@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notre Histoire — Créez votre affiche de couple</title>
+  <meta name="description" content="Créez une affiche personnalisée qui raconte votre histoire d'amour. Livraison encadrée chez vous." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Montserrat:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- ── HERO ─────────────────────────────────────────────────── -->
+  <header class="hero">
+    <div class="hero-inner">
+      <p class="hero-eyebrow">Affiche personnalisée · Livraison encadrée</p>
+      <h1 class="hero-title">Votre histoire,<br />encadrée pour toujours.</h1>
+      <p class="hero-sub">Créez en 5 minutes une affiche premium qui raconte vos moments forts. Imprimée et livrée chez vous.</p>
+      <a href="#configurator" class="btn-primary hero-cta">Créer mon affiche →</a>
+    </div>
+  </header>
+
+  <!-- ── CONFIGURATEUR ─────────────────────────────────────────── -->
+  <section class="configurator" id="configurator">
+    <div class="config-layout">
+
+      <!-- COLONNE GAUCHE : Formulaire -->
+      <div class="config-form" id="configForm">
+        <h2 class="form-heading">Personnalisez votre affiche</h2>
+
+        <!-- Prénoms -->
+        <div class="field-group">
+          <label class="field-label">Vos prénoms</label>
+          <div class="names-row">
+            <input type="text" id="partner1" class="field-input" placeholder="Julie" maxlength="20" />
+            <span class="names-sep">&</span>
+            <input type="text" id="partner2" class="field-input" placeholder="Maxime" maxlength="20" />
+          </div>
+        </div>
+
+        <!-- Format -->
+        <div class="field-group">
+          <label class="field-label">Format de l'affiche</label>
+          <div class="format-selector">
+            <label class="format-option">
+              <input type="radio" name="product" value="A3" checked />
+              <span class="format-card">
+                <span class="format-name">A3</span>
+                <span class="format-dim">30 × 40 cm</span>
+                <span class="format-price">39,90 €</span>
+              </span>
+            </label>
+            <label class="format-option">
+              <input type="radio" name="product" value="A4" />
+              <span class="format-card">
+                <span class="format-name">A4</span>
+                <span class="format-dim">21 × 30 cm</span>
+                <span class="format-price">29,90 €</span>
+              </span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Étapes -->
+        <div class="field-group">
+          <label class="field-label">Vos moments forts <span class="label-hint">(3 à 5 étapes)</span></label>
+          <div id="stepsContainer"></div>
+          <button type="button" class="btn-add-step" id="addStepBtn">+ Ajouter un moment</button>
+        </div>
+
+        <!-- CTA Commander -->
+        <div class="form-cta">
+          <button type="button" class="btn-primary btn-order" id="orderBtn">
+            Commander mon affiche
+          </button>
+          <p class="cta-meta">Paiement sécurisé · Satisfaction garantie</p>
+        </div>
+      </div>
+
+      <!-- COLONNE DROITE : Preview -->
+      <div class="config-preview">
+        <div class="preview-sticky">
+          <p class="preview-label">Aperçu en temps réel</p>
+          <div class="preview-frame">
+            <canvas id="posterCanvas"></canvas>
+          </div>
+          <p class="preview-note">L'affiche finale est imprimée en haute définition 300 DPI.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── SOCIAL PROOF ──────────────────────────────────────────── -->
+  <section class="social-proof">
+    <div class="proof-inner">
+      <div class="proof-stat"><span class="stat-num">+2 400</span><span class="stat-label">affiches imprimées</span></div>
+      <div class="proof-stat"><span class="stat-num">4,9 ⭐</span><span class="stat-label">note moyenne</span></div>
+      <div class="proof-stat"><span class="stat-num">5–7 j</span><span class="stat-label">livraison France</span></div>
+    </div>
+  </section>
+
+  <!-- ── SUCCESS PAGE (cachée par défaut) ──────────────────────── -->
+  <div class="success-overlay" id="successOverlay" style="display:none">
+    <div class="success-box">
+      <div class="success-icon">♥</div>
+      <h2>Commande confirmée !</h2>
+      <p>Votre affiche est en cours de préparation. Vous recevrez un email de confirmation avec le suivi de livraison.</p>
+      <button class="btn-primary" onclick="location.href='/'">Créer une nouvelle affiche</button>
+    </div>
+  </div>
+
+  <!-- Modal loading -->
+  <div class="loading-overlay" id="loadingOverlay" style="display:none">
+    <div class="loading-box">
+      <div class="loading-spinner"></div>
+      <p id="loadingMsg">Création de votre commande…</p>
+    </div>
+  </div>
+
+  <script src="/js/canvas.js"></script>
+  <script src="/js/form.js"></script>
+  <script src="/js/checkout.js"></script>
+</body>
+</html>
