@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notre Histoire — Affiche timeline de couple personnalisée</title>
+  <meta name="description" content="Créez une affiche personnalisée qui raconte votre histoire d'amour étape par étape. 5 designs premium. Livraison encadrée en France." />
+  <meta property="og:title" content="Notre Histoire — Votre love story encadrée" />
+  <meta property="og:description" content="5 designs premium · Photos réelles · Livré chez vous en cadre" />
+  <meta property="og:image" content="/assets/og-preview.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500;600&family=Great+Vibes&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- ── NAV ── -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <a href="/" class="nav-logo">Notre Histoire</a>
+      <div class="nav-links">
+        <a href="#designs">Designs</a>
+        <a href="#comment">Comment ça marche</a>
+        <a href="#avis">Avis</a>
+      </div>
+      <a href="#configurator" class="nav-cta">Créer mon affiche</a>
+    </div>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-eyebrow">Affiche personnalisée · Encadrée · Livrée</p>
+      <h1 class="hero-title">Votre histoire<br /><em>racontée sur vos murs.</em></h1>
+      <p class="hero-sub">Créez en 5 minutes une affiche timeline premium avec vos vraies photos. 5 designs exclusifs, imprimée et livrée chez vous.</p>
+      <div class="hero-actions">
+        <a href="#configurator" class="btn-primary">Créer mon affiche →</a>
+        <a href="#designs" class="btn-ghost">Voir les designs</a>
+      </div>
+      <div class="hero-trust">
+        <span>⭐ 4,9/5</span>
+        <span>·</span>
+        <span>+2 400 affiches</span>
+        <span>·</span>
+        <span>Livraison 5–7j</span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="poster-mockup" id="heroMockup">
+        <canvas id="heroCanvas" width="300" height="424"></canvas>
+      </div>
+      <div class="hero-badges">
+        <div class="badge">300 DPI</div>
+        <div class="badge">Papier premium</div>
+        <div class="badge">Made in France</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── DESIGNS ── -->
+  <section class="designs-section" id="designs">
+    <div class="section-inner">
+      <p class="section-eyebrow">5 designs exclusifs</p>
+      <h2 class="section-title">Choisissez votre style</h2>
+      <div class="designs-grid">
+        <div class="design-card active" data-design="classique">
+          <div class="design-preview classique-preview">
+            <div class="dp-title">Notre histoire</div>
+            <div class="dp-names">JULIE × MAXIME</div>
+            <div class="dp-line"></div>
+          </div>
+          <div class="design-info">
+            <span class="design-name">Classique</span>
+            <span class="design-mood">Crème & Rouge — Intemporel</span>
+          </div>
+        </div>
+        <div class="design-card" data-design="or">
+          <div class="design-preview or-preview">
+            <div class="dp-title">Notre histoire</div>
+            <div class="dp-names">JULIE × MAXIME</div>
+            <div class="dp-line"></div>
+          </div>
+          <div class="design-info">
+            <span class="design-name">Doré</span>
+            <span class="design-mood">Blanc & Or — Luxe</span>
+          </div>
+        </div>
+        <div class="design-card" data-design="sombre">
+          <div class="design-preview sombre-preview">
+            <div class="dp-title">Notre histoire</div>
+            <div class="dp-names">JULIE × MAXIME</div>
+            <div class="dp-line"></div>
+          </div>
+          <div class="design-info">
+            <span class="design-name">Sombre</span>
+            <span class="design-mood">Noir & Rose — Moderne</span>
+          </div>
+        </div>
+        <div class="design-card" data-design="botanik">
+          <div class="design-preview botanik-preview">
+            <div class="dp-title">Notre histoire</div>
+            <div class="dp-names">JULIE × MAXIME</div>
+            <div class="dp-line"></div>
+          </div>
+          <div class="design-info">
+            <span class="design-name">Botanik</span>
+            <span class="design-mood">Vert Sauge — Nature</span>
+          </div>
+        </div>
+        <div class="design-card" data-design="vintage">
+          <div class="design-preview vintage-preview">
+            <div class="dp-title">Notre histoire</div>
+            <div class="dp-names">JULIE × MAXIME</div>
+            <div class="dp-line"></div>
+          </div>
+          <div class="design-info">
+            <span class="design-name">Vintage</span>
+            <span class="design-mood">Sépia & Brun — Nostalgique</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── COMMENT ÇA MARCHE ── -->
+  <section class="how-section" id="comment">
+    <div class="section-inner">
+      <p class="section-eyebrow">Simple & rapide</p>
+      <h2 class="section-title">En 5 minutes, c'est prêt</h2>
+      <div class="steps-row">
+        <div class="how-step">
+          <div class="how-icon">✍️</div>
+          <h3>Personnalisez</h3>
+          <p>Vos prénoms, vos dates, vos moments forts et vos photos.</p>
+        </div>
+        <div class="how-arrow">→</div>
+        <div class="how-step">
+          <div class="how-icon">🎨</div>
+          <h3>Choisissez</h3>
+          <p>Un des 5 designs exclusifs et votre format d'affiche.</p>
+        </div>
+        <div class="how-arrow">→</div>
+        <div class="how-step">
+          <div class="how-icon">💳</div>
+          <h3>Commandez</h3>
+          <p>Paiement sécurisé Stripe. Votre adresse collectée automatiquement.</p>
+        </div>
+        <div class="how-arrow">→</div>
+        <div class="how-step">
+          <div class="how-icon">📦</div>
+          <h3>Recevez</h3>
+          <p>Votre affiche imprimée et encadrée arrive en 5 à 7 jours.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONFIGURATEUR ── -->
+  <section class="configurator" id="configurator">
+    <div class="config-header">
+      <h2>Créez votre affiche</h2>
+      <p>Aperçu mis à jour en temps réel</p>
+    </div>
+    <div class="config-layout">
+
+      <!-- FORMULAIRE -->
+      <div class="config-form">
+
+        <!-- Prénoms -->
+        <div class="form-block">
+          <label class="form-label">Vos prénoms</label>
+          <div class="names-row">
+            <input type="text" id="partner1" class="field-input" placeholder="Julie" maxlength="20" />
+            <span class="names-sep">×</span>
+            <input type="text" id="partner2" class="field-input" placeholder="Maxime" maxlength="20" />
+          </div>
+        </div>
+
+        <!-- Design -->
+        <div class="form-block">
+          <label class="form-label">Design</label>
+          <div class="design-selector" id="designSelector">
+            <button class="ds-btn active" data-design="classique">
+              <span class="ds-swatch classique-swatch"></span>Classique
+            </button>
+            <button class="ds-btn" data-design="or">
+              <span class="ds-swatch or-swatch"></span>Doré
+            </button>
+            <button class="ds-btn" data-design="sombre">
+              <span class="ds-swatch sombre-swatch"></span>Sombre
+            </button>
+            <button class="ds-btn" data-design="botanik">
+              <span class="ds-swatch botanik-swatch"></span>Botanik
+            </button>
+            <button class="ds-btn" data-design="vintage">
+              <span class="ds-swatch vintage-swatch"></span>Vintage
+            </button>
+          </div>
+        </div>
+
+        <!-- Format & Cadre -->
+        <div class="form-block">
+          <label class="form-label">Format & Cadre</label>
+          <div class="options-grid">
+            <div class="option-group">
+              <p class="option-sublabel">Format</p>
+              <div class="radio-group">
+                <label class="radio-opt">
+                  <input type="radio" name="product" value="A3" checked />
+                  <span>A3 — 39,90 €</span>
+                </label>
+                <label class="radio-opt">
+                  <input type="radio" name="product" value="A4" />
+                  <span>A4 — 29,90 €</span>
+                </label>
+              </div>
+            </div>
+            <div class="option-group">
+              <p class="option-sublabel">Cadre</p>
+              <div class="radio-group">
+                <label class="radio-opt">
+                  <input type="radio" name="frame" value="none" checked />
+                  <span>Sans cadre</span>
+                </label>
+                <label class="radio-opt">
+                  <input type="radio" name="frame" value="black" />
+                  <span>⬛ Noir +8€</span>
+                </label>
+                <label class="radio-opt">
+                  <input type="radio" name="frame" value="white" />
+                  <span>⬜ Blanc +8€</span>
+                </label>
+                <label class="radio-opt">
+                  <input type="radio" name="frame" value="wood" />
+                  <span>🪵 Bois +10€</span>
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Moments -->
+        <div class="form-block">
+          <label class="form-label">Vos moments <span class="label-hint">(3 à 5)</span></label>
+          <div id="stepsContainer"></div>
+          <button type="button" class="btn-add" id="addStepBtn">+ Ajouter un moment</button>
+        </div>
+
+        <!-- CTA -->
+        <div class="form-cta">
+          <div class="price-display" id="priceDisplay">39,90 €</div>
+          <button type="button" class="btn-order" id="orderBtn">
+            Commander mon affiche
+          </button>
+          <p class="cta-trust">🔒 Paiement sécurisé · Satisfait ou remboursé</p>
+        </div>
+      </div>
+
+      <!-- PREVIEW -->
+      <div class="config-preview">
+        <div class="preview-sticky">
+          <div class="preview-label-row">
+            <span class="preview-label">Aperçu temps réel</span>
+            <span class="preview-design-badge" id="designBadge">Classique</span>
+          </div>
+          <div class="preview-frame" id="previewFrame">
+            <canvas id="posterCanvas"></canvas>
+          </div>
+          <p class="preview-note">Rendu final en haute définition 300 DPI</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── AVIS ── -->
+  <section class="reviews-section" id="avis">
+    <div class="section-inner">
+      <p class="section-eyebrow">Ce qu'ils en pensent</p>
+      <h2 class="section-title">+2 400 couples conquis</h2>
+      <div class="reviews-grid">
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p>"Mon copain a pleuré en l'ouvrant. C'est exactement ce que j'espérais — nos moments forts, nos vraies photos, magnifiquement mis en valeur."</p>
+          <span class="review-author">— Camille R., design Classique</span>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p>"La qualité d'impression est bluffante. Le cadre noir rend le design Sombre absolument sublime. Je la recommande les yeux fermés."</p>
+          <span class="review-author">— Thomas M., design Sombre</span>
+        </div>
+        <div class="review-card">
+          <div class="review-stars">★★★★★</div>
+          <p>"Cadeau de mariage original et ultra personnalisé. La mariée a adoré le design Doré. Livré bien avant le jour J, parfait."</p>
+          <span class="review-author">— Sophie L., design Doré</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">Notre Histoire</span>
+        <p>Des affiches timeline personnalisées pour immortaliser votre amour. Imprimées en France, livrées encadrées.</p>
+      </div>
+      <div class="footer-links">
+        <a href="/cgv">CGV</a>
+        <a href="/mentions-legales">Mentions légales</a>
+        <a href="/contact">Contact</a>
+      </div>
+      <div class="footer-payments">
+        <span>💳 Visa · Mastercard · American Express</span>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2026 Notre Histoire. Tous droits réservés.</div>
+  </footer>
+
+  <!-- Overlays -->
+  <div class="loading-overlay" id="loadingOverlay" style="display:none">
+    <div class="loading-box">
+      <div class="loading-spinner"></div>
+      <p id="loadingMsg">Préparation de votre commande…</p>
+    </div>
+  </div>
+  <div class="success-overlay" id="successOverlay" style="display:none">
+    <div class="success-box">
+      <div class="success-icon">♥</div>
+      <h2>Commande confirmée !</h2>
+      <p>Votre affiche est en cours de préparation. Vous recevrez un email de suivi sous 24h.</p>
+      <button class="btn-primary" onclick="location.href='/'">Créer une nouvelle affiche</button>
+    </div>
+  </div>
+
+  <script src="/js/canvas.js"></script>
+  <script src="/js/form.js"></script>
+  <script src="/js/checkout.js"></script>
+</body>
+</html>
