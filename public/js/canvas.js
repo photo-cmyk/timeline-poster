@@ -1,216 +1,189 @@
 /**
- * canvas.js — Rendu temps réel de l'affiche sur Canvas HTML
- * Reproduit fidèlement le design du PDF généré côté serveur
+ * canvas.js v2 — Preview temps réel avec 5 designs
  */
 
-const CANVAS_W = 420;
-const CANVAS_H = 594; // ratio A4/A3
+const CANVAS_W = 380;
+const CANVAS_H = 537; // ratio A3
 
-const COLORS = {
-  background: '#FDFBF7',
-  accent: '#C92A2A',
-  line: '#A0A0A0',
-  dark: '#1A1A1A',
-  muted: '#777777',
-  border: '#E0DDD7',
+const DESIGNS = {
+  classique: { bg: '#FDFBF7', accent: '#C92A2A', line: '#A0A0A0', dark: '#1A1A1A', muted: '#777', border: '#E0DDD7' },
+  or:        { bg: '#FFFFFF', accent: '#C9A84C', line: '#C9A84C', dark: '#1A1A1A', muted: '#888', border: '#E8D9A0' },
+  sombre:    { bg: '#1A1A1A', accent: '#E8A0B0', line: '#3A3A3A', dark: '#F5F5F5', muted: '#999', border: '#2A2A2A' },
+  botanik:   { bg: '#E8EDE4', accent: '#4A7C59', line: '#7FAD8A', dark: '#2C3E2D', muted: '#5A7A5E', border: '#C5D9C0' },
+  vintage:   { bg: '#F5EDD6', accent: '#8B4513', line: '#B8956A', dark: '#3D2B1F', muted: '#7A5C3A', border: '#D4B896' },
 };
 
-const PICTO_MAP = {
-  heart:  '♥',
-  wine:   '🍷',
-  plane:  '✈',
-  house:  '🏠',
-  ring:   '💍',
-  star:   '★',
-  music:  '♪',
-};
+const PICTOS = { heart:'♥', wine:'♦', plane:'▲', house:'■', ring:'★', star:'✦', music:'♪' };
 
-// Cache images pour éviter les rechargements
-const imageCache = {};
+const imgCache = {};
+let currentDesign = 'classique';
 
-/**
- * Point d'entrée : dessine toute l'affiche
- */
-async function renderPoster(data) {
-  const canvas = document.getElementById('posterCanvas');
+function setDesign(design) {
+  currentDesign = design;
+}
+
+async function renderPoster(data, canvasId = 'posterCanvas') {
+  const canvas = document.getElementById(canvasId);
   if (!canvas) return;
 
   canvas.width = CANVAS_W;
   canvas.height = CANVAS_H;
 
   const ctx = canvas.getContext('2d');
-  const { partner1 = '', partner2 = '', steps = [] } = data;
+  const { partner1 = '', partner2 = '', steps = [], design = currentDesign } = data;
+  const C = DESIGNS[design] || DESIGNS.classique;
+  const W = CANVAS_W;
+  const H = CANVAS_H;
+  const margin = W * 0.06;
 
-  // ── Fond ──
-  ctx.fillStyle = COLORS.background;
-  ctx.fillRect(0, 0, CANVAS_W, CANVAS_H);
+  // Fond
+  ctx.fillStyle = C.bg;
+  ctx.fillRect(0, 0, W, H);
 
-  const margin = CANVAS_W * 0.06;
+  // Coins décoratifs
+  const cs = W * 0.055;
+  ctx.strokeStyle = C.accent;
+  ctx.lineWidth = 0.8;
+  // Top-left
+  ctx.beginPath(); ctx.moveTo(margin*0.6, margin*0.6+cs); ctx.lineTo(margin*0.6, margin*0.6); ctx.lineTo(margin*0.6+cs, margin*0.6); ctx.stroke();
+  // Top-right
+  ctx.beginPath(); ctx.moveTo(W-margin*0.6-cs, margin*0.6); ctx.lineTo(W-margin*0.6, margin*0.6); ctx.lineTo(W-margin*0.6, margin*0.6+cs); ctx.stroke();
+  // Bottom-left
+  ctx.beginPath(); ctx.moveTo(margin*0.6, H-margin*0.6-cs); ctx.lineTo(margin*0.6, H-margin*0.6); ctx.lineTo(margin*0.6+cs, H-margin*0.6); ctx.stroke();
+  // Bottom-right
+  ctx.beginPath(); ctx.moveTo(W-margin*0.6-cs, H-margin*0.6); ctx.lineTo(W-margin*0.6, H-margin*0.6); ctx.lineTo(W-margin*0.6, H-margin*0.6-cs); ctx.stroke();
 
-  // ── En-tête : "Notre histoire" ──
-  let cursorY = CANVAS_H * 0.05;
+  let cursorY = H * 0.055;
 
-  ctx.fillStyle = COLORS.dark;
-  ctx.font = `${CANVAS_W * 0.072}px 'Great Vibes', cursive`;
+  // "Notre histoire"
+  ctx.fillStyle = C.dark;
+  ctx.font = `italic ${W*0.07}px 'Great Vibes', cursive`;
   ctx.textAlign = 'center';
-  ctx.fillText('Notre histoire', CANVAS_W / 2, cursorY + CANVAS_W * 0.06);
-  cursorY += CANVAS_W * 0.088;
+  ctx.fillText('Notre histoire', W/2, cursorY + W*0.062);
+  cursorY += W * 0.082;
 
-  // ── Cœur ──
-  ctx.fillStyle = COLORS.accent;
-  ctx.font = `${CANVAS_W * 0.028}px Arial`;
-  ctx.fillText('♥', CANVAS_W / 2, cursorY + CANVAS_W * 0.016);
-  cursorY += CANVAS_W * 0.042;
+  // Séparateur accent
+  ctx.fillStyle = C.accent;
+  ctx.font = `${W*0.02}px Arial`;
+  ctx.fillText('— ♥ —', W/2, cursorY + W*0.014);
+  cursorY += W * 0.034;
 
-  // ── Prénoms ──
-  const names = `${(partner1 || 'PRÉNOM 1').toUpperCase()}  &  ${(partner2 || 'PRÉNOM 2').toUpperCase()}`;
-  ctx.fillStyle = COLORS.dark;
-  ctx.font = `bold ${CANVAS_W * 0.038}px 'Montserrat', sans-serif`;
-  ctx.letterSpacing = `${CANVAS_W * 0.006}px`;
-  ctx.fillText(names, CANVAS_W / 2, cursorY + CANVAS_W * 0.028);
-  ctx.letterSpacing = '0px';
-  cursorY += CANVAS_W * 0.055;
+  // Prénoms
+  const names = `${(partner1||'PRÉNOM 1').toUpperCase()}  ×  ${(partner2||'PRÉNOM 2').toUpperCase()}`;
+  ctx.fillStyle = C.dark;
+  ctx.font = `bold ${W*0.032}px 'DM Sans', sans-serif`;
+  ctx.fillText(names, W/2, cursorY + W*0.024);
+  cursorY += W * 0.048;
 
-  // ── Ligne séparatrice sous les prénoms ──
+  // Ligne fine
   ctx.beginPath();
-  ctx.moveTo(margin * 2, cursorY);
-  ctx.lineTo(CANVAS_W - margin * 2, cursorY);
-  ctx.strokeStyle = COLORS.border;
-  ctx.lineWidth = 0.5;
-  ctx.stroke();
+  ctx.moveTo(W*0.35, cursorY); ctx.lineTo(W*0.65, cursorY);
+  ctx.strokeStyle = C.line; ctx.lineWidth = 0.5; ctx.stroke();
   cursorY += 12;
 
-  // ── Timeline ──
-  const timelineX = CANVAS_W * 0.27;
+  // Timeline
+  const timelineX = W * 0.26;
   const timelineTop = cursorY;
-  const timelineBottom = CANVAS_H * 0.88;
-  const activeSteps = steps.filter(s => s); // filtrer null
-  const stepCount = Math.max(activeSteps.length, 1);
-  const stepZoneH = (timelineBottom - timelineTop) / stepCount;
+  const timelineBottom = H * 0.875;
+  const stepCount = Math.max(steps.length, 1);
+  const zoneH = (timelineBottom - timelineTop) / stepCount;
 
-  // Ligne verticale
   ctx.beginPath();
-  ctx.moveTo(timelineX, timelineTop);
-  ctx.lineTo(timelineX, timelineBottom);
-  ctx.strokeStyle = COLORS.line;
-  ctx.lineWidth = 0.8;
-  ctx.stroke();
+  ctx.moveTo(timelineX, timelineTop); ctx.lineTo(timelineX, timelineBottom);
+  ctx.strokeStyle = C.line; ctx.lineWidth = 0.7; ctx.stroke();
 
-  // ── Étapes ──
-  for (let i = 0; i < activeSteps.length; i++) {
-    const step = activeSteps[i] || {};
-    const centerY = timelineTop + stepZoneH * i + stepZoneH * 0.45;
+  for (let i = 0; i < steps.length; i++) {
+    const step = steps[i] || {};
+    const cy = timelineTop + zoneH * i + zoneH * 0.44;
 
-    // Point d'ancrage
+    // Point ancrage
     ctx.beginPath();
-    ctx.arc(timelineX, centerY, 4, 0, Math.PI * 2);
-    ctx.fillStyle = COLORS.accent;
-    ctx.fill();
+    ctx.arc(timelineX, cy, 5, 0, Math.PI*2);
+    ctx.fillStyle = C.accent; ctx.fill();
+    ctx.beginPath();
+    ctx.arc(timelineX, cy, 3.5, 0, Math.PI*2);
+    ctx.fillStyle = C.bg; ctx.fill();
 
-    // DATE (gauche)
-    ctx.fillStyle = COLORS.dark;
-    ctx.font = `bold ${CANVAS_W * 0.022}px 'Montserrat', sans-serif`;
+    // Date
+    ctx.fillStyle = C.accent;
+    ctx.font = `bold ${W*0.018}px 'DM Sans', sans-serif`;
     ctx.textAlign = 'right';
-    ctx.fillText((step.date || '').toUpperCase(), timelineX - 10, centerY + 4);
+    ctx.fillText((step.date||'').toUpperCase(), timelineX-10, cy+4);
 
-    // PICTO (sur la ligne)
-    ctx.font = `${CANVAS_W * 0.026}px Arial`;
+    // Picto
+    ctx.font = `${W*0.018}px Arial`;
     ctx.textAlign = 'center';
-    ctx.fillStyle = COLORS.accent;
-    ctx.fillText(PICTO_MAP[step.picto] || '♥', timelineX, centerY - 14);
+    ctx.fillStyle = C.accent;
+    ctx.fillText(PICTOS[step.picto]||'♥', timelineX, cy-13);
 
-    // TITRE étape
-    const textLeft = timelineX + 12;
-    const textMaxW = CANVAS_W * 0.37;
-
-    ctx.fillStyle = COLORS.dark;
-    ctx.font = `italic ${CANVAS_W * 0.024}px 'Great Vibes', cursive`;
+    // Titre
+    ctx.fillStyle = C.dark;
+    ctx.font = `italic ${W*0.022}px 'Cormorant Garamond', serif`;
     ctx.textAlign = 'left';
-    ctx.fillText(step.title || 'Votre moment', textLeft, centerY - 2);
+    ctx.fillText(step.title||'Votre moment', timelineX+11, cy-2);
 
-    // DESCRIPTION
-    ctx.fillStyle = COLORS.muted;
-    ctx.font = `${CANVAS_W * 0.016}px 'Inter', sans-serif`;
-    const desc = truncateText(step.description || '', 38);
-    ctx.fillText(desc, textLeft, centerY + CANVAS_W * 0.018);
+    // Description
+    ctx.fillStyle = C.muted;
+    ctx.font = `${W*0.014}px 'DM Sans', sans-serif`;
+    const desc = (step.description||'').slice(0,36);
+    ctx.fillText(desc, timelineX+11, cy+W*0.018);
 
-    // IMAGE
+    // Image
     if (step.imageUrl) {
-      const imgX = CANVAS_W * 0.68;
-      const imgW = CANVAS_W * 0.26;
-      const imgH = imgW * 0.75;
-
+      const imgX = W*0.66;
+      const imgW = W*0.28;
+      const imgH = imgW*0.72;
       try {
-        const img = await loadImageCached(step.imageUrl);
-        // Recadrage cover
-        drawImageCover(ctx, img, imgX, centerY - imgH / 2, imgW, imgH);
-
-        // Bordure fine
-        ctx.strokeStyle = COLORS.border;
-        ctx.lineWidth = 0.5;
-        ctx.strokeRect(imgX, centerY - imgH / 2, imgW, imgH);
+        const img = await loadImg(step.imageUrl);
+        coverDraw(ctx, img, imgX, cy-imgH/2, imgW, imgH);
+        ctx.strokeStyle = C.border; ctx.lineWidth = 0.5;
+        ctx.strokeRect(imgX, cy-imgH/2, imgW, imgH);
       } catch {
-        // Placeholder si image pas encore chargée
-        ctx.fillStyle = '#EAE7E0';
-        ctx.fillRect(CANVAS_W * 0.68, centerY - CANVAS_W * 0.1, CANVAS_W * 0.26, CANVAS_W * 0.195);
-        ctx.fillStyle = COLORS.muted;
-        ctx.font = `${CANVAS_W * 0.02}px Arial`;
+        ctx.fillStyle = C.border;
+        ctx.fillRect(imgX, cy-imgH/2, imgW, imgH);
+        ctx.fillStyle = C.muted;
+        ctx.font = `${W*0.022}px Arial`;
         ctx.textAlign = 'center';
-        ctx.fillText('📷', CANVAS_W * 0.81, centerY + 6);
+        ctx.fillText('📷', imgX+imgW/2, cy+6);
       }
     }
   }
 
-  // ── Pied de page ──
-  const footerY = CANVAS_H * 0.91;
-
+  // Footer
+  const fy = H * 0.9;
   ctx.beginPath();
-  ctx.moveTo(CANVAS_W * 0.3, footerY - 8);
-  ctx.lineTo(CANVAS_W * 0.7, footerY - 8);
-  ctx.strokeStyle = COLORS.line;
-  ctx.lineWidth = 0.5;
-  ctx.stroke();
+  ctx.moveTo(W*0.25, fy-6); ctx.lineTo(W*0.75, fy-6);
+  ctx.strokeStyle = C.line; ctx.lineWidth = 0.4; ctx.stroke();
 
-  ctx.fillStyle = COLORS.dark;
-  ctx.font = `italic ${CANVAS_W * 0.028}px 'Great Vibes', cursive`;
+  ctx.fillStyle = C.dark;
+  ctx.font = `italic ${W*0.025}px 'Great Vibes', cursive`;
   ctx.textAlign = 'center';
-  ctx.fillText('Le meilleur reste à venir...', CANVAS_W / 2, footerY + 16);
+  ctx.fillText('Le meilleur reste à venir…', W/2, fy+14);
 
-  ctx.fillStyle = COLORS.accent;
-  ctx.font = `${CANVAS_W * 0.032}px Arial`;
-  ctx.fillText('∞', CANVAS_W / 2, footerY + 38);
+  ctx.fillStyle = C.accent;
+  ctx.font = `${W*0.028}px Arial`;
+  ctx.fillText('∞', W/2, fy+32);
 }
 
-// ─── Helpers ────────────────────────────────────────────────────
-
-function loadImageCached(url) {
-  if (imageCache[url]) return Promise.resolve(imageCache[url]);
-  return new Promise((resolve, reject) => {
+function loadImg(url) {
+  if (imgCache[url]) return Promise.resolve(imgCache[url]);
+  return new Promise((res, rej) => {
     const img = new Image();
     img.crossOrigin = 'anonymous';
-    img.onload = () => { imageCache[url] = img; resolve(img); };
-    img.onerror = reject;
+    img.onload = () => { imgCache[url] = img; res(img); };
+    img.onerror = rej;
     img.src = url;
   });
 }
 
-function drawImageCover(ctx, img, x, y, w, h) {
-  const imgRatio = img.width / img.height;
-  const boxRatio = w / h;
-  let sx, sy, sw, sh;
-  if (imgRatio > boxRatio) {
-    sh = img.height; sw = img.height * boxRatio;
-    sx = (img.width - sw) / 2; sy = 0;
-  } else {
-    sw = img.width; sh = img.width / boxRatio;
-    sx = 0; sy = (img.height - sh) / 2;
-  }
-  ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+function coverDraw(ctx, img, x, y, w, h) {
+  const ir = img.width/img.height;
+  const br = w/h;
+  let sx,sy,sw,sh;
+  if (ir > br) { sh=img.height; sw=img.height*br; sx=(img.width-sw)/2; sy=0; }
+  else { sw=img.width; sh=img.width/br; sx=0; sy=(img.height-sh)/2; }
+  ctx.drawImage(img, sx,sy,sw,sh, x,y,w,h);
 }
 
-function truncateText(text, maxLen) {
-  return text.length > maxLen ? text.slice(0, maxLen - 1) + '…' : text;
-}
-
-// Exposer pour form.js
 window.renderPoster = renderPoster;
+window.setDesign = setDesign;
