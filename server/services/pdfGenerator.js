@@ -1,163 +1,169 @@
-const PDFDocument = require('pdfkit');
-const sharp = require('sharp');
-const fetch = require('node-fetch');
+/**
+ * pdfGenerator.js — Génération PDF 300 DPI via Puppeteer
+ * Reconstruit exactement le même rendu HTML que le front-end client.
+ */
+const puppeteer = require('puppeteer');
 
-const FORMAT = {
-  A3: { width: 841.89, height: 1190.55 },
-  A4: { width: 595.28, height: 841.89 },
+// Dimensions physiques en mm
+const FORMATS = {
+  A3: { w: 297, h: 420 },
+  A4: { w: 210, h: 297 },
 };
 
-const DESIGNS = {
-  classique: { bg: '#FDFBF7', accent: '#C92A2A', line: '#A0A0A0', dark: '#1A1A1A', muted: '#777', border: '#E0DDD7' },
-  or:        { bg: '#FFFFFF', accent: '#C9A84C', line: '#C9A84C', dark: '#1A1A1A', muted: '#888', border: '#E8D9A0' },
-  sombre:    { bg: '#1A1A1A', accent: '#E8A0B0', line: '#444', dark: '#F5F5F5', muted: '#AAA', border: '#333' },
-  botanik:   { bg: '#E8EDE4', accent: '#4A7C59', line: '#7FAD8A', dark: '#2C3E2D', muted: '#5A7A5E', border: '#C5D9C0' },
-  vintage:   { bg: '#F5EDD6', accent: '#8B4513', line: '#B8956A', dark: '#3D2B1F', muted: '#7A5C3A', border: '#D4B896' },
+// Pictos SVG identiques au front
+const PICTOS = {
+  heart: `<svg viewBox="0 0 24 24" fill="none" stroke="#C92A2A" stroke-width="1.8" stroke-linecap="round"><path d="M12 21C12 21 3 14 3 8a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-9 13-9 13z"/></svg>`,
+  ring:  `<svg viewBox="0 0 24 24" fill="none" stroke="#C92A2A" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="14" r="6"/><path d="M8 14l2-6 2-2 2 2 2 6"/></svg>`,
+  plane: `<svg viewBox="0 0 24 24" fill="none" stroke="#C92A2A" stroke-width="1.8" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>`,
+  house: `<svg viewBox="0 0 24 24" fill="none" stroke="#C92A2A" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>`,
+  wine:  `<svg viewBox="0 0 24 24" fill="none" stroke="#C92A2A" stroke-width="1.8" stroke-linecap="round"><path d="M8 2h8l-2 7a4 4 0 0 1-8 0L8 2z"/><line x1="12" y1="12" x2="12" y2="20"/><line x1="8" y1="20" x2="16" y2="20"/></svg>`,
 };
 
-const PICTO_MAP = {
-  heart: '♥', wine: '♦', plane: '▲', house: '■', ring: '★', star: '✦', music: '♪',
-};
+function esc(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function buildPosterHTML(orderData) {
+  const { partner1, partner2, steps, product = 'A3' } = orderData;
+  const n1 = (partner1 || '').toUpperCase();
+  const n2 = (partner2 || '').toUpperCase();
+  const n  = steps.length;
+
+  const stepsHTML = steps.map(step => {
+    const pictoSVG = PICTOS[step.picto] || PICTOS.heart;
+    const imgTag = step.imageUrl
+      ? `<img src="${step.imageUrl}" style="width:100%;height:100%;object-fit:cover;display:block"/>`
+      : `<div style="color:#B8B4AC;font-size:24px;display:flex;align-items:center;justify-content:center;height:100%">📷</div>`;
+
+    const imgH = Math.max(60, 120 - n * 12);
+
+    return `
+      <div style="display:grid;grid-template-columns:23% 5% 37% 30%;gap:0 1%;align-items:center;position:relative">
+        <div style="text-align:right;font-weight:700;font-size:${14-n}px;text-transform:uppercase;padding-right:8px;color:#111;font-family:'Inter',sans-serif;line-height:1.2">
+          ${esc((step.date || '').toUpperCase())}
+        </div>
+        <div style="display:flex;justify-content:center;align-items:center;position:relative;z-index:1">
+          <div style="width:28px;height:28px;border-radius:50%;border:1.2px solid #C92A2A;background:#fff;display:flex;align-items:center;justify-content:center">
+            <div style="width:15px;height:15px">${pictoSVG}</div>
+          </div>
+        </div>
+        <div style="padding-left:12px">
+          <div style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:600;font-size:${16-n}px;color:#111;margin-bottom:4px;line-height:1.2">
+            ${esc(step.title || '')}
+          </div>
+          <div style="font-size:${12-n}px;color:#777;line-height:1.45;font-family:'Inter',sans-serif">
+            ${esc(step.description || '')}
+          </div>
+        </div>
+        <div style="height:${imgH}px;border-radius:3px;overflow:hidden;background:#EDE9E2;border:0.5px solid #D8D4CC">
+          ${imgTag}
+        </div>
+      </div>`;
+  }).join(`<div style="height:1px;background:#DDDAD4;margin:0 5%;opacity:.4"></div>`);
+
+  return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:#FDFBF7;font-family:'Inter',sans-serif;-webkit-font-smoothing:antialiased}
+</style>
+</head>
+<body>
+<div style="
+  width:100%;
+  min-height:100vh;
+  background:#FDFBF7;
+  padding:7% 6% 5%;
+  display:flex;
+  flex-direction:column;
+">
+  <!-- En-tête -->
+  <div style="text-align:center;margin-bottom:5%">
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-weight:400;font-size:42px;color:#111;line-height:1.1;margin-bottom:10px">
+      Notre histoire
+    </div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:12px">
+      <div style="width:60px;height:0.6px;background:#C92A2A"></div>
+      <div style="color:#C92A2A;font-size:14px">♥</div>
+      <div style="width:60px;height:0.6px;background:#C92A2A"></div>
+    </div>
+    <div style="font-weight:700;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#111;font-family:'Inter',sans-serif">
+      ${n1}  ×  ${n2}
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div style="flex:1;position:relative;display:flex;flex-direction:column;justify-content:space-around;gap:0">
+    <!-- Ligne verticale -->
+    <div style="position:absolute;left:25%;top:0;bottom:0;width:0.8px;background:#A0A0A0;z-index:0"></div>
+    ${stepsHTML}
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center;margin-top:4%">
+    <div style="width:40%;height:0.5px;background:#A0A0A0;margin:0 auto 10px"></div>
+    <div style="font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:18px;color:#111">
+      Le meilleur reste à venir…
+    </div>
+    <div style="color:#C92A2A;font-size:22px;margin-top:6px">∞</div>
+  </div>
+</div>
+</body>
+</html>`;
+}
 
 async function generatePoster(orderData) {
-  const { partner1, partner2, product = 'A3', steps, design = 'classique' } = orderData;
-  const fmt = FORMAT[product] || FORMAT.A3;
-  const C = DESIGNS[design] || DESIGNS.classique;
+  const fmt = FORMATS[orderData.product] || FORMATS.A3;
 
-  return new Promise(async (resolve, reject) => {
-    try {
-      const chunks = [];
-      const doc = new PDFDocument({
-        size: [fmt.width, fmt.height],
-        margin: 0,
-        info: { Title: `Timeline ${partner1} & ${partner2}`, Author: 'Notre Histoire' },
-      });
+  // 300 DPI : 1mm = 300/25.4 ≈ 11.81 px
+  // On utilise deviceScaleFactor=3.125 sur une viewport 96dpi → 300dpi effectif
+  const DPI_SCALE   = 3.125;
+  const PX_PER_MM   = 3.7795; // 96 dpi
+  const viewportW   = Math.round(fmt.w * PX_PER_MM);
+  const viewportH   = Math.round(fmt.h * PX_PER_MM);
 
-      doc.on('data', chunk => chunks.push(chunk));
-      doc.on('end', () => resolve(Buffer.concat(chunks)));
-      doc.on('error', reject);
+  const html = buildPosterHTML(orderData);
 
-      const W = fmt.width;
-      const H = fmt.height;
-      const margin = W * 0.06;
-
-      // Fond
-      doc.rect(0, 0, W, H).fill(C.bg);
-
-      // Décoration coins (subtile)
-      const cornerSize = W * 0.06;
-      doc.moveTo(margin * 0.6, margin * 0.6).lineTo(margin * 0.6 + cornerSize, margin * 0.6)
-        .moveTo(margin * 0.6, margin * 0.6).lineTo(margin * 0.6, margin * 0.6 + cornerSize)
-        .strokeColor(C.accent).lineWidth(0.8).stroke();
-      doc.moveTo(W - margin * 0.6, margin * 0.6).lineTo(W - margin * 0.6 - cornerSize, margin * 0.6)
-        .moveTo(W - margin * 0.6, margin * 0.6).lineTo(W - margin * 0.6, margin * 0.6 + cornerSize)
-        .strokeColor(C.accent).lineWidth(0.8).stroke();
-
-      let cursorY = H * 0.055;
-
-      // "Notre histoire"
-      doc.font('Helvetica-Oblique').fontSize(W * 0.068).fillColor(C.dark)
-        .text('Notre histoire', 0, cursorY, { align: 'center', width: W });
-      cursorY += W * 0.082;
-
-      // Cœur accent
-      doc.font('Helvetica').fontSize(W * 0.022).fillColor(C.accent)
-        .text('— ♥ —', 0, cursorY, { align: 'center', width: W });
-      cursorY += W * 0.038;
-
-      // Prénoms
-      doc.font('Helvetica-Bold').fontSize(W * 0.034).fillColor(C.dark)
-        .text(`${partner1.toUpperCase()}  ×  ${partner2.toUpperCase()}`, margin, cursorY, {
-          align: 'center', width: W - margin * 2, characterSpacing: W * 0.007,
-        });
-      cursorY += W * 0.052;
-
-      // Séparateur
-      doc.moveTo(W * 0.35, cursorY).lineTo(W * 0.65, cursorY)
-        .strokeColor(C.line).lineWidth(0.5).stroke();
-      cursorY += 14;
-
-      // Timeline
-      const timelineX = W * 0.26;
-      const timelineTop = cursorY;
-      const timelineBottom = H * 0.875;
-      const stepCount = Math.max(steps.length, 1);
-      const stepZoneH = (timelineBottom - timelineTop) / stepCount;
-
-      // Ligne verticale
-      doc.moveTo(timelineX, timelineTop).lineTo(timelineX, timelineBottom)
-        .strokeColor(C.line).lineWidth(0.7).stroke();
-
-      for (let i = 0; i < steps.length; i++) {
-        const step = steps[i] || {};
-        const centerY = timelineTop + stepZoneH * i + stepZoneH * 0.44;
-
-        // Point ancrage
-        doc.circle(timelineX, centerY, 5).fillColor(C.accent).fill();
-        doc.circle(timelineX, centerY, 5).strokeColor(C.bg).lineWidth(1.5).stroke();
-
-        // Date
-        doc.font('Helvetica-Bold').fontSize(W * 0.019).fillColor(C.accent)
-          .text((step.date || '').toUpperCase(), margin * 0.5, centerY - W * 0.011, {
-            width: timelineX - margin * 0.5 - 10, align: 'right',
-          });
-
-        // Picto
-        const pictoSize = W * 0.02;
-        doc.font('Helvetica').fontSize(pictoSize).fillColor(C.accent)
-          .text(PICTO_MAP[step.picto] || '♥', timelineX - pictoSize, centerY - 22, { width: pictoSize * 2, align: 'center' });
-
-        // Titre
-        const textLeft = timelineX + 14;
-        const textW = W * 0.36;
-        doc.font('Helvetica-Oblique').fontSize(W * 0.023).fillColor(C.dark)
-          .text(step.title || '', textLeft, centerY - W * 0.022, { width: textW });
-
-        // Description
-        doc.font('Helvetica').fontSize(W * 0.015).fillColor(C.muted)
-          .text(step.description || '', textLeft, centerY + W * 0.004, { width: textW });
-
-        // Image
-        if (step.imageUrl) {
-          try {
-            const imgBuf = await fetchImage(step.imageUrl);
-            const imgX = W * 0.67;
-            const imgW = W * 0.27;
-            const imgH = imgW * 0.72;
-            const iy = centerY - imgH / 2;
-            doc.image(imgBuf, imgX, iy, { width: imgW, height: imgH, cover: [imgW, imgH] });
-            doc.rect(imgX, iy, imgW, imgH).strokeColor(C.border).lineWidth(0.5).stroke();
-          } catch {}
-        }
-      }
-
-      // Footer
-      const footerY = H * 0.9;
-      doc.moveTo(W * 0.25, footerY - 8).lineTo(W * 0.75, footerY - 8)
-        .strokeColor(C.line).lineWidth(0.4).stroke();
-      doc.font('Helvetica-Oblique').fontSize(W * 0.024).fillColor(C.dark)
-        .text('Le meilleur reste à venir…', 0, footerY + 4, { align: 'center', width: W });
-      doc.font('Helvetica').fontSize(W * 0.028).fillColor(C.accent)
-        .text('∞', 0, footerY + W * 0.036, { align: 'center', width: W });
-
-      // Coins bas
-      doc.moveTo(margin * 0.6, H - margin * 0.6).lineTo(margin * 0.6 + cornerSize, H - margin * 0.6)
-        .moveTo(margin * 0.6, H - margin * 0.6).lineTo(margin * 0.6, H - margin * 0.6 - cornerSize)
-        .strokeColor(C.accent).lineWidth(0.8).stroke();
-      doc.moveTo(W - margin * 0.6, H - margin * 0.6).lineTo(W - margin * 0.6 - cornerSize, H - margin * 0.6)
-        .moveTo(W - margin * 0.6, H - margin * 0.6).lineTo(W - margin * 0.6, H - margin * 0.6 - cornerSize)
-        .strokeColor(C.accent).lineWidth(0.8).stroke();
-
-      doc.end();
-    } catch (err) { reject(err); }
+  const browser = await puppeteer.launch({
+    headless: 'new',
+    args: ['--no-sandbox','--disable-setuid-sandbox','--disable-dev-shm-usage'],
   });
+
+  try {
+    const page = await browser.newPage();
+
+    await page.setViewport({
+      width:             viewportW,
+      height:            viewportH,
+      deviceScaleFactor: DPI_SCALE,
+    });
+
+    await page.setContent(html, { waitUntil: 'networkidle0', timeout: 30000 });
+
+    // Attendre que les images distantes soient chargées
+    await page.evaluate(() => {
+      return Promise.all(
+        Array.from(document.images)
+          .filter(img => !img.complete)
+          .map(img => new Promise(res => { img.onload = img.onerror = res; }))
+      );
+    });
+
+    const pdfBuffer = await page.pdf({
+      width:       `${fmt.w}mm`,
+      height:      `${fmt.h}mm`,
+      printBackground: true,
+      margin:      { top:0, right:0, bottom:0, left:0 },
+    });
+
+    return Buffer.from(pdfBuffer);
+
+  } finally {
+    await browser.close();
+  }
 }
 
-async function fetchImage(url) {
-  const res = await fetch(url, { timeout: 10000 });
-  if (!res.ok) throw new Error(`HTTP ${res.status}`);
-  const buf = Buffer.from(await res.arrayBuffer());
-  return sharp(buf).resize(800, 600, { fit: 'cover' }).jpeg({ quality: 95 }).toBuffer();
-}
-
-module.exports = { generatePoster, DESIGNS };
+module.exports = { generatePoster };
