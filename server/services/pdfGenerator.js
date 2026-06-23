@@ -2,7 +2,8 @@
  * pdfGenerator.js — Génération PDF 300 DPI via Puppeteer
  * Reconstruit exactement le même rendu HTML que le front-end client.
  */
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
+const chromium  = require('@sparticuz/chromium');
 
 // Dimensions physiques en mm
 const FORMATS = {
@@ -128,8 +129,10 @@ async function generatePoster(orderData) {
   const html = buildPosterHTML(orderData);
 
   const browser = await puppeteer.launch({
-    headless: 'new',
-    args: ['--no-sandbox','--disable-setuid-sandbox','--disable-dev-shm-usage'],
+    args:            chromium.args,
+    defaultViewport: chromium.defaultViewport,
+    executablePath:  await chromium.executablePath(),
+    headless:        chromium.headless,
   });
 
   try {
