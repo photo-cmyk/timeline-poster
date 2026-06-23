@@ -1,45 +1,33 @@
 /**
- * canvas.js v2.1 — Preview temps réel avec 5 designs
- * Fix: polices chargées avant rendu + fallback sûr
+ * canvas.js v2.2 — Rendu immédiat sans dépendance polices externes
  */
 
-const CANVAS_W = 360;
-const CANVAS_H = 509;
+const CANVAS_W = 340;
+const CANVAS_H = 481;
 
 const DESIGNS = {
-  classique: { bg: '#FDFBF7', accent: '#C92A2A', line: '#A0A0A0', dark: '#1A1A1A', muted: '#777', border: '#E0DDD7' },
+  classique: { bg: '#FDFBF7', accent: '#C92A2A', line: '#BEBEBE', dark: '#1A1A1A', muted: '#888', border: '#E0DDD7' },
   or:        { bg: '#FFFFFF', accent: '#C9A84C', line: '#C9A84C', dark: '#1A1A1A', muted: '#888', border: '#E8D9A0' },
-  sombre:    { bg: '#1A1A1A', accent: '#E8A0B0', line: '#3A3A3A', dark: '#F5F5F5', muted: '#999', border: '#2A2A2A' },
-  botanik:   { bg: '#E8EDE4', accent: '#4A7C59', line: '#7FAD8A', dark: '#2C3E2D', muted: '#5A7A5E', border: '#C5D9C0' },
-  vintage:   { bg: '#F5EDD6', accent: '#8B4513', line: '#B8956A', dark: '#3D2B1F', muted: '#7A5C3A', border: '#D4B896' },
+  sombre:    { bg: '#1A1A1A', accent: '#E8A0B0', line: '#444',    dark: '#F0F0F0', muted: '#AAA', border: '#333' },
+  botanik:   { bg: '#E8EDE4', accent: '#4A7C59', line: '#8FB99A', dark: '#2C3E2D', muted: '#5A7A5E', border: '#C5D9C0' },
+  vintage:   { bg: '#F5EDD6', accent: '#8B4513', line: '#C4A882', dark: '#3D2B1F', muted: '#7A5C3A', border: '#D4B896' },
 };
 
 const PICTOS = { heart:'♥', wine:'♦', plane:'▲', house:'■', ring:'★', star:'✦', music:'♪' };
 
 const imgCache = {};
 let currentDesign = 'classique';
-let fontsReady = false;
-
-// Préchargement polices
-async function loadFonts() {
-  if (fontsReady) return;
-  try {
-    await document.fonts.ready;
-    fontsReady = true;
-  } catch(e) {
-    fontsReady = true; // continuer même si erreur
-  }
-}
 
 function setDesign(design) {
   currentDesign = design;
+  const badge = document.getElementById('designBadge');
+  const names = { classique:'Classique', or:'Doré', sombre:'Sombre', botanik:'Botanik', vintage:'Vintage' };
+  if (badge) badge.textContent = names[design] || design;
 }
 
 async function renderPoster(data, canvasId = 'posterCanvas') {
   const canvas = document.getElementById(canvasId);
   if (!canvas) return;
-
-  await loadFonts();
 
   canvas.width = CANVAS_W;
   canvas.height = CANVAS_H;
@@ -49,130 +37,140 @@ async function renderPoster(data, canvasId = 'posterCanvas') {
   const C = DESIGNS[design] || DESIGNS.classique;
   const W = CANVAS_W;
   const H = CANVAS_H;
-  const margin = W * 0.06;
+  const margin = W * 0.07;
 
-  // Fond
+  // ── Fond ──
   ctx.fillStyle = C.bg;
   ctx.fillRect(0, 0, W, H);
 
-  // Coins décoratifs
-  const cs = W * 0.055;
+  // ── Coins déco ──
+  const cs = W * 0.06;
   ctx.strokeStyle = C.accent;
-  ctx.lineWidth = 0.8;
-  [[margin*0.6, margin*0.6, 1, 1], [W-margin*0.6, margin*0.6, -1, 1],
-   [margin*0.6, H-margin*0.6, 1, -1], [W-margin*0.6, H-margin*0.6, -1, -1]].forEach(([x,y,dx,dy]) => {
+  ctx.lineWidth = 1;
+  [
+    [margin*0.5, margin*0.5, 1, 1],
+    [W-margin*0.5, margin*0.5, -1, 1],
+    [margin*0.5, H-margin*0.5, 1, -1],
+    [W-margin*0.5, H-margin*0.5, -1, -1]
+  ].forEach(([x,y,dx,dy]) => {
     ctx.beginPath();
     ctx.moveTo(x, y+dy*cs); ctx.lineTo(x, y); ctx.lineTo(x+dx*cs, y);
     ctx.stroke();
   });
 
-  let cursorY = H * 0.055;
+  let cy = H * 0.06;
 
-  // "Notre histoire" — police script avec fallback
+  // ── Titre "Notre histoire" ──
   ctx.fillStyle = C.dark;
   ctx.textAlign = 'center';
-  const scriptFont = fontsReady ? "'Great Vibes', cursive" : 'italic Georgia, serif';
-  ctx.font = `italic ${W*0.068}px ${scriptFont}`;
-  ctx.fillText('Notre histoire', W/2, cursorY + W*0.058);
-  cursorY += W * 0.08;
+  ctx.font = `italic ${W*0.085}px Georgia, serif`;
+  ctx.fillText('Notre histoire', W/2, cy + W*0.072);
+  cy += W * 0.095;
 
-  // Séparateur
+  // ── Séparateur cœur ──
   ctx.fillStyle = C.accent;
-  ctx.font = `${W*0.02}px Arial`;
-  ctx.fillText('— ♥ —', W/2, cursorY + W*0.014);
-  cursorY += W * 0.032;
+  ctx.font = `${W*0.025}px Arial`;
+  ctx.fillText('— ♥ —', W/2, cy + W*0.018);
+  cy += W * 0.036;
 
-  // Prénoms
-  const names = `${(partner1||'PRÉNOM 1').toUpperCase()}  ×  ${(partner2||'PRÉNOM 2').toUpperCase()}`;
+  // ── Prénoms ──
+  const n1 = (partner1 || 'Prénom 1').toUpperCase();
+  const n2 = (partner2 || 'Prénom 2').toUpperCase();
   ctx.fillStyle = C.dark;
-  ctx.font = `bold ${W*0.03}px 'DM Sans', Arial, sans-serif`;
-  ctx.fillText(names, W/2, cursorY + W*0.022);
-  cursorY += W * 0.044;
+  ctx.font = `bold ${W*0.034}px Arial, sans-serif`;
+  ctx.fillText(`${n1}  ×  ${n2}`, W/2, cy + W*0.026);
+  cy += W * 0.048;
 
-  // Ligne
+  // ── Ligne fine ──
   ctx.beginPath();
-  ctx.moveTo(W*0.35, cursorY); ctx.lineTo(W*0.65, cursorY);
-  ctx.strokeStyle = C.line; ctx.lineWidth = 0.5; ctx.stroke();
-  cursorY += 12;
+  ctx.moveTo(W*0.32, cy); ctx.lineTo(W*0.68, cy);
+  ctx.strokeStyle = C.line; ctx.lineWidth = 0.6; ctx.stroke();
+  cy += 14;
 
-  // Timeline
-  const timelineX = W * 0.26;
-  const timelineTop = cursorY;
-  const timelineBottom = H * 0.875;
-  const activeSteps = steps.filter(Boolean);
-  const stepCount = Math.max(activeSteps.length, 1);
-  const zoneH = (timelineBottom - timelineTop) / stepCount;
+  // ── Timeline ──
+  const tlX = W * 0.25;
+  const tlTop = cy;
+  const tlBottom = H * 0.87;
+  const activeSteps = (steps || []).filter(Boolean);
+  const count = Math.max(activeSteps.length, 1);
+  const zoneH = (tlBottom - tlTop) / count;
 
+  // Ligne verticale
   ctx.beginPath();
-  ctx.moveTo(timelineX, timelineTop); ctx.lineTo(timelineX, timelineBottom);
-  ctx.strokeStyle = C.line; ctx.lineWidth = 0.7; ctx.stroke();
+  ctx.moveTo(tlX, tlTop); ctx.lineTo(tlX, tlBottom);
+  ctx.strokeStyle = C.line; ctx.lineWidth = 0.8; ctx.stroke();
 
   for (let i = 0; i < activeSteps.length; i++) {
     const step = activeSteps[i] || {};
-    const cy = timelineTop + zoneH * i + zoneH * 0.44;
+    const stepY = tlTop + zoneH * i + zoneH * 0.44;
 
     // Point ancrage
-    ctx.beginPath(); ctx.arc(timelineX, cy, 5, 0, Math.PI*2);
+    ctx.beginPath(); ctx.arc(tlX, stepY, 5, 0, Math.PI*2);
     ctx.fillStyle = C.accent; ctx.fill();
-    ctx.beginPath(); ctx.arc(timelineX, cy, 3, 0, Math.PI*2);
+    ctx.beginPath(); ctx.arc(tlX, stepY, 2.5, 0, Math.PI*2);
     ctx.fillStyle = C.bg; ctx.fill();
 
-    // Date
+    // Date (gauche)
     ctx.fillStyle = C.accent;
-    ctx.font = `bold ${W*0.017}px 'DM Sans', Arial, sans-serif`;
+    ctx.font = `bold ${W*0.018}px Arial`;
     ctx.textAlign = 'right';
-    ctx.fillText((step.date||'').toUpperCase(), timelineX-10, cy+4);
+    ctx.fillText((step.date || '').toUpperCase(), tlX - 10, stepY + 4);
 
-    // Picto
-    ctx.font = `${W*0.017}px Arial`;
+    // Picto (sur la ligne, au dessus du point)
+    ctx.font = `${W*0.02}px Arial`;
     ctx.textAlign = 'center';
-    ctx.fillStyle = C.accent;
-    ctx.fillText(PICTOS[step.picto]||'♥', timelineX, cy-13);
+    ctx.fillText(PICTOS[step.picto] || '♥', tlX, stepY - 12);
 
-    // Titre
+    // Titre (droite)
+    const tx = tlX + 12;
+    const tw = W * 0.38;
     ctx.fillStyle = C.dark;
-    ctx.font = `italic ${W*0.02}px 'Cormorant Garamond', Georgia, serif`;
+    ctx.font = `italic ${W*0.022}px Georgia, serif`;
     ctx.textAlign = 'left';
-    ctx.fillText(step.title||'Votre moment', timelineX+11, cy-1);
+    ctx.fillText(clip(step.title || 'Votre moment', 22), tx, stepY - 1);
 
     // Description
     ctx.fillStyle = C.muted;
-    ctx.font = `${W*0.013}px 'DM Sans', Arial, sans-serif`;
-    ctx.fillText((step.description||'').slice(0,38), timelineX+11, cy+W*0.018);
+    ctx.font = `${W*0.014}px Arial`;
+    ctx.fillText(clip(step.description || '', 34), tx, stepY + W*0.02);
 
-    // Image
+    // Image (extrême droite)
     if (step.imageUrl) {
-      const imgX = W*0.66, imgW = W*0.28, imgH = imgW*0.72;
+      const ix = W * 0.65, iw = W * 0.29, ih = iw * 0.73;
       try {
         const img = await loadImg(step.imageUrl);
-        coverDraw(ctx, img, imgX, cy-imgH/2, imgW, imgH);
+        coverDraw(ctx, img, ix, stepY - ih/2, iw, ih);
         ctx.strokeStyle = C.border; ctx.lineWidth = 0.5;
-        ctx.strokeRect(imgX, cy-imgH/2, imgW, imgH);
+        ctx.strokeRect(ix, stepY - ih/2, iw, ih);
       } catch {
         ctx.fillStyle = C.border;
-        ctx.fillRect(imgX, cy-imgH/2, imgW, imgH);
+        ctx.fillRect(ix, stepY - ih/2, iw, ih);
         ctx.fillStyle = C.muted;
-        ctx.font = `${W*0.02}px Arial`;
+        ctx.font = `${W*0.022}px Arial`;
         ctx.textAlign = 'center';
-        ctx.fillText('📷', imgX+imgW/2, cy+5);
+        ctx.fillText('📷', ix + iw/2, stepY + 6);
       }
     }
   }
 
-  // Footer
+  // ── Footer ──
   const fy = H * 0.9;
   ctx.beginPath();
-  ctx.moveTo(W*0.25, fy-6); ctx.lineTo(W*0.75, fy-6);
-  ctx.strokeStyle = C.line; ctx.lineWidth = 0.4; ctx.stroke();
+  ctx.moveTo(W*0.28, fy-8); ctx.lineTo(W*0.72, fy-8);
+  ctx.strokeStyle = C.line; ctx.lineWidth = 0.5; ctx.stroke();
 
   ctx.fillStyle = C.dark;
-  ctx.font = `italic ${W*0.024}px ${scriptFont}`;
+  ctx.font = `italic ${W*0.026}px Georgia, serif`;
   ctx.textAlign = 'center';
-  ctx.fillText('Le meilleur reste à venir…', W/2, fy+13);
+  ctx.fillText('Le meilleur reste à venir…', W/2, fy + 10);
 
   ctx.fillStyle = C.accent;
-  ctx.font = `${W*0.027}px Arial`;
-  ctx.fillText('∞', W/2, fy+30);
+  ctx.font = `${W*0.03}px Arial`;
+  ctx.fillText('∞', W/2, fy + 28);
+}
+
+function clip(str, max) {
+  return str && str.length > max ? str.slice(0, max-1) + '…' : (str || '');
 }
 
 function loadImg(url) {
@@ -187,11 +185,12 @@ function loadImg(url) {
 }
 
 function coverDraw(ctx, img, x, y, w, h) {
-  const ir = img.width/img.height, br = w/h;
-  let sx,sy,sw,sh;
-  if (ir > br) { sh=img.height; sw=sh*br; sx=(img.width-sw)/2; sy=0; }
-  else { sw=img.width; sh=sw/br; sx=0; sy=(img.height-sh)/2; }
-  ctx.drawImage(img, sx,sy,sw,sh, x,y,w,h);
+  const ir = img.width / img.height;
+  const br = w / h;
+  let sx, sy, sw, sh;
+  if (ir > br) { sh = img.height; sw = sh * br; sx = (img.width - sw) / 2; sy = 0; }
+  else         { sw = img.width;  sh = sw / br; sx = 0; sy = (img.height - sh) / 2; }
+  ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
 }
 
 window.renderPoster = renderPoster;
