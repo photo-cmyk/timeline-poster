@@ -58,7 +58,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Cadre
   document.querySelectorAll('input[name="frame"]').forEach(r => {
-    r.addEventListener('change', e => { state.frame = e.target.value; updatePrice(); });
+    r.addEventListener('change', e => {
+      state.frame = e.target.value;
+      if (window.setFrame) window.setFrame(state.frame);
+      updatePrice();
+      scheduleRender();
+    });
   });
 
   // Selector design (boutons)
