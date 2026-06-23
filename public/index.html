@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notre Histoire — Affiche timeline de couple personnalisée</title>
+  <meta name="description" content="Créez une affiche timeline personnalisée avec vos photos. 5 designs premium. Imprimée et livrée encadrée en France." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<!-- ══ NAV ══════════════════════════════════════════════════ -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">Notre Histoire</a>
+    <div class="nav-links">
+      <a href="#designs">Designs</a>
+      <a href="#comment">Comment ça marche</a>
+      <a href="#avis">Avis clients</a>
+    </div>
+    <a href="#configurator" class="nav-cta">Créer mon affiche</a>
+    <button class="nav-burger" id="navBurger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- ══ HERO ═════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-text">
+    <p class="eyebrow">Affiche personnalisée · Imprimée en France</p>
+    <h1>Votre histoire,<br /><em>encadrée pour toujours.</em></h1>
+    <p class="hero-sub">Créez en 5 minutes une affiche premium avec vos vraies photos et vos moments forts. Livrée encadrée directement chez vous.</p>
+    <div class="hero-btns">
+      <a href="#configurator" class="btn-primary">Créer mon affiche →</a>
+      <a href="#designs" class="btn-link">Voir les designs</a>
+    </div>
+    <div class="hero-proof">
+      <div class="proof-item"><strong>4,9/5</strong><span>+380 avis</span></div>
+      <div class="proof-sep"></div>
+      <div class="proof-item"><strong>+2 400</strong><span>affiches livrées</span></div>
+      <div class="proof-sep"></div>
+      <div class="proof-item"><strong>5–7j</strong><span>livraison France</span></div>
+    </div>
+  </div>
+
+  <!-- Galerie produit hero -->
+  <div class="hero-gallery">
+    <div class="gallery-main" id="galleryMain">
+      <!-- Mockup salon principal -->
+      <div class="mockup-scene" id="mockupScene">
+        <canvas id="mockupCanvas" width="560" height="420"></canvas>
+        <div class="mockup-label" id="mockupLabel">Salon — Design Classique</div>
+      </div>
+      <!-- Bouton zoom -->
+      <button class="zoom-btn" id="zoomBtn" aria-label="Zoomer">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Vignettes scènes -->
+    <div class="gallery-thumbs">
+      <button class="thumb-btn active" data-scene="salon" data-label="Salon">
+        <canvas class="thumb-canvas" data-scene="salon" width="80" height="60"></canvas>
+        <span>Salon</span>
+      </button>
+      <button class="thumb-btn" data-scene="chambre" data-label="Chambre">
+        <canvas class="thumb-canvas" data-scene="chambre" width="80" height="60"></canvas>
+        <span>Chambre</span>
+      </button>
+      <button class="thumb-btn" data-scene="couloir" data-label="Couloir">
+        <canvas class="thumb-canvas" data-scene="couloir" width="80" height="60"></canvas>
+        <span>Couloir</span>
+      </button>
+      <button class="thumb-btn" data-scene="poster" data-label="Affiche seule">
+        <canvas class="thumb-canvas" data-scene="poster" width="80" height="60"></canvas>
+        <span>Affiche</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MODAL ZOOM ════════════════════════════════════════════ -->
+<div class="zoom-modal" id="zoomModal">
+  <div class="zoom-overlay" id="zoomOverlay"></div>
+  <div class="zoom-content">
+    <button class="zoom-close" id="zoomClose">✕</button>
+    <canvas id="zoomCanvas" width="480" height="678"></canvas>
+  </div>
+</div>
+
+<!-- ══ DESIGNS ══════════════════════════════════════════════ -->
+<section class="designs-section" id="designs">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">5 designs exclusifs</p>
+      <h2>Choisissez votre style</h2>
+    </div>
+    <div class="designs-grid">
+      <div class="design-card active" data-design="classique" tabindex="0">
+        <div class="dc-preview classique">
+          <span class="dc-script">Notre histoire</span>
+          <span class="dc-names">JULIE × MAXIME</span>
+          <span class="dc-line"></span>
+        </div>
+        <div class="dc-info">
+          <strong>Classique</strong>
+          <span>Crème & rouge · Intemporel</span>
+        </div>
+      </div>
+      <div class="design-card" data-design="or" tabindex="0">
+        <div class="dc-preview or">
+          <span class="dc-script">Notre histoire</span>
+          <span class="dc-names" style="color:#C9A84C">JULIE × MAXIME</span>
+          <span class="dc-line" style="background:#C9A84C"></span>
+        </div>
+        <div class="dc-info">
+          <strong>Doré</strong>
+          <span>Blanc & or · Luxe</span>
+        </div>
+      </div>
+      <div class="design-card" data-design="sombre" tabindex="0">
+        <div class="dc-preview sombre">
+          <span class="dc-script" style="color:#F0F0F0">Notre histoire</span>
+          <span class="dc-names" style="color:#E8A0B0">JULIE × MAXIME</span>
+          <span class="dc-line" style="background:#444"></span>
+        </div>
+        <div class="dc-info">
+          <strong>Sombre</strong>
+          <span>Noir & rose · Moderne</span>
+        </div>
+      </div>
+      <div class="design-card" data-design="botanik" tabindex="0">
+        <div class="dc-preview botanik">
+          <span class="dc-script" style="color:#2C3E2D">Notre histoire</span>
+          <span class="dc-names" style="color:#4A7C59">JULIE × MAXIME</span>
+          <span class="dc-line" style="background:#7FAD8A"></span>
+        </div>
+        <div class="dc-info">
+          <strong>Botanik</strong>
+          <span>Vert sauge · Nature</span>
+        </div>
+      </div>
+      <div class="design-card" data-design="vintage" tabindex="0">
+        <div class="dc-preview vintage">
+          <span class="dc-script" style="color:#3D2B1F">Notre histoire</span>
+          <span class="dc-names" style="color:#8B4513">JULIE × MAXIME</span>
+          <span class="dc-line" style="background:#B8956A"></span>
+        </div>
+        <div class="dc-info">
+          <strong>Vintage</strong>
+          <span>Sépia & brun · Nostalgique</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ COMMENT ÇA MARCHE ════════════════════════════════════ -->
+<section class="how-section" id="comment">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Simple & rapide</p>
+      <h2>Prêt en 5 minutes</h2>
+    </div>
+    <div class="how-grid">
+      <div class="how-step">
+        <div class="how-num">01</div>
+        <div class="how-icon">✍️</div>
+        <h3>Personnalisez</h3>
+        <p>Vos prénoms, vos dates, vos photos et vos moments forts.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">02</div>
+        <div class="how-icon">🎨</div>
+        <h3>Choisissez</h3>
+        <p>Un des 5 designs exclusifs, votre format et votre encadrement.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">03</div>
+        <div class="how-icon">💳</div>
+        <h3>Commandez</h3>
+        <p>Paiement sécurisé Stripe. Votre adresse collectée automatiquement.</p>
+      </div>
+      <div class="how-step">
+        <div class="how-num">04</div>
+        <div class="how-icon">📦</div>
+        <h3>Recevez</h3>
+        <p>Votre affiche imprimée et encadrée arrive en 5 à 7 jours ouvrés.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CONFIGURATEUR ════════════════════════════════════════ -->
+<section class="configurator" id="configurator">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Personnalisez votre affiche</p>
+      <h2>Créez votre affiche</h2>
+    </div>
+    <div class="config-layout">
+
+      <!-- FORMULAIRE -->
+      <div class="config-form">
+
+        <div class="form-block">
+          <label class="form-label">Vos prénoms</label>
+          <div class="names-row">
+            <input id="partner1" class="f-input" type="text" placeholder="Julie" maxlength="20" />
+            <span class="names-x">×</span>
+            <input id="partner2" class="f-input" type="text" placeholder="Maxime" maxlength="20" />
+          </div>
+        </div>
+
+        <div class="form-block">
+          <label class="form-label">Design</label>
+          <div class="design-btns" id="designBtns">
+            <button class="db active" data-design="classique"><span class="db-dot" style="background:#C92A2A"></span>Classique</button>
+            <button class="db" data-design="or"><span class="db-dot" style="background:#C9A84C"></span>Doré</button>
+            <button class="db" data-design="sombre"><span class="db-dot" style="background:#E8A0B0"></span>Sombre</button>
+            <button class="db" data-design="botanik"><span class="db-dot" style="background:#4A7C59"></span>Botanik</button>
+            <button class="db" data-design="vintage"><span class="db-dot" style="background:#8B4513"></span>Vintage</button>
+          </div>
+        </div>
+
+        <div class="form-block">
+          <label class="form-label">Format & Encadrement</label>
+          <div class="options-2col">
+            <div>
+              <p class="sub-label">Format</p>
+              <label class="radio-row"><input type="radio" name="product" value="A3" checked /><span>A3 — 39,90 €</span></label>
+              <label class="radio-row"><input type="radio" name="product" value="A4" /><span>A4 — 29,90 €</span></label>
+            </div>
+            <div>
+              <p class="sub-label">Encadrement</p>
+              <label class="radio-row"><input type="radio" name="frame" value="none" checked /><span>Sans cadre</span></label>
+              <label class="radio-row"><input type="radio" name="frame" value="black" /><span>⬛ Noir +8€</span></label>
+              <label class="radio-row"><input type="radio" name="frame" value="white" /><span>⬜ Blanc +8€</span></label>
+              <label class="radio-row"><input type="radio" name="frame" value="wood" /><span>🪵 Bois +10€</span></label>
+              <label class="radio-row"><input type="radio" name="frame" value="canvas" /><span>🖼️ Toile +20€</span></label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-block">
+          <label class="form-label">Vos moments <span class="hint">(3 à 5)</span></label>
+          <div id="stepsContainer"></div>
+          <button type="button" class="btn-add-step" id="addStepBtn">+ Ajouter un moment</button>
+        </div>
+
+        <div class="form-cta">
+          <div class="price-row">
+            <span class="price-total" id="priceDisplay">39,90 €</span>
+            <span class="price-note">livraison offerte</span>
+          </div>
+          <button type="button" class="btn-order" id="orderBtn">Commander mon affiche</button>
+          <p class="trust-note">🔒 Paiement sécurisé Stripe · Satisfait ou remboursé 30j</p>
+        </div>
+      </div>
+
+      <!-- PREVIEW -->
+      <div class="config-preview">
+        <div class="preview-sticky">
+          <div class="preview-topbar">
+            <span class="preview-tag">Aperçu temps réel</span>
+            <span class="preview-design-name" id="previewDesignName">Classique</span>
+          </div>
+
+          <!-- Grande preview mockup -->
+          <div class="preview-mockup-wrap">
+            <canvas id="posterCanvas"></canvas>
+            <button class="zoom-btn preview-zoom" id="previewZoomBtn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Vignettes scènes preview -->
+          <div class="preview-scenes">
+            <button class="scene-btn active" data-scene="poster" title="Affiche seule">🖼</button>
+            <button class="scene-btn" data-scene="salon" title="Vue salon">🛋</button>
+            <button class="scene-btn" data-scene="chambre" title="Vue chambre">🛏</button>
+            <button class="scene-btn" data-scene="couloir" title="Vue couloir">🚪</button>
+          </div>
+
+          <p class="preview-dpi">Impression haute définition 300 DPI · Papier 200g</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ AVIS ══════════════════════════════════════════════════ -->
+<section class="reviews-section" id="avis">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Ils l'ont offert</p>
+      <h2>+2 400 couples conquis</h2>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Mon copain a fondu en larmes en l'ouvrant. Nos 4 moments ensemble, nos vraies photos, dans un cadre noir magnifique. C'est le plus beau cadeau que j'ai jamais offert."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">C</div>
+          <div><strong>Camille R.</strong><span>Design Classique · Cadre noir</span></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"La qualité d'impression est bluffante. On voit chaque détail des photos. Le design Sombre avec cadre blanc rend absolument incroyable dans notre chambre."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">T</div>
+          <div><strong>Thomas M.</strong><span>Design Sombre · Cadre blanc</span></div>
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p>"Cadeau de mariage ultra original. Livré en 6 jours, emballage parfait. La mariée a pleuré de joie. Le design Doré dans un cadre bois, c'est magnifique."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">S</div>
+          <div><strong>Sophie L.</strong><span>Design Doré · Cadre bois</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ FOOTER ════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner wrap">
+    <div>
+      <p class="footer-logo">Notre Histoire</p>
+      <p class="footer-desc">Des affiches timeline personnalisées pour immortaliser votre amour. Imprimées en France, livrées encadrées.</p>
+    </div>
+    <div class="footer-links">
+      <a href="/cgv">CGV</a>
+      <a href="/mentions-legales">Mentions légales</a>
+      <a href="/contact">Contact</a>
+    </div>
+    <div class="footer-pay">
+      <p>Paiement sécurisé</p>
+      <div class="pay-badges">
+        <span>VISA</span><span>MC</span><span>AMEX</span>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Notre Histoire · Tous droits réservés</div>
+</footer>
+
+<!-- ══ OVERLAYS ══════════════════════════════════════════════ -->
+<div class="overlay-loading" id="loadingOverlay" style="display:none">
+  <div class="overlay-box">
+    <div class="spinner"></div>
+    <p id="loadingMsg">Préparation de votre commande…</p>
+  </div>
+</div>
+<div class="overlay-success" id="successOverlay" style="display:none">
+  <div class="overlay-box">
+    <div class="success-heart">♥</div>
+    <h2>Commande confirmée !</h2>
+    <p>Votre affiche est en cours de préparation. Vous recevrez un email de suivi sous 24h.</p>
+    <button class="btn-primary" onclick="location.href='/'">Créer une autre affiche</button>
+  </div>
+</div>
+
+<script src="/js/poster.js"></script>
+<script src="/js/scenes.js"></script>
+<script src="/js/form.js"></script>
+<script src="/js/app.js"></script>
+</body>
+</html>
