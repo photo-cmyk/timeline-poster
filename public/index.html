@@ -6,1032 +6,830 @@
 <title>Notre Histoire — Créez votre affiche</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet"/>
-
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-/* ═══════════════════════════════════════════════════
-   RESET & TOKENS
-═══════════════════════════════════════════════════ */
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-:root {
-  --cream:       #FDFBF7;
-  --ink:         #111111;
-  --ink-soft:    #3A3A3A;
-  --muted:       #8A8A8A;
-  --border:      #E2E0DC;
-  --surface:     #F4F2EE;
-  --page-bg:     #EFEFED;
-  --accent:      #C92A2A;
-  --accent-soft: #F9EAEA;
-  --frame-black: #1A1A1A;
-
-  --font-ui:     'Inter', system-ui, sans-serif;
-  --font-display:'Cormorant Garamond', Georgia, serif;
-
-  --r:    6px;
-  --r-lg: 12px;
-  --sh:   0 20px 60px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+/* ═══ TOKENS ═════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#FDFBF7;
+  --ink:#111;
+  --ink2:#3D3D3D;
+  --muted:#888;
+  --border:#E2E0DC;
+  --surface:#F5F3EF;
+  --page:#ECEAE6;
+  --accent:#C92A2A;
+  --fd:'Cormorant Garamond',Georgia,serif;
+  --fs:'Inter',system-ui,sans-serif;
+  --r:6px;
+  --r2:12px;
 }
+html{font-size:16px}
+body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
 
-html { font-size: 16px; }
-body {
-  font-family: var(--font-ui);
-  background: var(--page-bg);
-  color: var(--ink);
-  min-height: 100vh;
-  -webkit-font-smoothing: antialiased;
-}
+/* ═══ LAYOUT ═════════════════════════════════════════════ */
+.app{display:grid;grid-template-columns:400px 1fr;min-height:100vh}
+@media(max-width:900px){.app{grid-template-columns:1fr}}
 
-/* ═══════════════════════════════════════════════════
-   LAYOUT PRINCIPAL
-═══════════════════════════════════════════════════ */
-.app {
-  display: grid;
-  grid-template-columns: 420px 1fr;
-  min-height: 100vh;
-}
+/* ═══ PANNEAU FORMULAIRE ═════════════════════════════════ */
+.pf{background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;position:relative}
+.pf-head{padding:24px 24px 18px;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:10}
+.pf-logo{font-family:var(--fd);font-size:24px;font-style:italic;font-weight:400}
+.pf-sub{font-size:11px;color:var(--muted);margin-top:2px}
+.pf-body{padding:20px 24px;flex:1;display:flex;flex-direction:column;gap:20px}
+.pf-cta{padding:18px 24px;border-top:1px solid var(--border);background:#fff;position:sticky;bottom:0}
 
-/* ── Panneau formulaire ── */
-.panel-form {
-  background: #fff;
-  border-right: 1px solid var(--border);
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
+/* Labels */
+.lbl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
 
-.panel-header {
-  padding: 28px 28px 20px;
-  border-bottom: 1px solid var(--border);
-  position: sticky;
-  top: 0;
-  background: #fff;
-  z-index: 10;
-}
+/* Inputs */
+.fi{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--r);font-family:var(--fs);font-size:14px;color:var(--ink);background:var(--surface);outline:none;transition:border-color .18s,background .18s}
+.fi:focus{border-color:var(--ink);background:#fff}
+.fi::placeholder{color:var(--muted)}
+.fi-row{display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:6px}
+.fi-sep{font-family:var(--fd);font-size:20px;color:var(--muted);text-align:center}
+.fi-textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-family:var(--fs);font-size:13px;color:var(--ink);background:var(--surface);resize:none;min-height:60px;outline:none;transition:border-color .18s}
+.fi-textarea:focus{border-color:var(--ink);background:#fff}
 
-.panel-header h1 {
-  font-family: var(--font-display);
-  font-size: 26px;
-  font-weight: 400;
-  font-style: italic;
-  color: var(--ink);
-  margin-bottom: 4px;
-}
+/* Format */
+.fmt-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.fmt-btn{padding:10px 8px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);font-family:var(--fs);font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;text-align:center;transition:all .18s}
+.fmt-btn small{display:block;font-size:10px;font-weight:400;color:var(--muted);margin-top:2px}
+.fmt-btn:hover,.fmt-btn.on{border-color:var(--ink);background:var(--ink);color:#fff}
+.fmt-btn.on small{color:rgba(255,255,255,.6)}
 
-.panel-header p {
-  font-size: 12px;
-  color: var(--muted);
-  font-weight: 400;
-}
+/* Finitions */
+.fin-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.fin-btn{padding:9px 8px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);font-size:12px;font-weight:500;cursor:pointer;text-align:center;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:4px}
+.fin-btn .fin-swatch{width:22px;height:22px;border-radius:4px;display:block}
+.fin-btn:hover,.fin-btn.on{border-color:var(--ink)}
+.fin-btn.on{background:var(--ink);color:#fff}
+.fin-btn.on .fin-swatch{outline:2px solid rgba(255,255,255,.4)}
 
-.panel-body {
-  padding: 24px 28px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-/* ── Panneau preview ── */
-.panel-preview {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  padding: 48px 40px;
-  gap: 20px;
-  background: var(--page-bg);
-  overflow-y: auto;
-}
-
-/* ═══════════════════════════════════════════════════
-   FORMULAIRE — BLOCS
-═══════════════════════════════════════════════════ */
-.form-section {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.form-label {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 8px;
-}
-
-.form-sep {
-  font-family: var(--font-display);
-  font-size: 22px;
-  color: var(--muted);
-  text-align: center;
-}
-
-.f-input {
-  width: 100%;
-  padding: 11px 14px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--r);
-  font-family: var(--font-ui);
-  font-size: 14px;
-  color: var(--ink);
-  background: var(--surface);
-  outline: none;
-  transition: border-color 0.18s, background 0.18s;
-}
-.f-input:focus {
-  border-color: var(--ink);
-  background: #fff;
-}
-.f-input::placeholder { color: var(--muted); }
-
-/* ── Étapes accordéon ── */
-.steps-list {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-.step-card {
-  border: 1.5px solid var(--border);
-  border-radius: var(--r-lg);
-  overflow: hidden;
-  background: #fff;
-  transition: border-color 0.18s;
-}
-.step-card.open { border-color: var(--ink); }
-
-.step-card-header {
-  display: flex;
-  align-items: center;
-  padding: 14px 16px;
-  cursor: pointer;
-  user-select: none;
-  gap: 12px;
-}
-
-.step-dot {
-  width: 10px; height: 10px;
-  border-radius: 50%;
-  background: var(--accent);
-  flex-shrink: 0;
-}
-
-.step-title-label {
-  flex: 1;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--ink);
-}
-
-.step-subtitle {
-  font-size: 11px;
-  color: var(--muted);
-  font-weight: 400;
-  margin-left: auto;
-  max-width: 120px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.step-chevron {
-  width: 16px; height: 16px;
-  color: var(--muted);
-  flex-shrink: 0;
-  transition: transform 0.2s;
-}
-.step-card.open .step-chevron { transform: rotate(180deg); }
-
-.step-card-body {
-  display: none;
-  padding: 4px 16px 16px;
-  flex-direction: column;
-  gap: 12px;
-}
-.step-card.open .step-card-body { display: flex; }
-
-.step-fields-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-}
-
-.step-field { display: flex; flex-direction: column; gap: 5px; }
-.step-field.full { grid-column: 1/-1; }
-.step-field label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
-
-.f-textarea {
-  width: 100%; padding: 10px 12px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--r);
-  font-family: var(--font-ui); font-size: 13px;
-  color: var(--ink); background: var(--surface);
-  resize: none; outline: none; min-height: 64px;
-  transition: border-color .18s, background .18s;
-}
-.f-textarea:focus { border-color: var(--ink); background: #fff; }
+/* Étapes */
+.step-card{border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;background:#fff;transition:border-color .18s}
+.step-card.on{border-color:var(--ink)}
+.step-head{display:flex;align-items:center;padding:13px 14px;cursor:pointer;gap:10px;user-select:none}
+.step-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.step-name{font-size:13px;font-weight:600;flex:1}
+.step-preview{font-size:11px;color:var(--muted);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.step-chev{width:15px;height:15px;color:var(--muted);transition:transform .2s;flex-shrink:0}
+.step-card.on .step-chev{transform:rotate(180deg)}
+.step-body{display:none;padding:4px 14px 14px;gap:10px;flex-direction:column}
+.step-card.on .step-body{display:flex}
+.step-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.step-full{grid-column:1/-1}
+.step-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
 
 /* Pictos */
-.picto-grid {
-  display: flex; gap: 6px; flex-wrap: wrap;
+.picto-row{display:flex;gap:5px;flex-wrap:wrap}
+.pb{width:36px;height:36px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;padding:0}
+.pb:hover{border-color:var(--ink)}
+.pb.on{border-color:var(--ink);background:var(--ink)}
+.pb.on svg *{stroke:#fff!important}
+
+/* Upload */
+.upz{position:relative;border:2px dashed var(--border);border-radius:var(--r);background:var(--surface);padding:14px;text-align:center;cursor:pointer;transition:all .2s;overflow:hidden}
+.upz:hover{border-color:var(--ink);background:#fff}
+.upz input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.upz-ph{pointer-events:none;font-size:11px;color:var(--muted)}
+.upz-ph span{font-size:18px;display:block;margin-bottom:4px}
+.upz-img{width:100%;height:64px;object-fit:cover;border-radius:4px;margin-top:8px;display:none}
+
+/* Steps actions */
+.step-actions{display:flex;gap:7px}
+.btn-add{flex:1;padding:10px;border:2px dashed var(--border);border-radius:var(--r);background:transparent;font-family:var(--fs);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
+.btn-add:hover{border-color:var(--ink);color:var(--ink)}
+.btn-add:disabled{opacity:.35;cursor:not-allowed}
+.btn-del{padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--r);background:transparent;cursor:pointer;color:var(--muted);transition:all .2s}
+.btn-del:hover{border-color:var(--accent);color:var(--accent)}
+.btn-del:disabled{opacity:.35;cursor:not-allowed}
+
+/* Environnement selector */
+.env-row{display:flex;gap:6px;flex-wrap:wrap}
+.env-btn{padding:8px 12px;border:1.5px solid var(--border);border-radius:50px;background:var(--surface);font-size:12px;font-weight:500;cursor:pointer;transition:all .18s;white-space:nowrap}
+.env-btn:hover,.env-btn.on{border-color:var(--ink);background:var(--ink);color:#fff}
+
+/* Prix + CTA */
+.price-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
+.price-val{font-family:var(--fd);font-size:34px;font-weight:600}
+.price-lbl{font-size:11px;color:var(--muted)}
+.btn-order{width:100%;padding:15px;background:var(--ink);color:#fff;border:none;border-radius:var(--r);font-family:var(--fs);font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.04em;transition:background .2s,transform .15s}
+.btn-order:hover{background:var(--accent);transform:translateY(-1px)}
+.trust{font-size:11px;color:var(--muted);text-align:center;margin-top:8px}
+
+/* ═══ PANNEAU PREVIEW ═════════════════════════════════ */
+.pp{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:36px 32px;gap:18px;overflow-y:auto;background:var(--page)}
+.pp-topbar{width:100%;max-width:700px;display:flex;align-items:center;justify-content:space-between}
+.pp-lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.btn-zoom{padding:8px 16px;border:1.5px solid var(--border);border-radius:50px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s}
+.btn-zoom:hover{border-color:var(--ink);background:var(--ink);color:#fff}
+.btn-zoom svg{transition:stroke .2s}
+.btn-zoom:hover svg *{stroke:#fff}
+
+/* Environnement wrapper */
+.env-wrap{width:100%;max-width:700px;position:relative;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.14),0 4px 14px rgba(0,0,0,.08)}
+
+/* Mode à plat */
+.env-flat{background:var(--page);display:flex;align-items:center;justify-content:center;padding:40px 32px}
+
+/* Mode pièce */
+.env-room{position:relative;width:100%;min-height:400px;background:#D4C9B8}
+.env-room-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.env-room-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.08) 0%,transparent 60%)}
+
+/* Affiche wrapper dans la pièce */
+.poster-wrap{position:relative}
+.poster-wrap.env-flat-mode{
+  border:12px solid #1A1A1A;
+  border-radius:2px;
+  box-shadow:0 24px 64px rgba(0,0,0,.16),0 6px 16px rgba(0,0,0,.1);
 }
 
-.picto-btn {
-  width: 38px; height: 38px;
-  border: 1.5px solid var(--border);
-  border-radius: 8px;
-  background: var(--surface);
-  cursor: pointer;
-  display: flex; align-items: center; justify-content: center;
-  transition: all .15s;
-  padding: 0;
+/* Finitions CSS */
+.fin-none   .poster-wrap{border:none;box-shadow:0 16px 48px rgba(0,0,0,.15)}
+.fin-black  .poster-wrap{border:14px solid #111;box-shadow:inset 0 0 0 1px #333,0 20px 50px rgba(0,0,0,.4),4px 4px 0 #000}
+.fin-white  .poster-wrap{border:14px solid #F2F2F2;box-shadow:inset 0 0 0 1px #DDD,0 16px 40px rgba(0,0,0,.25),3px 3px 0 #DDD}
+.fin-wood   .poster-wrap{
+  border:16px solid transparent;
+  border-image:linear-gradient(135deg,#C8956A 0%,#8B5E3C 30%,#A8733E 50%,#7A4E2A 70%,#C8956A 100%) 1;
+  box-shadow:0 20px 50px rgba(0,0,0,.35),3px 3px 8px rgba(0,0,0,.2);
 }
-.picto-btn:hover { border-color: var(--ink); background: #fff; }
-.picto-btn.active {
-  border-color: var(--ink);
-  background: var(--ink);
-}
-.picto-btn svg { pointer-events: none; }
-.picto-btn.active svg path,
-.picto-btn.active svg circle,
-.picto-btn.active svg rect,
-.picto-btn.active svg polyline { stroke: #fff; }
-
-/* Upload photo */
-.upload-zone {
-  position: relative;
-  border: 2px dashed var(--border);
-  border-radius: var(--r);
-  background: var(--surface);
-  padding: 16px;
-  text-align: center;
-  cursor: pointer;
-  transition: border-color .2s, background .2s;
-  overflow: hidden;
-}
-.upload-zone:hover { border-color: var(--ink); background: #fff; }
-.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
-.upload-zone .uz-placeholder { pointer-events: none; }
-.uz-icon { font-size: 20px; margin-bottom: 4px; }
-.uz-text { font-size: 11px; color: var(--muted); }
-.uz-preview {
-  width: 100%; height: 70px;
-  object-fit: cover; border-radius: 4px;
-  display: none; margin-top: 8px;
+.fin-canvas .poster-wrap{
+  border:12px solid #C8B898;
+  outline:2px solid #A89878;
+  box-shadow:0 12px 30px rgba(0,0,0,.3),6px 6px 0 rgba(0,0,0,.15),inset 0 0 12px rgba(0,0,0,.06);
+  filter:contrast(1.02) saturate(1.08);
 }
 
-/* Boutons actions étapes */
-.steps-actions {
-  display: flex; gap: 8px;
+/* Affiche dans une pièce — transformation 3D */
+.env-salon   .poster-in-room{transform:perspective(900px) rotateY(-6deg) rotateX(1deg) translateZ(10px);transform-origin:center center}
+.env-chambre .poster-in-room{transform:perspective(900px) rotateX(2deg) rotateY(0deg) translateZ(8px);transform-origin:center top}
+.env-couloir .poster-in-room{transform:perspective(900px) rotateY(8deg) rotateX(1deg) translateZ(10px);transform-origin:center center}
+
+/* ═══ POSTER HTML (le vrai design à l'intérieur) ════ */
+.poster{
+  background:var(--cream);
+  position:relative;
+  overflow:hidden;
+  font-family:var(--fs);
+  /* ratio piloté par JS */
 }
 
-.btn-add-step {
-  flex: 1; padding: 10px;
-  border: 2px dashed var(--border);
-  border-radius: var(--r);
-  background: transparent;
-  font-family: var(--font-ui); font-size: 12px; font-weight: 600;
-  color: var(--muted); cursor: pointer;
-  transition: all .2s;
-}
-.btn-add-step:hover { border-color: var(--ink); color: var(--ink); }
-.btn-add-step:disabled { opacity: 0.4; cursor: not-allowed; }
-
-.btn-del-step {
-  padding: 10px 14px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--r);
-  background: transparent;
-  font-size: 14px; cursor: pointer; color: var(--muted);
-  transition: all .2s;
-}
-.btn-del-step:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
-
-/* CTA */
-.panel-cta {
-  padding: 20px 28px;
-  border-top: 1px solid var(--border);
-  background: #fff;
-  position: sticky;
-  bottom: 0;
+.poster-inner{
+  position:absolute;
+  inset:0;
+  padding:6% 5% 5%;
+  display:flex;
+  flex-direction:column;
 }
 
-.price-line {
-  display: flex; align-items: baseline;
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-.price-amount {
-  font-family: var(--font-display);
-  font-size: 32px; font-weight: 600;
-  color: var(--ink);
-}
-.price-label { font-size: 12px; color: var(--muted); }
+/* En-tête */
+.p-header{text-align:center;margin-bottom:4%}
+.p-title{font-family:var(--fd);font-style:italic;font-weight:400;line-height:1.1;margin-bottom:1.5%}
+.p-deco{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:2%}
+.p-deco-line{flex:1;max-width:60px;height:0.6px;background:#C92A2A}
+.p-deco-heart{color:#C92A2A;font-size:1em}
+.p-names{font-weight:700;letter-spacing:.16em;text-transform:uppercase}
 
-.btn-order {
-  width: 100%; padding: 15px 28px;
-  background: var(--ink); color: #fff;
-  border: none; border-radius: var(--r);
-  font-family: var(--font-ui); font-size: 14px; font-weight: 600;
-  cursor: pointer; letter-spacing: 0.03em;
-  transition: background .2s, transform .15s;
-}
-.btn-order:hover { background: var(--accent); transform: translateY(-1px); }
+/* Timeline */
+.p-timeline{flex:1;position:relative;display:flex;flex-direction:column;justify-content:space-around}
+.p-tl-line{position:absolute;left:25%;top:0;bottom:0;width:0.8px;background:#A0A0A0}
 
-.trust { font-size: 11px; color: var(--muted); text-align: center; margin-top: 8px; }
+/* Étape */
+.p-step{display:grid;position:relative;align-items:center}
+/* colonnes : date | cercle | texte | image */
+.p-step{grid-template-columns:23% 4% 38% 30%;grid-template-areas:"date dot text img";gap:0 1%}
 
-/* ═══════════════════════════════════════════════════
-   PREVIEW — Canvas affiche
-═══════════════════════════════════════════════════ */
-.preview-label {
-  font-size: 10px; font-weight: 700;
-  letter-spacing: 0.14em; text-transform: uppercase;
-  color: var(--muted);
-  align-self: flex-start;
-}
+.p-date{grid-area:date;text-align:right;font-weight:700;text-transform:uppercase;line-height:1.2;padding-right:2%}
+.p-dot{grid-area:dot;display:flex;justify-content:center;align-items:center;position:relative;z-index:1}
+.p-dot-circle{border-radius:50%;border:1.2px solid #C92A2A;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.p-text{grid-area:text;padding-left:4%}
+.p-step-title{font-family:var(--fd);font-style:italic;font-weight:600;line-height:1.2;margin-bottom:2%}
+.p-step-desc{color:#777;line-height:1.4}
+.p-img{grid-area:img;overflow:hidden;border-radius:2px;background:#EDE9E2;display:flex;align-items:center;justify-content:center}
+.p-img img{width:100%;height:100%;object-fit:cover;display:block}
+.p-img-ph{color:#B8B4AC;font-size:1.4em}
 
-.preview-stage {
-  position: relative;
-  /* Le cadre noir CSS autour de l'affiche */
-  border: 12px solid var(--frame-black);
-  border-radius: 2px;
-  box-shadow: var(--sh);
-  background: var(--cream);
-  /* Taille pilotée par JS */
-}
+/* Footer */
+.p-footer{text-align:center;margin-top:3%}
+.p-footer-line{width:40%;height:0.5px;background:#A0A0A0;margin:0 auto 2%}
+.p-footer-text{font-family:var(--fd);font-style:italic}
+.p-footer-inf{color:#C92A2A}
 
-.preview-stage canvas {
-  display: block;
-}
+/* ═══ MODAL ZOOM ═════════════════════════════════════ */
+.modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+.modal.on{opacity:1;pointer-events:all}
+.modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px)}
+.modal-content{position:relative;z-index:1;max-height:94vh;overflow-y:auto;border-radius:4px}
+.modal-close{position:fixed;top:20px;right:24px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:18px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.modal-close:hover{background:rgba(255,255,255,.3)}
 
-.preview-dpi {
-  font-size: 10px; color: var(--muted);
-  display: flex; align-items: center; gap: 6px;
-}
-.preview-dpi::before {
-  content: '';
-  display: block; width: 6px; height: 6px;
-  border-radius: 50%; background: #4CAF50;
-}
+/* ═══ LOADING ═══════════════════════════════════════ */
+.overlay-load{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.overlay-load.on{display:flex}
+.load-box{background:#fff;border-radius:12px;padding:40px 36px;text-align:center;width:340px}
+.spinner{width:32px;height:32px;border:2.5px solid var(--border);border-top-color:var(--ink);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.load-msg{font-size:14px;color:var(--muted)}
 
-/* Format selector */
-.format-selector {
-  display: flex; gap: 8px;
-}
-.fmt-btn {
-  flex: 1; padding: 10px 8px;
-  border: 1.5px solid var(--border);
-  border-radius: var(--r);
-  background: var(--surface);
-  font-family: var(--font-ui); font-size: 12px; font-weight: 600;
-  color: var(--ink-soft); cursor: pointer;
-  text-align: center; transition: all .18s;
-}
-.fmt-btn:hover { border-color: var(--ink); }
-.fmt-btn.active { border-color: var(--ink); background: var(--ink); color: #fff; }
-.fmt-btn span { display: block; font-size: 10px; font-weight: 400; opacity: .7; margin-top: 2px; }
+/* ═══ OVERLAY SUCCESS ════════════════════════════════ */
+.overlay-ok{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+.overlay-ok.on{display:flex}
+.ok-box{background:#fff;border-radius:12px;padding:44px 36px;text-align:center;width:380px}
+.ok-heart{font-size:40px;color:var(--accent);margin-bottom:14px}
+.ok-h{font-family:var(--fd);font-size:26px;font-weight:400;margin-bottom:10px}
+.ok-p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:22px}
 
-/* ═══════════════════════════════════════════════════
-   RESPONSIVE MOBILE
-═══════════════════════════════════════════════════ */
-@media (max-width: 900px) {
-  .app {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-  }
-  .panel-preview { order: -1; padding: 24px 16px; }
-  .panel-form { max-height: none; }
+/* ═══ RESPONSIVE ════════════════════════════════════ */
+@media(max-width:900px){
+  .pp{padding:20px 16px}
+  .env-wrap{max-width:100%}
 }
 </style>
 </head>
 <body>
-
 <div class="app">
 
-  <!-- ══════════════════════════════════
-       PANNEAU FORMULAIRE (gauche)
-  ══════════════════════════════════ -->
-  <aside class="panel-form">
-    <div class="panel-header">
-      <h1>Notre Histoire</h1>
-      <p>Aperçu mis à jour en temps réel · 300 DPI à l'impression</p>
+<!-- ═══════════════════════════════════════════
+     PANNEAU FORMULAIRE
+═══════════════════════════════════════════ -->
+<aside class="pf">
+  <div class="pf-head">
+    <div class="pf-logo">Notre Histoire</div>
+    <div class="pf-sub">Aperçu mis à jour en temps réel</div>
+  </div>
+
+  <div class="pf-body">
+
+    <!-- Prénoms -->
+    <div>
+      <label class="lbl">Vos prénoms</label>
+      <div class="fi-row">
+        <input id="p1" class="fi" type="text" placeholder="Julie" maxlength="18"/>
+        <span class="fi-sep">&</span>
+        <input id="p2" class="fi" type="text" placeholder="Maxime" maxlength="18"/>
+      </div>
     </div>
 
-    <div class="panel-body">
+    <!-- Format -->
+    <div>
+      <label class="lbl">Format</label>
+      <div class="fmt-row">
+        <button class="fmt-btn on" data-fmt="A3">A3<small>30×40 cm — 39,90 €</small></button>
+        <button class="fmt-btn" data-fmt="A4">A4<small>21×30 cm — 29,90 €</small></button>
+      </div>
+    </div>
 
-      <!-- Prénoms -->
-      <div class="form-section">
-        <label class="form-label">Vos prénoms</label>
-        <div class="form-row">
-          <input id="partner1" class="f-input" type="text" placeholder="Julie" maxlength="18"/>
-          <span class="form-sep">&</span>
-          <input id="partner2" class="f-input" type="text" placeholder="Maxime" maxlength="18"/>
+    <!-- Finition -->
+    <div>
+      <label class="lbl">Finition & Cadre</label>
+      <div class="fin-grid">
+        <button class="fin-btn on" data-fin="none">
+          <span class="fin-swatch" style="background:var(--cream);border:1px solid var(--border)"></span>
+          Affiche seule
+        </button>
+        <button class="fin-btn" data-fin="black">
+          <span class="fin-swatch" style="background:#111"></span>
+          Cadre Noir +8€
+        </button>
+        <button class="fin-btn" data-fin="white">
+          <span class="fin-swatch" style="background:#F2F2F2;border:1px solid var(--border)"></span>
+          Cadre Blanc +8€
+        </button>
+        <button class="fin-btn" data-fin="wood">
+          <span class="fin-swatch" style="background:linear-gradient(135deg,#C8956A,#8B5E3C)"></span>
+          Cadre Bois +10€
+        </button>
+        <button class="fin-btn" data-fin="canvas" style="grid-column:1/-1">
+          <span class="fin-swatch" style="background:#C8B898"></span>
+          Toile sur Châssis +20€
+        </button>
+      </div>
+    </div>
+
+    <!-- Environnement -->
+    <div>
+      <label class="lbl">Mise en situation</label>
+      <div class="env-row">
+        <button class="env-btn on" data-env="flat">À plat</button>
+        <button class="env-btn" data-env="salon">Salon</button>
+        <button class="env-btn" data-env="chambre">Chambre</button>
+        <button class="env-btn" data-env="couloir">Couloir</button>
+      </div>
+    </div>
+
+    <!-- Étapes -->
+    <div>
+      <label class="lbl">Vos moments <span style="font-weight:400;text-transform:none;letter-spacing:0">(3 à 5)</span></label>
+      <div id="stepsList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px"></div>
+      <div class="step-actions">
+        <button class="btn-add" id="btnAdd">+ Ajouter un moment</button>
+        <button class="btn-del" id="btnDel">✕</button>
+      </div>
+    </div>
+
+  </div><!-- /pf-body -->
+
+  <div class="pf-cta">
+    <div class="price-row">
+      <span class="price-val" id="priceVal">39,90 €</span>
+      <span class="price-lbl">livraison offerte</span>
+    </div>
+    <button class="btn-order" id="btnOrder">Commander mon affiche</button>
+    <p class="trust">🔒 Paiement sécurisé Stripe · Satisfait ou remboursé 30j</p>
+  </div>
+</aside>
+
+<!-- ═══════════════════════════════════════════
+     PANNEAU PREVIEW
+═══════════════════════════════════════════ -->
+<main class="pp" id="pp">
+  <div class="pp-topbar">
+    <span class="pp-lbl" id="ppLbl">Aperçu — Design Classique</span>
+    <button class="btn-zoom" id="btnZoom">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>
+      </svg>
+      Zoomer
+    </button>
+  </div>
+
+  <!-- Wrapper environnement -->
+  <div class="env-wrap fin-none env-flat-mode" id="envWrap">
+    <!-- Mode à plat -->
+    <div class="env-flat" id="envFlat">
+      <div class="poster-wrap" id="posterWrapFlat">
+        <div class="poster" id="posterFlat">
+          <div class="poster-inner" id="posterInnerFlat"></div>
         </div>
       </div>
+    </div>
 
-      <!-- Format -->
-      <div class="form-section">
-        <label class="form-label">Format</label>
-        <div class="format-selector">
-          <button class="fmt-btn active" data-fmt="A3">A3 <span>30×40 cm — 39,90 €</span></button>
-          <button class="fmt-btn" data-fmt="A4">A4 <span>21×30 cm — 29,90 €</span></button>
+    <!-- Mode pièce (caché par défaut) -->
+    <div class="env-room" id="envRoom" style="display:none">
+      <img class="env-room-bg" id="roomBg" src="" alt=""/>
+      <div class="env-room-overlay"></div>
+      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:40px">
+        <div class="poster-in-room">
+          <div class="poster-wrap" id="posterWrapRoom">
+            <div class="poster" id="posterRoom">
+              <div class="poster-inner" id="posterInnerRoom"></div>
+            </div>
+          </div>
         </div>
       </div>
-
-      <!-- Étapes -->
-      <div class="form-section">
-        <label class="form-label">Vos moments <span style="font-weight:400;text-transform:none;letter-spacing:0">(3 à 5)</span></label>
-        <div class="steps-list" id="stepsList"></div>
-        <div class="steps-actions">
-          <button class="btn-add-step" id="btnAddStep">+ Ajouter un moment</button>
-          <button class="btn-del-step" id="btnDelStep" title="Supprimer le dernier">✕</button>
-        </div>
-      </div>
-
     </div>
+  </div>
 
-    <div class="panel-cta">
-      <div class="price-line">
-        <span class="price-amount" id="priceDisplay">39,90 €</span>
-        <span class="price-label">livraison offerte en France</span>
-      </div>
-      <button class="btn-order" id="btnOrder">Commander mon affiche</button>
-      <p class="trust">🔒 Paiement sécurisé Stripe · Satisfait ou remboursé</p>
+  <p style="font-size:10px;color:var(--muted)">Rendu fidèle · Impression 300 DPI · Papier 200g</p>
+</main>
+
+<!-- ═══ MODAL ZOOM ═════════════════════════════════ -->
+<div class="modal" id="modal">
+  <div class="modal-bg" id="modalBg"></div>
+  <button class="modal-close" id="modalClose">✕</button>
+  <div class="modal-content">
+    <div class="poster" id="posterModal" style="border:12px solid #111;box-shadow:0 30px 80px rgba(0,0,0,.4)">
+      <div class="poster-inner" id="posterInnerModal"></div>
     </div>
-  </aside>
-
-  <!-- ══════════════════════════════════
-       PREVIEW (droite)
-  ══════════════════════════════════ -->
-  <main class="panel-preview">
-    <p class="preview-label">Aperçu fidèle au produit imprimé</p>
-
-    <div class="preview-stage" id="previewStage">
-      <canvas id="posterCanvas"></canvas>
-    </div>
-
-    <p class="preview-dpi">Rendu pixel-perfect · Impression 300 DPI · Papier 200g premium</p>
-  </main>
-
+  </div>
 </div>
 
-<!-- ══════════════════════════════════════════════════
-     MOTEUR DE RENDU CANVAS
-══════════════════════════════════════════════════ -->
+<!-- ═══ OVERLAYS ═══════════════════════════════════ -->
+<div class="overlay-load" id="overlayLoad">
+  <div class="load-box">
+    <div class="spinner"></div>
+    <p class="load-msg" id="loadMsg">Préparation de votre commande…</p>
+  </div>
+</div>
+
+<div class="overlay-ok" id="overlayOk">
+  <div class="ok-box">
+    <div class="ok-heart">♥</div>
+    <div class="ok-h">Commande confirmée !</div>
+    <p class="ok-p">Votre affiche est en cours de préparation. Vous recevrez un email de suivi sous 24h.</p>
+    <button class="btn-order" onclick="location.href='/'">Créer une autre affiche</button>
+  </div>
+</div>
+
 <script>
 'use strict';
 
-/* ────────────────────────────────────────────────
-   PICTOS SVG — dessinés directement sur Canvas
-   Chaque fonction reçoit (ctx, cx, cy, size, color)
-───────────────────────────────────────────────── */
-const PICTOS = {
-  heart: (ctx, cx, cy, s, col) => {
-    ctx.save(); ctx.translate(cx, cy); ctx.scale(s/24, s/24);
-    ctx.beginPath();
-    ctx.moveTo(0, -2);
-    ctx.bezierCurveTo(-1, -5, -6, -5, -6, -1);
-    ctx.bezierCurveTo(-6, 3, 0, 8, 0, 8);
-    ctx.bezierCurveTo(0, 8, 6, 3, 6, -1);
-    ctx.bezierCurveTo(6, -5, 1, -5, 0, -2);
-    ctx.closePath();
-    ctx.fillStyle = col; ctx.fill();
-    ctx.restore();
-  },
-  ring: (ctx, cx, cy, s, col) => {
-    ctx.save(); ctx.translate(cx, cy);
-    const r = s * 0.38, rInner = s * 0.22;
-    ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI*2);
-    ctx.fillStyle = col; ctx.fill();
-    ctx.beginPath(); ctx.arc(0, 0, rInner, 0, Math.PI*2);
-    ctx.fillStyle = '#fff'; ctx.fill();
-    // diamant
-    ctx.beginPath();
-    ctx.moveTo(0, -r-s*0.18); ctx.lineTo(s*0.12, -r-s*0.04);
-    ctx.lineTo(0, -r+s*0.06); ctx.lineTo(-s*0.12, -r-s*0.04);
-    ctx.closePath(); ctx.fillStyle = col; ctx.fill();
-    ctx.restore();
-  },
-  plane: (ctx, cx, cy, s, col) => {
-    ctx.save(); ctx.translate(cx, cy); ctx.rotate(-Math.PI/5);
-    ctx.scale(s/20, s/20);
-    ctx.beginPath();
-    ctx.moveTo(0, -9); ctx.lineTo(4, 2); ctx.lineTo(0, 0); ctx.lineTo(-4, 2); ctx.closePath();
-    ctx.fillStyle = col; ctx.fill();
-    ctx.beginPath();
-    ctx.moveTo(-7, 1); ctx.lineTo(7, 1); ctx.lineTo(4, 4); ctx.lineTo(-4, 4); ctx.closePath();
-    ctx.fillStyle = col; ctx.fill();
-    ctx.restore();
-  },
-  house: (ctx, cx, cy, s, col) => {
-    ctx.save(); ctx.translate(cx, cy); ctx.scale(s/22, s/22);
-    ctx.fillStyle = col;
-    // toit
-    ctx.beginPath(); ctx.moveTo(0,-10); ctx.lineTo(10,-2); ctx.lineTo(-10,-2); ctx.closePath(); ctx.fill();
-    // murs
-    ctx.fillRect(-7, -2, 14, 11);
-    // porte
-    ctx.fillStyle = '#fff';
-    ctx.fillRect(-2.5, 2, 5, 7);
-    ctx.restore();
-  },
-  wine: (ctx, cx, cy, s, col) => {
-    ctx.save(); ctx.translate(cx, cy); ctx.scale(s/22, s/22);
-    ctx.strokeStyle = col; ctx.lineWidth = 1.8; ctx.lineCap = 'round';
-    // verre
-    ctx.beginPath();
-    ctx.moveTo(-5, -9); ctx.lineTo(5, -9);
-    ctx.bezierCurveTo(5, -3, 3, 0, 0, 2);
-    ctx.bezierCurveTo(-3, 0, -5, -3, -5, -9);
-    ctx.closePath();
-    ctx.fillStyle = col; ctx.globalAlpha = 0.7; ctx.fill(); ctx.globalAlpha = 1;
-    ctx.stroke();
-    // pied
-    ctx.beginPath(); ctx.moveTo(0,2); ctx.lineTo(0,7); ctx.stroke();
-    ctx.beginPath(); ctx.moveTo(-4,7); ctx.lineTo(4,7); ctx.stroke();
-    ctx.restore();
-  },
-};
-
-const PICTO_KEYS = ['heart', 'ring', 'plane', 'house', 'wine'];
-const PICTO_LABELS = { heart:'Cœur', ring:'Bague', plane:'Voyage', house:'Maison', wine:'Dîner' };
-
-/* ────────────────────────────────────────────────
-   ÉTAT DE L'APPLICATION
-───────────────────────────────────────────────── */
-const state = {
-  partner1: '',
-  partner2: '',
+/* ══════════════════════════════════════════════════
+   ÉTAT GLOBAL
+══════════════════════════════════════════════════ */
+const S = {
+  p1: '', p2: '',
   format: 'A3',
+  fin: 'none',
+  env: 'flat',
   steps: []
 };
 
-// Préremplissage exemple
-function initDefaultSteps() {
-  state.steps = [
-    { date:'14 FÉV. 2020', title:'Notre rencontre', desc:'Une soirée entre amis, un regard qui change tout.', picto:'heart', img: null },
-    { date:'12 JUIL. 2021', title:'Premier voyage', desc:'Barcelone sous le soleil, juste nous deux.', picto:'plane', img: null },
-    { date:'25 DÉC. 2022', title:'Notre chez-nous', desc:'On a posé nos valises, pour de bon.', picto:'house', img: null },
-  ];
-}
+const PRICES = { A3: 39.90, A4: 29.90 };
+const FIN_EXTRA = { none:0, black:8, white:8, wood:10, canvas:20 };
 
-/* ────────────────────────────────────────────────
-   CANVAS — MOTEUR DE RENDU
-───────────────────────────────────────────────── */
-const canvas = document.getElementById('posterCanvas');
-const ctx    = canvas.getContext('2d');
-
-// Dimensions canvas basées sur le format
-const FORMATS = {
-  A3: { w: 420, h: 594 }, // points proportionnels
-  A4: { w: 297, h: 420 },
+const ROOMS = {
+  salon:   'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=80&auto=format&fit=crop',
+  chambre: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=80&auto=format&fit=crop',
+  couloir: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=80&auto=format&fit=crop',
 };
 
-// Palette couleurs affiche
-const C = {
-  bg:       '#FDFBF7',
-  accent:   '#C92A2A',
-  timeline: '#A0A0A0',
-  dark:     '#111111',
-  muted:    '#777777',
-  border:   '#DDDAD4',
+/* ══════════════════════════════════════════════════
+   PICTOS SVG
+══════════════════════════════════════════════════ */
+const PICTOS = {
+  heart:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21C12 21 3 14 3 8a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-9 13-9 13z"/></svg>`,
+  ring:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="14" r="6"/><path d="M8 14l2-6 2-2 2 2 2 6"/></svg>`,
+  plane:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>`,
+  house:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>`,
+  wine:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 2h8l-2 7a4 4 0 0 1-8 0L8 2z"/><line x1="12" y1="12" x2="12" y2="20"/><line x1="8" y1="20" x2="16" y2="20"/></svg>`,
 };
+const PICTO_KEYS = ['heart','ring','plane','house','wine'];
+const PICTO_LABELS = {heart:'Cœur',ring:'Bague',plane:'Voyage',house:'Maison',wine:'Dîner'};
 
-let renderScheduled = false;
-function scheduleRender() {
-  if (renderScheduled) return;
-  renderScheduled = true;
-  requestAnimationFrame(() => { renderScheduled = false; renderPoster(); });
+/* ══════════════════════════════════════════════════
+   DIMENSIONS POSTER
+══════════════════════════════════════════════════ */
+const RATIO = { A3: 594/420, A4: 420/297 };
+
+function sizePoster(el, targetW) {
+  const r = RATIO[S.format] || RATIO.A3;
+  el.style.width  = targetW + 'px';
+  el.style.height = Math.round(targetW * r) + 'px';
 }
 
-function renderPoster() {
-  const fmt = FORMATS[state.format] || FORMATS.A3;
-  const W = fmt.w, H = fmt.h;
-
-  canvas.width  = W;
-  canvas.height = H;
-
-  // Dimensionner le stage CSS
-  const stage = document.getElementById('previewStage');
-  const maxH  = window.innerHeight * 0.82;
-  const scale = Math.min(maxH / H, 1);
-  stage.style.width  = (W * scale) + 'px';
-  stage.style.height = (H * scale) + 'px';
-  canvas.style.width  = '100%';
-  canvas.style.height = '100%';
-
-  // Fond affiche crème
-  ctx.fillStyle = C.bg;
-  ctx.fillRect(0, 0, W, H);
-
-  // ── En-tête ────────────────────────────────────
-  const headerH = H * 0.14;
-  drawHeader(W, H, headerH);
-
-  // ── Timeline ───────────────────────────────────
-  const tlTop    = headerH + H * 0.03;
-  const tlBottom = H * 0.88;
-  const tlX      = W * 0.25; // 25% de la gauche
-
-  drawTimeline(tlX, tlTop, tlBottom, W, H);
-
-  // ── Footer ─────────────────────────────────────
-  drawFooter(W, H);
+function getTargetWidth() {
+  const pp = document.getElementById('pp');
+  const avail = pp ? pp.clientWidth - 64 : 500;
+  const maxByHeight = (window.innerHeight * 0.80) / (RATIO[S.format] || RATIO.A3);
+  return Math.min(avail, maxByHeight, 520);
 }
 
-/* ── En-tête ──────────────────────────────────── */
-function drawHeader(W, H, headerH) {
-  const cx = W / 2;
+/* ══════════════════════════════════════════════════
+   RENDU HTML DE L'AFFICHE
+══════════════════════════════════════════════════ */
+function posterHTML() {
+  const n1 = S.p1 ? S.p1.toUpperCase() : 'PRÉNOM 1';
+  const n2 = S.p2 ? S.p2.toUpperCase() : 'PRÉNOM 2';
+  const steps = S.steps;
+  const n = steps.length || 1;
 
-  // "Notre histoire" — police manuscrite simulée en italique serif
-  ctx.fillStyle = C.dark;
-  ctx.textAlign = 'center';
-  ctx.font = `italic ${W * 0.075}px 'Cormorant Garamond', Georgia, serif`;
-  ctx.fillText('Notre histoire', cx, H * 0.065);
+  // Tailles dynamiques basées sur la largeur de référence 420px
+  const ref = 420;
+  const ts  = (px) => `${(px/ref*100).toFixed(2)}%`;
 
-  // Trait décoratif fin sous le titre
-  const lineY = H * 0.085;
-  ctx.strokeStyle = C.accent;
-  ctx.lineWidth = 0.8;
-  ctx.beginPath(); ctx.moveTo(cx - W*0.12, lineY); ctx.lineTo(cx + W*0.12, lineY); ctx.stroke();
+  return `
+    <div class="p-header">
+      <div class="p-title" style="font-size:${ts(34)}">Notre histoire</div>
+      <div class="p-deco">
+        <span class="p-deco-line"></span>
+        <span class="p-deco-heart" style="font-size:${ts(13)}">♥</span>
+        <span class="p-deco-line"></span>
+      </div>
+      <div class="p-names" style="font-size:${ts(13)};letter-spacing:${ts(2)}">${n1}  ×  ${n2}</div>
+    </div>
 
-  // Cœur centré
-  PICTOS.heart(ctx, cx, H * 0.095, W * 0.025, C.accent);
+    <div class="p-timeline">
+      <div class="p-tl-line"></div>
+      ${steps.map(step => stepHTML(step, n, ref)).join('')}
+    </div>
 
-  // Prénoms
-  const n1 = state.partner1 ? state.partner1.toUpperCase() : 'PRÉNOM 1';
-  const n2 = state.partner2 ? state.partner2.toUpperCase() : 'PRÉNOM 2';
-  ctx.fillStyle = C.dark;
-  ctx.font = `600 ${W * 0.032}px 'Inter', Arial, sans-serif`;
-  ctx.letterSpacing = `${W * 0.004}px`;
-  ctx.fillText(`${n1}  ×  ${n2}`, cx, H * 0.118);
-  ctx.letterSpacing = '0px';
+    <div class="p-footer">
+      <div class="p-footer-line"></div>
+      <div class="p-footer-text" style="font-size:${ts(14)}">Le meilleur reste à venir…</div>
+      <div class="p-footer-inf" style="font-size:${ts(16)}">∞</div>
+    </div>`;
 }
 
-/* ── Timeline ─────────────────────────────────── */
-function drawTimeline(tlX, tlTop, tlBottom, W, H) {
-  const steps = state.steps;
-  const n = steps.length;
-  if (n === 0) return;
+function stepHTML(step, totalSteps, ref) {
+  const circleSize = 28;
+  const imgAspect  = 0.72; // ratio image zone
+  const dateSize   = Math.max(8, 13 - totalSteps);
+  const titleSize  = Math.max(9, 15 - totalSteps);
+  const descSize   = Math.max(7, 11 - totalSteps);
+  const imgH       = Math.max(36, 80 - totalSteps * 8);
 
-  // Ligne verticale fine
-  ctx.strokeStyle = C.timeline;
-  ctx.lineWidth   = 0.8;
-  ctx.beginPath(); ctx.moveTo(tlX, tlTop); ctx.lineTo(tlX, tlBottom); ctx.stroke();
+  const pictoSVG = PICTOS[step.picto] || PICTOS.heart;
 
-  // Répartition dynamique : chaque étape occupe un segment égal
-  const segH = (tlBottom - tlTop) / n;
+  const imgContent = step.localUrl
+    ? `<img src="${step.localUrl}" alt=""/>`
+    : `<div class="p-img-ph">📷</div>`;
 
-  for (let i = 0; i < n; i++) {
-    const step  = steps[i];
-    const anchorY = tlTop + segH * i + segH * 0.5; // centre vertical du segment
+  return `
+    <div class="p-step">
+      <div class="p-date" style="font-size:${dateSize}px">${(step.date||'').toUpperCase()}</div>
+      <div class="p-dot">
+        <div class="p-dot-circle" style="width:${circleSize}px;height:${circleSize}px">
+          <div style="width:${circleSize*0.55}px;height:${circleSize*0.55}px;color:#C92A2A">${pictoSVG}</div>
+        </div>
+      </div>
+      <div class="p-text">
+        <div class="p-step-title" style="font-size:${titleSize}px">${esc(step.title||'Votre moment')}</div>
+        <div class="p-step-desc" style="font-size:${descSize}px">${esc(step.desc||'')}</div>
+      </div>
+      <div class="p-img" style="height:${imgH}px;border-radius:3px">${imgContent}</div>
+    </div>`;
+}
 
-    drawStep(step, i, tlX, anchorY, W, H, segH);
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+/* ══════════════════════════════════════════════════
+   UPDATE PREVIEW
+══════════════════════════════════════════════════ */
+let pending = false;
+function update() {
+  if (pending) return;
+  pending = true;
+  requestAnimationFrame(() => { pending = false; _doUpdate(); });
+}
+
+function _doUpdate() {
+  const html = posterHTML();
+
+  // Tous les posters partagent le même HTML
+  ['posterInnerFlat','posterInnerRoom','posterInnerModal'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML = html;
+  });
+
+  // Tailles
+  const w = getTargetWidth();
+  ['posterFlat','posterRoom'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) sizePoster(el, w);
+  });
+  // Modal = plus grand
+  const modalEl = document.getElementById('posterModal');
+  if (modalEl) {
+    const mw = Math.min(window.innerWidth * 0.9, 520);
+    sizePoster(modalEl, mw);
   }
-}
 
-/* ── Une étape ────────────────────────────────── */
-function drawStep(step, idx, tlX, anchorY, W, H, segH) {
-  const circleR = W * 0.022; // rayon du cercle picto
+  // Finition CSS
+  const envWrap = document.getElementById('envWrap');
+  envWrap.className = envWrap.className.replace(/\bfin-\w+/g,'') + ` fin-${S.fin}`;
 
-  // ── DATE (gauche, alignée à droite) ──
-  ctx.fillStyle = C.dark;
-  ctx.textAlign = 'right';
-  ctx.font = `700 ${W * 0.022}px 'Inter', Arial, sans-serif`;
-  const dateStr = (step.date || '').toUpperCase();
-  ctx.fillText(dateStr, tlX - circleR - W * 0.015, anchorY + W * 0.008);
-
-  // ── CERCLE + PICTO (sur la ligne) ──
-  // Fond blanc du cercle
-  ctx.fillStyle = '#fff';
-  ctx.strokeStyle = C.accent;
-  ctx.lineWidth = 1.2;
-  ctx.beginPath(); ctx.arc(tlX, anchorY, circleR, 0, Math.PI*2);
-  ctx.fill(); ctx.stroke();
-
-  // Picto dans le cercle
-  const pictoFn = PICTOS[step.picto] || PICTOS.heart;
-  pictoFn(ctx, tlX, anchorY, circleR * 1.1, C.accent);
-
-  // ── TEXTE (droite de la ligne) ──
-  const textX = tlX + circleR + W * 0.025;
-  const textW = W * 0.34;
-
-  // Titre — manuscrit élégant
-  ctx.fillStyle = C.dark;
-  ctx.textAlign = 'left';
-  ctx.font = `italic 600 ${W * 0.028}px 'Cormorant Garamond', Georgia, serif`;
-  ctx.fillText(clipText(ctx, step.title || '', textW), textX, anchorY - W * 0.01);
-
-  // Description — corps lisible
-  ctx.fillStyle = C.muted;
-  ctx.font = `400 ${W * 0.018}px 'Inter', Arial, sans-serif`;
-  wrapText(ctx, step.desc || '', textX, anchorY + W * 0.016, textW, W * 0.022, 2);
-
-  // ── IMAGE (extrême droite) ──
-  const imgX = W * 0.66;
-  const imgW = W * 0.29;
-  const imgH = imgW * 0.74; // ratio légèrement rectangulaire
-  const imgY = anchorY - imgH / 2;
-
-  drawImageZone(step.img, imgX, imgY, imgW, imgH, W);
-
-  // Séparateur inter-étapes (fin, discret)
-  if (idx < state.steps.length - 1) {
-    const sepY = anchorY + segH * 0.45;
-    ctx.strokeStyle = C.border;
-    ctx.lineWidth = 0.4;
-    ctx.setLineDash([2, 4]);
-    ctx.beginPath(); ctx.moveTo(W * 0.04, sepY); ctx.lineTo(W * 0.96, sepY); ctx.stroke();
-    ctx.setLineDash([]);
-  }
-}
-
-/* ── Zone image ───────────────────────────────── */
-function drawImageZone(imgEl, x, y, w, h, W) {
-  // Fond placeholder toujours présent
-  ctx.fillStyle = '#EDE9E2';
-  roundRect(ctx, x, y, w, h, W * 0.008);
-  ctx.fill();
-
-  if (imgEl && imgEl.complete && imgEl.naturalWidth > 0) {
-    // Clip + cover
-    ctx.save();
-    roundRect(ctx, x, y, w, h, W * 0.008);
-    ctx.clip();
-    const ir = imgEl.naturalWidth / imgEl.naturalHeight;
-    const br = w / h;
-    let sx, sy, sw, sh;
-    if (ir > br) { sh = imgEl.naturalHeight; sw = sh * br; sx = (imgEl.naturalWidth - sw) / 2; sy = 0; }
-    else         { sw = imgEl.naturalWidth; sh = sw / br; sx = 0; sy = (imgEl.naturalHeight - sh) / 2; }
-    ctx.drawImage(imgEl, sx, sy, sw, sh, x, y, w, h);
-    ctx.restore();
+  // Environnement
+  const isFlat = S.env === 'flat';
+  document.getElementById('envFlat').style.display  = isFlat ? '' : 'none';
+  document.getElementById('envRoom').style.display  = isFlat ? 'none' : '';
+  envWrap.className = envWrap.className.replace(/\benv-flat-mode\b|\benv-salon\b|\benv-chambre\b|\benv-couloir\b/g, '').trim();
+  if (isFlat) {
+    envWrap.classList.add('env-flat-mode');
   } else {
-    // Icône caméra placeholder
-    ctx.fillStyle = '#B8B4AC';
-    ctx.font = `${w * 0.2}px Arial`;
-    ctx.textAlign = 'center';
-    ctx.fillText('📷', x + w/2, y + h/2 + w * 0.07);
-    ctx.fillStyle = '#C8C4BC';
-    ctx.font = `${w * 0.1}px Inter, Arial`;
-    ctx.fillText('Ajouter une photo', x + w/2, y + h * 0.72);
+    envWrap.classList.add(`env-${S.env}`);
+    document.getElementById('roomBg').src = ROOMS[S.env] || '';
   }
 
-  // Bordure fine autour de l'image
-  ctx.strokeStyle = '#D8D4CC';
-  ctx.lineWidth = 0.5;
-  roundRect(ctx, x, y, w, h, W * 0.008);
-  ctx.stroke();
+  // Prix
+  const base = PRICES[S.format] || 39.90;
+  const extra = FIN_EXTRA[S.fin] || 0;
+  document.getElementById('priceVal').textContent = (base + extra).toFixed(2).replace('.',',') + ' €';
 }
 
-/* ── Footer ───────────────────────────────────── */
-function drawFooter(W, H) {
-  const cy = H * 0.915;
-  ctx.textAlign = 'center';
-
-  // Ligne déco
-  ctx.strokeStyle = C.timeline;
-  ctx.lineWidth = 0.5;
-  ctx.beginPath(); ctx.moveTo(W*0.25, cy - H*0.014); ctx.lineTo(W*0.75, cy - H*0.014); ctx.stroke();
-
-  // Phrase de conclusion
-  ctx.fillStyle = C.dark;
-  ctx.font = `italic ${W * 0.026}px 'Cormorant Garamond', Georgia, serif`;
-  ctx.fillText('Le meilleur reste à venir…', W/2, cy);
-
-  // Infini
-  ctx.fillStyle = C.accent;
-  ctx.font = `${W * 0.03}px Arial`;
-  ctx.fillText('∞', W/2, cy + H * 0.022);
-}
-
-/* ────────────────────────────────────────────────
-   HELPERS CANVAS
-───────────────────────────────────────────────── */
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y); ctx.arcTo(x+w, y,   x+w, y+r,   r);
-  ctx.lineTo(x + w, y + h - r); ctx.arcTo(x+w, y+h, x+w-r, y+h, r);
-  ctx.lineTo(x + r, y + h); ctx.arcTo(x, y+h, x, y+h-r, r);
-  ctx.lineTo(x, y + r); ctx.arcTo(x, y, x+r, y, r);
-  ctx.closePath();
-}
-
-function clipText(ctx, text, maxW) {
-  if (!text) return '';
-  if (ctx.measureText(text).width <= maxW) return text;
-  while (text.length > 0 && ctx.measureText(text + '…').width > maxW) {
-    text = text.slice(0, -1);
-  }
-  return text + '…';
-}
-
-function wrapText(ctx, text, x, y, maxW, lineH, maxLines) {
-  if (!text) return;
-  const words = text.split(' ');
-  let line = '', linesDrawn = 0;
-  for (let i = 0; i < words.length; i++) {
-    const test = line + (line ? ' ' : '') + words[i];
-    if (ctx.measureText(test).width > maxW && line) {
-      if (linesDrawn >= maxLines - 1) {
-        ctx.fillText(clipText(ctx, line, maxW), x, y + linesDrawn * lineH);
-        return;
-      }
-      ctx.fillText(line, x, y + linesDrawn * lineH);
-      line = words[i]; linesDrawn++;
-    } else { line = test; }
-  }
-  if (line) ctx.fillText(clipText(ctx, line, maxW), x, y + linesDrawn * lineH);
-}
-
-/* ────────────────────────────────────────────────
-   CONSTRUCTION DU FORMULAIRE
-───────────────────────────────────────────────── */
-function buildStepCard(idx) {
-  const step = state.steps[idx];
+/* ══════════════════════════════════════════════════
+   CONSTRUCTION FORMULAIRE ÉTAPES
+══════════════════════════════════════════════════ */
+function buildCard(idx) {
+  const step = S.steps[idx];
   const card = document.createElement('div');
-  card.className = 'step-card open';
+  card.className = 'step-card on';
   card.dataset.idx = idx;
 
   card.innerHTML = `
-    <div class="step-card-header">
+    <div class="step-head">
       <span class="step-dot"></span>
-      <span class="step-title-label">Moment ${idx + 1}</span>
-      <span class="step-subtitle">${step.title || ''}</span>
-      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <polyline points="6 9 12 15 18 9"/>
-      </svg>
+      <span class="step-name">Moment ${idx+1}</span>
+      <span class="step-preview">${step.title||''}</span>
+      <svg class="step-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
     </div>
-    <div class="step-card-body">
-      <div class="step-fields-grid">
-        <div class="step-field">
-          <label>Date</label>
-          <input class="f-input si-date" type="text" placeholder="14 FÉV. 2020" value="${step.date || ''}" maxlength="20"/>
+    <div class="step-body">
+      <div class="step-grid">
+        <div>
+          <label class="step-lbl">Date</label>
+          <input class="fi si-date" type="text" placeholder="14 FÉV. 2020" value="${step.date||''}" maxlength="20"/>
         </div>
-        <div class="step-field">
-          <label>Picto</label>
-          <div class="picto-grid" data-idx="${idx}">
-            ${PICTO_KEYS.map(k => `
-              <button class="picto-btn${k === step.picto ? ' active' : ''}" data-picto="${k}" title="${PICTO_LABELS[k]}">
-                ${pictoSVG(k)}
-              </button>`).join('')}
-          </div>
+        <div>
+          <label class="step-lbl">Picto</label>
+          <div class="picto-row">${PICTO_KEYS.map(k=>`
+            <button class="pb${k===step.picto?' on':''}" data-p="${k}" title="${PICTO_LABELS[k]}" style="color:${k===step.picto?'#fff':'#555'}">
+              <div style="width:16px;height:16px">${PICTOS[k]}</div>
+            </button>`).join('')}</div>
         </div>
-        <div class="step-field full">
-          <label>Titre</label>
-          <input class="f-input si-title" type="text" placeholder="Notre rencontre" value="${step.title || ''}" maxlength="40"/>
+        <div class="step-full">
+          <label class="step-lbl">Titre</label>
+          <input class="fi si-title" type="text" placeholder="Notre rencontre" value="${step.title||''}" maxlength="40"/>
         </div>
-        <div class="step-field full">
-          <label>Description</label>
-          <textarea class="f-textarea si-desc" placeholder="Quelques mots sur ce moment…" maxlength="120">${step.desc || ''}</textarea>
+        <div class="step-full">
+          <label class="step-lbl">Description</label>
+          <textarea class="fi-textarea si-desc" maxlength="120" placeholder="Quelques mots sur ce moment…">${step.desc||''}</textarea>
         </div>
-        <div class="step-field full">
-          <label>Photo</label>
-          <div class="upload-zone">
+        <div class="step-full">
+          <label class="step-lbl">Photo</label>
+          <div class="upz">
             <input type="file" accept="image/*" class="si-file"/>
-            <div class="uz-placeholder">
-              <div class="uz-icon">📷</div>
-              <div class="uz-text">Cliquer pour ajouter une photo</div>
-            </div>
-            <img class="uz-preview" src="" alt=""/>
+            <div class="upz-ph"><span>📷</span>Cliquer pour ajouter une photo</div>
+            <img class="upz-img" src="${step.localUrl||''}" style="${step.localUrl?'display:block':''}"/>
           </div>
         </div>
       </div>
     </div>`;
 
-  // Toggle accordéon
-  card.querySelector('.step-card-header').addEventListener('click', () => {
-    card.classList.toggle('open');
-  });
+  // Toggle
+  card.querySelector('.step-head').addEventListener('click', () => card.classList.toggle('on'));
 
-  // Mise à jour en direct
+  // Inputs
   card.querySelector('.si-date').addEventListener('input', e => {
-    state.steps[idx].date = e.target.value;
-    scheduleRender();
+    S.steps[idx].date = e.target.value; update();
   });
   card.querySelector('.si-title').addEventListener('input', e => {
-    state.steps[idx].title = e.target.value;
-    card.querySelector('.step-subtitle').textContent = e.target.value;
-    scheduleRender();
+    S.steps[idx].title = e.target.value;
+    card.querySelector('.step-preview').textContent = e.target.value;
+    update();
   });
   card.querySelector('.si-desc').addEventListener('input', e => {
-    state.steps[idx].desc = e.target.value;
-    scheduleRender();
+    S.steps[idx].desc = e.target.value; update();
   });
 
   // Pictos
-  card.querySelectorAll('.picto-btn').forEach(btn => {
+  card.querySelectorAll('.pb').forEach(btn => {
     btn.addEventListener('click', e => {
       e.stopPropagation();
-      card.querySelectorAll('.picto-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      state.steps[idx].picto = btn.dataset.picto;
-      scheduleRender();
+      S.steps[idx].picto = btn.dataset.p;
+      card.querySelectorAll('.pb').forEach(b => {
+        b.classList.remove('on');
+        b.style.color = '#555';
+      });
+      btn.classList.add('on');
+      btn.style.color = '#fff';
+      update();
     });
   });
 
-  // Upload image
+  // Upload — URL.createObjectURL pour preview immédiate
   card.querySelector('.si-file').addEventListener('change', e => {
     const file = e.target.files[0];
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = ev => {
-      const img = new Image();
-      img.onload = () => {
-        state.steps[idx].img = img;
-        card.querySelector('.uz-preview').src = ev.target.result;
-        card.querySelector('.uz-preview').style.display = 'block';
-        card.querySelector('.uz-placeholder').style.display = 'none';
-        scheduleRender();
-      };
-      img.src = ev.target.result;
-    };
-    reader.readAsDataURL(file);
+    // Révoquer l'ancienne URL si elle existe
+    if (S.steps[idx].localUrl) URL.revokeObjectURL(S.steps[idx].localUrl);
+    const url = URL.createObjectURL(file);
+    S.steps[idx].localUrl  = url;
+    S.steps[idx].file      = file; // conservé pour upload Supabase au checkout
+    const img = card.querySelector('.upz-img');
+    img.src = url; img.style.display = 'block';
+    card.querySelector('.upz-ph').style.display = 'none';
+    update();
   });
 
   return card;
 }
 
-function pictoSVG(key) {
-  const size = 18;
-  const svgs = {
-    heart: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21C12 21 3 14 3 8a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-9 13-9 13z"/></svg>`,
-    ring:  `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="14" r="6"/><path d="M8 14 L10 8 L12 6 L14 8 L16 14"/></svg>`,
-    plane: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>`,
-    house: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9L12 2L21 9V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>`,
-    wine:  `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 2h8l-2 7a4 4 0 0 1-4 0L8 2z"/><line x1="12" y1="12" x2="12" y2="20"/><line x1="8" y1="20" x2="16" y2="20"/></svg>`,
-  };
-  return svgs[key] || svgs.heart;
-}
-
-function rebuildStepsList() {
+function rebuildList() {
   const list = document.getElementById('stepsList');
   list.innerHTML = '';
-  state.steps.forEach((_, i) => list.appendChild(buildStepCard(i)));
-  document.getElementById('btnAddStep').disabled = state.steps.length >= 5;
-  document.getElementById('btnDelStep').disabled = state.steps.length <= 3;
+  S.steps.forEach((_,i) => list.appendChild(buildCard(i)));
+  document.getElementById('btnAdd').disabled = S.steps.length >= 5;
+  document.getElementById('btnDel').disabled = S.steps.length <= 3;
 }
 
-/* ────────────────────────────────────────────────
-   INTERACTIONS GLOBALES
-───────────────────────────────────────────────── */
-document.getElementById('partner1').addEventListener('input', e => {
-  state.partner1 = e.target.value; scheduleRender();
-});
-document.getElementById('partner2').addEventListener('input', e => {
-  state.partner2 = e.target.value; scheduleRender();
+/* ══════════════════════════════════════════════════
+   INTERACTIONS
+══════════════════════════════════════════════════ */
+document.getElementById('p1').addEventListener('input', e => { S.p1 = e.target.value; update(); });
+document.getElementById('p2').addEventListener('input', e => { S.p2 = e.target.value; update(); });
+
+document.querySelectorAll('.fmt-btn').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.fmt-btn').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); S.format = b.dataset.fmt; update();
+}));
+
+document.querySelectorAll('.fin-btn').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.fin-btn').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); S.fin = b.dataset.fin; update();
+}));
+
+document.querySelectorAll('.env-btn').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('.env-btn').forEach(x => x.classList.remove('on'));
+  b.classList.add('on'); S.env = b.dataset.env; update();
+}));
+
+document.getElementById('btnAdd').addEventListener('click', () => {
+  if (S.steps.length >= 5) return;
+  S.steps.push({ date:'', title:'', desc:'', picto:'heart', localUrl:null, file:null });
+  rebuildList(); update();
 });
 
-document.querySelectorAll('.fmt-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.fmt-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    state.format = btn.dataset.fmt;
-    document.getElementById('priceDisplay').textContent =
-      state.format === 'A3' ? '39,90 €' : '29,90 €';
-    scheduleRender();
+document.getElementById('btnDel').addEventListener('click', () => {
+  if (S.steps.length <= 3) return;
+  const last = S.steps.pop();
+  if (last.localUrl) URL.revokeObjectURL(last.localUrl);
+  rebuildList(); update();
+});
+
+// Zoom modal
+const modal = document.getElementById('modal');
+document.getElementById('btnZoom').addEventListener('click', () => {
+  modal.classList.add('on'); document.body.style.overflow = 'hidden';
+  const mw = Math.min(window.innerWidth * 0.88, 520);
+  sizePoster(document.getElementById('posterModal'), mw);
+});
+function closeModal() { modal.classList.remove('on'); document.body.style.overflow = ''; }
+document.getElementById('modalClose').addEventListener('click', closeModal);
+document.getElementById('modalBg').addEventListener('click', closeModal);
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+window.addEventListener('resize', update);
+
+/* ══════════════════════════════════════════════════
+   CHECKOUT — Upload Supabase + Stripe
+══════════════════════════════════════════════════ */
+document.getElementById('btnOrder').addEventListener('click', async () => {
+  // Validation
+  if (!S.p1.trim() || !S.p2.trim()) { alert('Veuillez entrer les deux prénoms.'); return; }
+  const errs = [];
+  S.steps.forEach((s,i) => {
+    if (!s.date.trim())  errs.push(`Moment ${i+1} : date manquante`);
+    if (!s.title.trim()) errs.push(`Moment ${i+1} : titre manquant`);
+    if (!s.file && !s.localUrl) errs.push(`Moment ${i+1} : photo manquante`);
   });
+  if (errs.length) { alert('Erreurs :\n\n' + errs.map(e=>'• '+e).join('\n')); return; }
+
+  showLoad('Envoi des photos…');
+
+  try {
+    // 1. Upload images sur Supabase
+    const stepsWithUrls = await Promise.all(S.steps.map(async (step, i) => {
+      if (!step.file) return { ...step, imageUrl: step.localUrl };
+      const fd = new FormData();
+      fd.append('image', step.file);
+      const res = await fetch('/api/upload/image', { method:'POST', body:fd });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Upload échoué');
+      return { ...step, imageUrl: data.url };
+    }));
+
+    showLoad('Création de votre commande…');
+
+    // 2. Créer session Stripe
+    const payload = {
+      partner1: S.p1,
+      partner2: S.p2,
+      product:  S.format,
+      frame:    S.fin,
+      design:   'classique',
+      steps: stepsWithUrls.map(s => ({
+        date:        s.date,
+        title:       s.title,
+        description: s.desc,
+        picto:       s.picto,
+        imageUrl:    s.imageUrl,
+      })),
+    };
+
+    const res = await fetch('/api/checkout', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Erreur serveur');
+
+    showLoad('Redirection vers le paiement sécurisé…');
+    window.location.href = data.url;
+
+  } catch(err) {
+    hideLoad();
+    alert('Erreur : ' + err.message);
+  }
 });
 
-document.getElementById('btnAddStep').addEventListener('click', () => {
-  if (state.steps.length >= 5) return;
-  state.steps.push({ date:'', title:'', desc:'', picto:'heart', img:null });
-  rebuildStepsList();
-  scheduleRender();
-});
+function showLoad(msg) {
+  document.getElementById('loadMsg').textContent = msg;
+  document.getElementById('overlayLoad').classList.add('on');
+}
+function hideLoad() {
+  document.getElementById('overlayLoad').classList.remove('on');
+}
 
-document.getElementById('btnDelStep').addEventListener('click', () => {
-  if (state.steps.length <= 3) return;
-  state.steps.pop();
-  rebuildStepsList();
-  scheduleRender();
-});
+// Succès Stripe
+const params = new URLSearchParams(location.search);
+if (params.get('session_id')) document.getElementById('overlayOk').classList.add('on');
 
-document.getElementById('btnOrder').addEventListener('click', () => {
-  // Placeholder — brancher sur /api/checkout existant
-  alert('Commande en cours de redirection vers Stripe…');
-});
+/* ══════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════ */
+S.steps = [
+  { date:'14 FÉV. 2020', title:'Notre rencontre',   desc:'Une soirée entre amis, un regard qui change tout.', picto:'heart',  localUrl:null, file:null },
+  { date:'12 JUIL. 2021', title:'Premier voyage',   desc:'Barcelone sous le soleil, juste nous deux.',        picto:'plane',  localUrl:null, file:null },
+  { date:'25 DÉC. 2022',  title:'Notre chez-nous',  desc:'On a posé nos valises, pour de bon.',               picto:'house',  localUrl:null, file:null },
+];
 
-// Redimensionnement
-window.addEventListener('resize', scheduleRender);
-
-/* ────────────────────────────────────────────────
-   DÉMARRAGE
-───────────────────────────────────────────────── */
-initDefaultSteps();
-rebuildStepsList();
-scheduleRender();
+rebuildList();
+update();
 </script>
 </body>
 </html>
