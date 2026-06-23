@@ -315,7 +315,7 @@ body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:10
         <button class="env-btn on" data-env="flat">À plat</button>
         <button class="env-btn" data-env="salon">Salon</button>
         <button class="env-btn" data-env="chambre">Chambre</button>
-        <button class="env-btn" data-env="couloir">Couloir</button>
+        <button class="env-btn" data-env="fauteuil">Salon 2</button>
       </div>
     </div>
 
@@ -369,13 +369,10 @@ body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:10
     <!-- Mode pièce (caché par défaut) -->
     <div class="env-room" id="envRoom" style="display:none">
       <img class="env-room-bg" id="roomBg" src="" alt=""/>
-      <div class="env-room-overlay"></div>
-      <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:40px">
-        <div class="poster-in-room">
-          <div class="poster-wrap" id="posterWrapRoom">
-            <div class="poster" id="posterRoom">
-              <div class="poster-inner" id="posterInnerRoom"></div>
-            </div>
+      <div class="poster-in-room" id="posterInRoom">
+        <div class="poster-wrap" id="posterWrapRoom">
+          <div class="poster" id="posterRoom">
+            <div class="poster-inner" id="posterInnerRoom"></div>
           </div>
         </div>
       </div>
@@ -431,9 +428,12 @@ const PRICES = { A3: 39.90, A4: 29.90 };
 const FIN_EXTRA = { none:0, black:8, white:8, wood:10, canvas:20 };
 
 const ROOMS = {
-  salon:   'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=1200&q=80&auto=format&fit=crop',
-  chambre: 'https://images.unsplash.com/photo-1616594039964-ae9021a400a0?w=1200&q=80&auto=format&fit=crop',
-  couloir: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=1200&q=80&auto=format&fit=crop',
+  salon:   { src:'/assets/room-salon.jpg',   // cadre noir déjà présent → on remplace l'intérieur
+             left:0.525, top:0.075, width:0.295, aspect:1/1 },
+  chambre: { src:'/assets/room-chambre.jpg', // mur blanc centré au-dessus du lit
+             left:0.345, top:0.03, width:0.31, aspect:297/420 },
+  fauteuil:{ src:'/assets/room-fauteuil.jpg',// grand mur gauche au-dessus du fauteuil
+             left:0.08,  top:0.04, width:0.26, aspect:210/297 },
 };
 
 /* ══════════════════════════════════════════════════
@@ -575,14 +575,19 @@ function _doUpdate() {
 
   // Environnement
   const isFlat = S.env === 'flat';
-  document.getElementById('envFlat').style.display  = isFlat ? '' : 'none';
-  document.getElementById('envRoom').style.display  = isFlat ? 'none' : '';
-  envWrap.className = envWrap.className.replace(/\benv-flat-mode\b|\benv-salon\b|\benv-chambre\b|\benv-couloir\b/g, '').trim();
+  document.getElementById('envFlat').style.display = isFlat ? '' : 'none';
+  document.getElementById('envRoom').style.display = isFlat ? 'none' : '';
+  envWrap.className = envWrap.className.replace(/\benv-flat-mode\b/g,'').trim();
   if (isFlat) {
     envWrap.classList.add('env-flat-mode');
   } else {
-    envWrap.classList.add(`env-${S.env}`);
-    document.getElementById('roomBg').src = ROOMS[S.env] || '';
+    const room = ROOMS[S.env];
+    if (room) {
+      const roomBg = document.getElementById('roomBg');
+      roomBg.src = room.src;
+      roomBg.onload = () => positionPosterInRoom();
+      if (roomBg.complete && roomBg.naturalWidth > 0) positionPosterInRoom();
+    }
   }
 
   // Prix
@@ -814,6 +819,46 @@ function showLoad(msg) {
 function hideLoad() {
   document.getElementById('overlayLoad').classList.remove('on');
 }
+
+
+/* ══════════════════════════════════════════════════
+   POSITION AFFICHE DANS LA PIÈCE
+══════════════════════════════════════════════════ */
+function positionPosterInRoom() {
+  const room = ROOMS[S.env];
+  if (!room) return;
+
+  const roomBg  = document.getElementById('roomBg');
+  const posterIn = document.getElementById('posterInRoom');
+  const posterEl = document.getElementById('posterRoom');
+  const wrap     = document.getElementById('posterWrapRoom');
+
+  const imgW = roomBg.offsetWidth;
+  const imgH = roomBg.offsetHeight;
+  if (!imgW || !imgH) return;
+
+  // Largeur de l'affiche en px = % de la largeur de l'image affichée
+  const posterW = imgW * room.width;
+  // Hauteur selon ratio A3/A4
+  const ratio = S.format === 'A3' ? 594/420 : 420/297;
+  const posterH = posterW * ratio;
+
+  // Positionnement absolu
+  posterIn.style.left   = (imgW * room.left - posterW/2) + 'px';
+  posterIn.style.top    = (imgH * room.top) + 'px';
+  posterIn.style.width  = posterW + 'px';
+
+  // Dimensionner le poster HTML
+  posterEl.style.width  = posterW + 'px';
+  posterEl.style.height = posterH + 'px';
+
+  // Ombre réaliste pour intégration
+  wrap.style.boxShadow = `${posterW*0.02}px ${posterW*0.04}px ${posterW*0.12}px rgba(0,0,0,0.45),${posterW*0.005}px ${posterW*0.01}px ${posterW*0.03}px rgba(0,0,0,0.2)`;
+}
+
+window.addEventListener('resize', () => {
+  if (S.env !== 'flat') positionPosterInRoom();
+});
 
 // Succès Stripe
 const params = new URLSearchParams(location.search);
