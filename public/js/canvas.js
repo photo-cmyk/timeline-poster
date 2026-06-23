@@ -13,7 +13,7 @@ const DESIGNS = {
   vintage:   { bg: '#F5EDD6', accent: '#8B4513', line: '#C4A882', dark: '#3D2B1F', muted: '#7A5C3A', border: '#D4B896' },
 };
 
-const PICTOS = { heart:'♥', wine:'♦', plane:'▲', house:'■', ring:'★', star:'✦', music:'♪' };
+const PICTO_MAP = { heart:'♥', wine:'♦', plane:'▲', house:'■', ring:'★', star:'✦', music:'♪' };
 
 const imgCache = {};
 let currentDesign = 'classique';
@@ -119,7 +119,7 @@ async function renderPoster(data, canvasId = 'posterCanvas') {
     // Picto (sur la ligne, au dessus du point)
     ctx.font = `${W*0.02}px Arial`;
     ctx.textAlign = 'center';
-    ctx.fillText(PICTOS[step.picto] || '♥', tlX, stepY - 12);
+    ctx.fillText(PICTO_MAP[step.picto] || '♥', tlX, stepY - 12);
 
     // Titre (droite)
     const tx = tlX + 12;
