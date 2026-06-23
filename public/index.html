@@ -1,379 +1,1037 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Notre Histoire — Affiche timeline de couple personnalisée</title>
-  <meta name="description" content="Créez une affiche timeline personnalisée avec vos photos. 5 designs premium. Imprimée et livrée encadrée en France." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/css/style.css" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Notre Histoire — Créez votre affiche</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital@1&display=swap" rel="stylesheet"/>
+
+<style>
+/* ═══════════════════════════════════════════════════
+   RESET & TOKENS
+═══════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cream:       #FDFBF7;
+  --ink:         #111111;
+  --ink-soft:    #3A3A3A;
+  --muted:       #8A8A8A;
+  --border:      #E2E0DC;
+  --surface:     #F4F2EE;
+  --page-bg:     #EFEFED;
+  --accent:      #C92A2A;
+  --accent-soft: #F9EAEA;
+  --frame-black: #1A1A1A;
+
+  --font-ui:     'Inter', system-ui, sans-serif;
+  --font-display:'Cormorant Garamond', Georgia, serif;
+
+  --r:    6px;
+  --r-lg: 12px;
+  --sh:   0 20px 60px rgba(0,0,0,0.12), 0 4px 12px rgba(0,0,0,0.06);
+}
+
+html { font-size: 16px; }
+body {
+  font-family: var(--font-ui);
+  background: var(--page-bg);
+  color: var(--ink);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ═══════════════════════════════════════════════════
+   LAYOUT PRINCIPAL
+═══════════════════════════════════════════════════ */
+.app {
+  display: grid;
+  grid-template-columns: 420px 1fr;
+  min-height: 100vh;
+}
+
+/* ── Panneau formulaire ── */
+.panel-form {
+  background: #fff;
+  border-right: 1px solid var(--border);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.panel-header {
+  padding: 28px 28px 20px;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 10;
+}
+
+.panel-header h1 {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--ink);
+  margin-bottom: 4px;
+}
+
+.panel-header p {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 400;
+}
+
+.panel-body {
+  padding: 24px 28px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* ── Panneau preview ── */
+.panel-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 48px 40px;
+  gap: 20px;
+  background: var(--page-bg);
+  overflow-y: auto;
+}
+
+/* ═══════════════════════════════════════════════════
+   FORMULAIRE — BLOCS
+═══════════════════════════════════════════════════ */
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-sep {
+  font-family: var(--font-display);
+  font-size: 22px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.f-input {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  font-family: var(--font-ui);
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--surface);
+  outline: none;
+  transition: border-color 0.18s, background 0.18s;
+}
+.f-input:focus {
+  border-color: var(--ink);
+  background: #fff;
+}
+.f-input::placeholder { color: var(--muted); }
+
+/* ── Étapes accordéon ── */
+.steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.step-card {
+  border: 1.5px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: #fff;
+  transition: border-color 0.18s;
+}
+.step-card.open { border-color: var(--ink); }
+
+.step-card-header {
+  display: flex;
+  align-items: center;
+  padding: 14px 16px;
+  cursor: pointer;
+  user-select: none;
+  gap: 12px;
+}
+
+.step-dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+.step-title-label {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.step-subtitle {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 400;
+  margin-left: auto;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.step-chevron {
+  width: 16px; height: 16px;
+  color: var(--muted);
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+.step-card.open .step-chevron { transform: rotate(180deg); }
+
+.step-card-body {
+  display: none;
+  padding: 4px 16px 16px;
+  flex-direction: column;
+  gap: 12px;
+}
+.step-card.open .step-card-body { display: flex; }
+
+.step-fields-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.step-field { display: flex; flex-direction: column; gap: 5px; }
+.step-field.full { grid-column: 1/-1; }
+.step-field label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+
+.f-textarea {
+  width: 100%; padding: 10px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  font-family: var(--font-ui); font-size: 13px;
+  color: var(--ink); background: var(--surface);
+  resize: none; outline: none; min-height: 64px;
+  transition: border-color .18s, background .18s;
+}
+.f-textarea:focus { border-color: var(--ink); background: #fff; }
+
+/* Pictos */
+.picto-grid {
+  display: flex; gap: 6px; flex-wrap: wrap;
+}
+
+.picto-btn {
+  width: 38px; height: 38px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface);
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+  padding: 0;
+}
+.picto-btn:hover { border-color: var(--ink); background: #fff; }
+.picto-btn.active {
+  border-color: var(--ink);
+  background: var(--ink);
+}
+.picto-btn svg { pointer-events: none; }
+.picto-btn.active svg path,
+.picto-btn.active svg circle,
+.picto-btn.active svg rect,
+.picto-btn.active svg polyline { stroke: #fff; }
+
+/* Upload photo */
+.upload-zone {
+  position: relative;
+  border: 2px dashed var(--border);
+  border-radius: var(--r);
+  background: var(--surface);
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  overflow: hidden;
+}
+.upload-zone:hover { border-color: var(--ink); background: #fff; }
+.upload-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+.upload-zone .uz-placeholder { pointer-events: none; }
+.uz-icon { font-size: 20px; margin-bottom: 4px; }
+.uz-text { font-size: 11px; color: var(--muted); }
+.uz-preview {
+  width: 100%; height: 70px;
+  object-fit: cover; border-radius: 4px;
+  display: none; margin-top: 8px;
+}
+
+/* Boutons actions étapes */
+.steps-actions {
+  display: flex; gap: 8px;
+}
+
+.btn-add-step {
+  flex: 1; padding: 10px;
+  border: 2px dashed var(--border);
+  border-radius: var(--r);
+  background: transparent;
+  font-family: var(--font-ui); font-size: 12px; font-weight: 600;
+  color: var(--muted); cursor: pointer;
+  transition: all .2s;
+}
+.btn-add-step:hover { border-color: var(--ink); color: var(--ink); }
+.btn-add-step:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn-del-step {
+  padding: 10px 14px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  background: transparent;
+  font-size: 14px; cursor: pointer; color: var(--muted);
+  transition: all .2s;
+}
+.btn-del-step:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+/* CTA */
+.panel-cta {
+  padding: 20px 28px;
+  border-top: 1px solid var(--border);
+  background: #fff;
+  position: sticky;
+  bottom: 0;
+}
+
+.price-line {
+  display: flex; align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.price-amount {
+  font-family: var(--font-display);
+  font-size: 32px; font-weight: 600;
+  color: var(--ink);
+}
+.price-label { font-size: 12px; color: var(--muted); }
+
+.btn-order {
+  width: 100%; padding: 15px 28px;
+  background: var(--ink); color: #fff;
+  border: none; border-radius: var(--r);
+  font-family: var(--font-ui); font-size: 14px; font-weight: 600;
+  cursor: pointer; letter-spacing: 0.03em;
+  transition: background .2s, transform .15s;
+}
+.btn-order:hover { background: var(--accent); transform: translateY(-1px); }
+
+.trust { font-size: 11px; color: var(--muted); text-align: center; margin-top: 8px; }
+
+/* ═══════════════════════════════════════════════════
+   PREVIEW — Canvas affiche
+═══════════════════════════════════════════════════ */
+.preview-label {
+  font-size: 10px; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--muted);
+  align-self: flex-start;
+}
+
+.preview-stage {
+  position: relative;
+  /* Le cadre noir CSS autour de l'affiche */
+  border: 12px solid var(--frame-black);
+  border-radius: 2px;
+  box-shadow: var(--sh);
+  background: var(--cream);
+  /* Taille pilotée par JS */
+}
+
+.preview-stage canvas {
+  display: block;
+}
+
+.preview-dpi {
+  font-size: 10px; color: var(--muted);
+  display: flex; align-items: center; gap: 6px;
+}
+.preview-dpi::before {
+  content: '';
+  display: block; width: 6px; height: 6px;
+  border-radius: 50%; background: #4CAF50;
+}
+
+/* Format selector */
+.format-selector {
+  display: flex; gap: 8px;
+}
+.fmt-btn {
+  flex: 1; padding: 10px 8px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--r);
+  background: var(--surface);
+  font-family: var(--font-ui); font-size: 12px; font-weight: 600;
+  color: var(--ink-soft); cursor: pointer;
+  text-align: center; transition: all .18s;
+}
+.fmt-btn:hover { border-color: var(--ink); }
+.fmt-btn.active { border-color: var(--ink); background: var(--ink); color: #fff; }
+.fmt-btn span { display: block; font-size: 10px; font-weight: 400; opacity: .7; margin-top: 2px; }
+
+/* ═══════════════════════════════════════════════════
+   RESPONSIVE MOBILE
+═══════════════════════════════════════════════════ */
+@media (max-width: 900px) {
+  .app {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
+  .panel-preview { order: -1; padding: 24px 16px; }
+  .panel-form { max-height: none; }
+}
+</style>
 </head>
 <body>
 
-<!-- ══ NAV ══════════════════════════════════════════════════ -->
-<nav class="nav" id="nav">
-  <div class="nav-inner">
-    <a href="/" class="nav-logo">Notre Histoire</a>
-    <div class="nav-links">
-      <a href="#designs">Designs</a>
-      <a href="#comment">Comment ça marche</a>
-      <a href="#avis">Avis clients</a>
-    </div>
-    <a href="#configurator" class="nav-cta">Créer mon affiche</a>
-    <button class="nav-burger" id="navBurger" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
+<div class="app">
 
-<!-- ══ HERO ═════════════════════════════════════════════════ -->
-<section class="hero">
-  <div class="hero-text">
-    <p class="eyebrow">Affiche personnalisée · Imprimée en France</p>
-    <h1>Votre histoire,<br /><em>encadrée pour toujours.</em></h1>
-    <p class="hero-sub">Créez en 5 minutes une affiche premium avec vos vraies photos et vos moments forts. Livrée encadrée directement chez vous.</p>
-    <div class="hero-btns">
-      <a href="#configurator" class="btn-primary">Créer mon affiche →</a>
-      <a href="#designs" class="btn-link">Voir les designs</a>
+  <!-- ══════════════════════════════════
+       PANNEAU FORMULAIRE (gauche)
+  ══════════════════════════════════ -->
+  <aside class="panel-form">
+    <div class="panel-header">
+      <h1>Notre Histoire</h1>
+      <p>Aperçu mis à jour en temps réel · 300 DPI à l'impression</p>
     </div>
-    <div class="hero-proof">
-      <div class="proof-item"><strong>4,9/5</strong><span>+380 avis</span></div>
-      <div class="proof-sep"></div>
-      <div class="proof-item"><strong>+2 400</strong><span>affiches livrées</span></div>
-      <div class="proof-sep"></div>
-      <div class="proof-item"><strong>5–7j</strong><span>livraison France</span></div>
-    </div>
-  </div>
 
-  <!-- Galerie produit hero -->
-  <div class="hero-gallery">
-    <div class="gallery-main" id="galleryMain">
-      <!-- Mockup salon principal -->
-      <div class="mockup-scene" id="mockupScene">
-        <canvas id="mockupCanvas" width="560" height="420"></canvas>
-        <div class="mockup-label" id="mockupLabel">Salon — Design Classique</div>
+    <div class="panel-body">
+
+      <!-- Prénoms -->
+      <div class="form-section">
+        <label class="form-label">Vos prénoms</label>
+        <div class="form-row">
+          <input id="partner1" class="f-input" type="text" placeholder="Julie" maxlength="18"/>
+          <span class="form-sep">&</span>
+          <input id="partner2" class="f-input" type="text" placeholder="Maxime" maxlength="18"/>
+        </div>
       </div>
-      <!-- Bouton zoom -->
-      <button class="zoom-btn" id="zoomBtn" aria-label="Zoomer">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>
-        </svg>
-      </button>
+
+      <!-- Format -->
+      <div class="form-section">
+        <label class="form-label">Format</label>
+        <div class="format-selector">
+          <button class="fmt-btn active" data-fmt="A3">A3 <span>30×40 cm — 39,90 €</span></button>
+          <button class="fmt-btn" data-fmt="A4">A4 <span>21×30 cm — 29,90 €</span></button>
+        </div>
+      </div>
+
+      <!-- Étapes -->
+      <div class="form-section">
+        <label class="form-label">Vos moments <span style="font-weight:400;text-transform:none;letter-spacing:0">(3 à 5)</span></label>
+        <div class="steps-list" id="stepsList"></div>
+        <div class="steps-actions">
+          <button class="btn-add-step" id="btnAddStep">+ Ajouter un moment</button>
+          <button class="btn-del-step" id="btnDelStep" title="Supprimer le dernier">✕</button>
+        </div>
+      </div>
+
     </div>
 
-    <!-- Vignettes scènes -->
-    <div class="gallery-thumbs">
-      <button class="thumb-btn active" data-scene="salon" data-label="Salon">
-        <canvas class="thumb-canvas" data-scene="salon" width="80" height="60"></canvas>
-        <span>Salon</span>
-      </button>
-      <button class="thumb-btn" data-scene="chambre" data-label="Chambre">
-        <canvas class="thumb-canvas" data-scene="chambre" width="80" height="60"></canvas>
-        <span>Chambre</span>
-      </button>
-      <button class="thumb-btn" data-scene="couloir" data-label="Couloir">
-        <canvas class="thumb-canvas" data-scene="couloir" width="80" height="60"></canvas>
-        <span>Couloir</span>
-      </button>
-      <button class="thumb-btn" data-scene="poster" data-label="Affiche seule">
-        <canvas class="thumb-canvas" data-scene="poster" width="80" height="60"></canvas>
-        <span>Affiche</span>
-      </button>
+    <div class="panel-cta">
+      <div class="price-line">
+        <span class="price-amount" id="priceDisplay">39,90 €</span>
+        <span class="price-label">livraison offerte en France</span>
+      </div>
+      <button class="btn-order" id="btnOrder">Commander mon affiche</button>
+      <p class="trust">🔒 Paiement sécurisé Stripe · Satisfait ou remboursé</p>
     </div>
-  </div>
-</section>
+  </aside>
 
-<!-- ══ MODAL ZOOM ════════════════════════════════════════════ -->
-<div class="zoom-modal" id="zoomModal">
-  <div class="zoom-overlay" id="zoomOverlay"></div>
-  <div class="zoom-content">
-    <button class="zoom-close" id="zoomClose">✕</button>
-    <canvas id="zoomCanvas" width="480" height="678"></canvas>
-  </div>
+  <!-- ══════════════════════════════════
+       PREVIEW (droite)
+  ══════════════════════════════════ -->
+  <main class="panel-preview">
+    <p class="preview-label">Aperçu fidèle au produit imprimé</p>
+
+    <div class="preview-stage" id="previewStage">
+      <canvas id="posterCanvas"></canvas>
+    </div>
+
+    <p class="preview-dpi">Rendu pixel-perfect · Impression 300 DPI · Papier 200g premium</p>
+  </main>
+
 </div>
 
-<!-- ══ DESIGNS ══════════════════════════════════════════════ -->
-<section class="designs-section" id="designs">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">5 designs exclusifs</p>
-      <h2>Choisissez votre style</h2>
-    </div>
-    <div class="designs-grid">
-      <div class="design-card active" data-design="classique" tabindex="0">
-        <div class="dc-preview classique">
-          <span class="dc-script">Notre histoire</span>
-          <span class="dc-names">JULIE × MAXIME</span>
-          <span class="dc-line"></span>
-        </div>
-        <div class="dc-info">
-          <strong>Classique</strong>
-          <span>Crème & rouge · Intemporel</span>
-        </div>
-      </div>
-      <div class="design-card" data-design="or" tabindex="0">
-        <div class="dc-preview or">
-          <span class="dc-script">Notre histoire</span>
-          <span class="dc-names" style="color:#C9A84C">JULIE × MAXIME</span>
-          <span class="dc-line" style="background:#C9A84C"></span>
-        </div>
-        <div class="dc-info">
-          <strong>Doré</strong>
-          <span>Blanc & or · Luxe</span>
-        </div>
-      </div>
-      <div class="design-card" data-design="sombre" tabindex="0">
-        <div class="dc-preview sombre">
-          <span class="dc-script" style="color:#F0F0F0">Notre histoire</span>
-          <span class="dc-names" style="color:#E8A0B0">JULIE × MAXIME</span>
-          <span class="dc-line" style="background:#444"></span>
-        </div>
-        <div class="dc-info">
-          <strong>Sombre</strong>
-          <span>Noir & rose · Moderne</span>
-        </div>
-      </div>
-      <div class="design-card" data-design="botanik" tabindex="0">
-        <div class="dc-preview botanik">
-          <span class="dc-script" style="color:#2C3E2D">Notre histoire</span>
-          <span class="dc-names" style="color:#4A7C59">JULIE × MAXIME</span>
-          <span class="dc-line" style="background:#7FAD8A"></span>
-        </div>
-        <div class="dc-info">
-          <strong>Botanik</strong>
-          <span>Vert sauge · Nature</span>
-        </div>
-      </div>
-      <div class="design-card" data-design="vintage" tabindex="0">
-        <div class="dc-preview vintage">
-          <span class="dc-script" style="color:#3D2B1F">Notre histoire</span>
-          <span class="dc-names" style="color:#8B4513">JULIE × MAXIME</span>
-          <span class="dc-line" style="background:#B8956A"></span>
-        </div>
-        <div class="dc-info">
-          <strong>Vintage</strong>
-          <span>Sépia & brun · Nostalgique</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<!-- ══════════════════════════════════════════════════
+     MOTEUR DE RENDU CANVAS
+══════════════════════════════════════════════════ -->
+<script>
+'use strict';
 
-<!-- ══ COMMENT ÇA MARCHE ════════════════════════════════════ -->
-<section class="how-section" id="comment">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">Simple & rapide</p>
-      <h2>Prêt en 5 minutes</h2>
-    </div>
-    <div class="how-grid">
-      <div class="how-step">
-        <div class="how-num">01</div>
-        <div class="how-icon">✍️</div>
-        <h3>Personnalisez</h3>
-        <p>Vos prénoms, vos dates, vos photos et vos moments forts.</p>
-      </div>
-      <div class="how-step">
-        <div class="how-num">02</div>
-        <div class="how-icon">🎨</div>
-        <h3>Choisissez</h3>
-        <p>Un des 5 designs exclusifs, votre format et votre encadrement.</p>
-      </div>
-      <div class="how-step">
-        <div class="how-num">03</div>
-        <div class="how-icon">💳</div>
-        <h3>Commandez</h3>
-        <p>Paiement sécurisé Stripe. Votre adresse collectée automatiquement.</p>
-      </div>
-      <div class="how-step">
-        <div class="how-num">04</div>
-        <div class="how-icon">📦</div>
-        <h3>Recevez</h3>
-        <p>Votre affiche imprimée et encadrée arrive en 5 à 7 jours ouvrés.</p>
-      </div>
-    </div>
-  </div>
-</section>
+/* ────────────────────────────────────────────────
+   PICTOS SVG — dessinés directement sur Canvas
+   Chaque fonction reçoit (ctx, cx, cy, size, color)
+───────────────────────────────────────────────── */
+const PICTOS = {
+  heart: (ctx, cx, cy, s, col) => {
+    ctx.save(); ctx.translate(cx, cy); ctx.scale(s/24, s/24);
+    ctx.beginPath();
+    ctx.moveTo(0, -2);
+    ctx.bezierCurveTo(-1, -5, -6, -5, -6, -1);
+    ctx.bezierCurveTo(-6, 3, 0, 8, 0, 8);
+    ctx.bezierCurveTo(0, 8, 6, 3, 6, -1);
+    ctx.bezierCurveTo(6, -5, 1, -5, 0, -2);
+    ctx.closePath();
+    ctx.fillStyle = col; ctx.fill();
+    ctx.restore();
+  },
+  ring: (ctx, cx, cy, s, col) => {
+    ctx.save(); ctx.translate(cx, cy);
+    const r = s * 0.38, rInner = s * 0.22;
+    ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI*2);
+    ctx.fillStyle = col; ctx.fill();
+    ctx.beginPath(); ctx.arc(0, 0, rInner, 0, Math.PI*2);
+    ctx.fillStyle = '#fff'; ctx.fill();
+    // diamant
+    ctx.beginPath();
+    ctx.moveTo(0, -r-s*0.18); ctx.lineTo(s*0.12, -r-s*0.04);
+    ctx.lineTo(0, -r+s*0.06); ctx.lineTo(-s*0.12, -r-s*0.04);
+    ctx.closePath(); ctx.fillStyle = col; ctx.fill();
+    ctx.restore();
+  },
+  plane: (ctx, cx, cy, s, col) => {
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(-Math.PI/5);
+    ctx.scale(s/20, s/20);
+    ctx.beginPath();
+    ctx.moveTo(0, -9); ctx.lineTo(4, 2); ctx.lineTo(0, 0); ctx.lineTo(-4, 2); ctx.closePath();
+    ctx.fillStyle = col; ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(-7, 1); ctx.lineTo(7, 1); ctx.lineTo(4, 4); ctx.lineTo(-4, 4); ctx.closePath();
+    ctx.fillStyle = col; ctx.fill();
+    ctx.restore();
+  },
+  house: (ctx, cx, cy, s, col) => {
+    ctx.save(); ctx.translate(cx, cy); ctx.scale(s/22, s/22);
+    ctx.fillStyle = col;
+    // toit
+    ctx.beginPath(); ctx.moveTo(0,-10); ctx.lineTo(10,-2); ctx.lineTo(-10,-2); ctx.closePath(); ctx.fill();
+    // murs
+    ctx.fillRect(-7, -2, 14, 11);
+    // porte
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(-2.5, 2, 5, 7);
+    ctx.restore();
+  },
+  wine: (ctx, cx, cy, s, col) => {
+    ctx.save(); ctx.translate(cx, cy); ctx.scale(s/22, s/22);
+    ctx.strokeStyle = col; ctx.lineWidth = 1.8; ctx.lineCap = 'round';
+    // verre
+    ctx.beginPath();
+    ctx.moveTo(-5, -9); ctx.lineTo(5, -9);
+    ctx.bezierCurveTo(5, -3, 3, 0, 0, 2);
+    ctx.bezierCurveTo(-3, 0, -5, -3, -5, -9);
+    ctx.closePath();
+    ctx.fillStyle = col; ctx.globalAlpha = 0.7; ctx.fill(); ctx.globalAlpha = 1;
+    ctx.stroke();
+    // pied
+    ctx.beginPath(); ctx.moveTo(0,2); ctx.lineTo(0,7); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(-4,7); ctx.lineTo(4,7); ctx.stroke();
+    ctx.restore();
+  },
+};
 
-<!-- ══ CONFIGURATEUR ════════════════════════════════════════ -->
-<section class="configurator" id="configurator">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">Personnalisez votre affiche</p>
-      <h2>Créez votre affiche</h2>
+const PICTO_KEYS = ['heart', 'ring', 'plane', 'house', 'wine'];
+const PICTO_LABELS = { heart:'Cœur', ring:'Bague', plane:'Voyage', house:'Maison', wine:'Dîner' };
+
+/* ────────────────────────────────────────────────
+   ÉTAT DE L'APPLICATION
+───────────────────────────────────────────────── */
+const state = {
+  partner1: '',
+  partner2: '',
+  format: 'A3',
+  steps: []
+};
+
+// Préremplissage exemple
+function initDefaultSteps() {
+  state.steps = [
+    { date:'14 FÉV. 2020', title:'Notre rencontre', desc:'Une soirée entre amis, un regard qui change tout.', picto:'heart', img: null },
+    { date:'12 JUIL. 2021', title:'Premier voyage', desc:'Barcelone sous le soleil, juste nous deux.', picto:'plane', img: null },
+    { date:'25 DÉC. 2022', title:'Notre chez-nous', desc:'On a posé nos valises, pour de bon.', picto:'house', img: null },
+  ];
+}
+
+/* ────────────────────────────────────────────────
+   CANVAS — MOTEUR DE RENDU
+───────────────────────────────────────────────── */
+const canvas = document.getElementById('posterCanvas');
+const ctx    = canvas.getContext('2d');
+
+// Dimensions canvas basées sur le format
+const FORMATS = {
+  A3: { w: 420, h: 594 }, // points proportionnels
+  A4: { w: 297, h: 420 },
+};
+
+// Palette couleurs affiche
+const C = {
+  bg:       '#FDFBF7',
+  accent:   '#C92A2A',
+  timeline: '#A0A0A0',
+  dark:     '#111111',
+  muted:    '#777777',
+  border:   '#DDDAD4',
+};
+
+let renderScheduled = false;
+function scheduleRender() {
+  if (renderScheduled) return;
+  renderScheduled = true;
+  requestAnimationFrame(() => { renderScheduled = false; renderPoster(); });
+}
+
+function renderPoster() {
+  const fmt = FORMATS[state.format] || FORMATS.A3;
+  const W = fmt.w, H = fmt.h;
+
+  canvas.width  = W;
+  canvas.height = H;
+
+  // Dimensionner le stage CSS
+  const stage = document.getElementById('previewStage');
+  const maxH  = window.innerHeight * 0.82;
+  const scale = Math.min(maxH / H, 1);
+  stage.style.width  = (W * scale) + 'px';
+  stage.style.height = (H * scale) + 'px';
+  canvas.style.width  = '100%';
+  canvas.style.height = '100%';
+
+  // Fond affiche crème
+  ctx.fillStyle = C.bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // ── En-tête ────────────────────────────────────
+  const headerH = H * 0.14;
+  drawHeader(W, H, headerH);
+
+  // ── Timeline ───────────────────────────────────
+  const tlTop    = headerH + H * 0.03;
+  const tlBottom = H * 0.88;
+  const tlX      = W * 0.25; // 25% de la gauche
+
+  drawTimeline(tlX, tlTop, tlBottom, W, H);
+
+  // ── Footer ─────────────────────────────────────
+  drawFooter(W, H);
+}
+
+/* ── En-tête ──────────────────────────────────── */
+function drawHeader(W, H, headerH) {
+  const cx = W / 2;
+
+  // "Notre histoire" — police manuscrite simulée en italique serif
+  ctx.fillStyle = C.dark;
+  ctx.textAlign = 'center';
+  ctx.font = `italic ${W * 0.075}px 'Cormorant Garamond', Georgia, serif`;
+  ctx.fillText('Notre histoire', cx, H * 0.065);
+
+  // Trait décoratif fin sous le titre
+  const lineY = H * 0.085;
+  ctx.strokeStyle = C.accent;
+  ctx.lineWidth = 0.8;
+  ctx.beginPath(); ctx.moveTo(cx - W*0.12, lineY); ctx.lineTo(cx + W*0.12, lineY); ctx.stroke();
+
+  // Cœur centré
+  PICTOS.heart(ctx, cx, H * 0.095, W * 0.025, C.accent);
+
+  // Prénoms
+  const n1 = state.partner1 ? state.partner1.toUpperCase() : 'PRÉNOM 1';
+  const n2 = state.partner2 ? state.partner2.toUpperCase() : 'PRÉNOM 2';
+  ctx.fillStyle = C.dark;
+  ctx.font = `600 ${W * 0.032}px 'Inter', Arial, sans-serif`;
+  ctx.letterSpacing = `${W * 0.004}px`;
+  ctx.fillText(`${n1}  ×  ${n2}`, cx, H * 0.118);
+  ctx.letterSpacing = '0px';
+}
+
+/* ── Timeline ─────────────────────────────────── */
+function drawTimeline(tlX, tlTop, tlBottom, W, H) {
+  const steps = state.steps;
+  const n = steps.length;
+  if (n === 0) return;
+
+  // Ligne verticale fine
+  ctx.strokeStyle = C.timeline;
+  ctx.lineWidth   = 0.8;
+  ctx.beginPath(); ctx.moveTo(tlX, tlTop); ctx.lineTo(tlX, tlBottom); ctx.stroke();
+
+  // Répartition dynamique : chaque étape occupe un segment égal
+  const segH = (tlBottom - tlTop) / n;
+
+  for (let i = 0; i < n; i++) {
+    const step  = steps[i];
+    const anchorY = tlTop + segH * i + segH * 0.5; // centre vertical du segment
+
+    drawStep(step, i, tlX, anchorY, W, H, segH);
+  }
+}
+
+/* ── Une étape ────────────────────────────────── */
+function drawStep(step, idx, tlX, anchorY, W, H, segH) {
+  const circleR = W * 0.022; // rayon du cercle picto
+
+  // ── DATE (gauche, alignée à droite) ──
+  ctx.fillStyle = C.dark;
+  ctx.textAlign = 'right';
+  ctx.font = `700 ${W * 0.022}px 'Inter', Arial, sans-serif`;
+  const dateStr = (step.date || '').toUpperCase();
+  ctx.fillText(dateStr, tlX - circleR - W * 0.015, anchorY + W * 0.008);
+
+  // ── CERCLE + PICTO (sur la ligne) ──
+  // Fond blanc du cercle
+  ctx.fillStyle = '#fff';
+  ctx.strokeStyle = C.accent;
+  ctx.lineWidth = 1.2;
+  ctx.beginPath(); ctx.arc(tlX, anchorY, circleR, 0, Math.PI*2);
+  ctx.fill(); ctx.stroke();
+
+  // Picto dans le cercle
+  const pictoFn = PICTOS[step.picto] || PICTOS.heart;
+  pictoFn(ctx, tlX, anchorY, circleR * 1.1, C.accent);
+
+  // ── TEXTE (droite de la ligne) ──
+  const textX = tlX + circleR + W * 0.025;
+  const textW = W * 0.34;
+
+  // Titre — manuscrit élégant
+  ctx.fillStyle = C.dark;
+  ctx.textAlign = 'left';
+  ctx.font = `italic 600 ${W * 0.028}px 'Cormorant Garamond', Georgia, serif`;
+  ctx.fillText(clipText(ctx, step.title || '', textW), textX, anchorY - W * 0.01);
+
+  // Description — corps lisible
+  ctx.fillStyle = C.muted;
+  ctx.font = `400 ${W * 0.018}px 'Inter', Arial, sans-serif`;
+  wrapText(ctx, step.desc || '', textX, anchorY + W * 0.016, textW, W * 0.022, 2);
+
+  // ── IMAGE (extrême droite) ──
+  const imgX = W * 0.66;
+  const imgW = W * 0.29;
+  const imgH = imgW * 0.74; // ratio légèrement rectangulaire
+  const imgY = anchorY - imgH / 2;
+
+  drawImageZone(step.img, imgX, imgY, imgW, imgH, W);
+
+  // Séparateur inter-étapes (fin, discret)
+  if (idx < state.steps.length - 1) {
+    const sepY = anchorY + segH * 0.45;
+    ctx.strokeStyle = C.border;
+    ctx.lineWidth = 0.4;
+    ctx.setLineDash([2, 4]);
+    ctx.beginPath(); ctx.moveTo(W * 0.04, sepY); ctx.lineTo(W * 0.96, sepY); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+}
+
+/* ── Zone image ───────────────────────────────── */
+function drawImageZone(imgEl, x, y, w, h, W) {
+  // Fond placeholder toujours présent
+  ctx.fillStyle = '#EDE9E2';
+  roundRect(ctx, x, y, w, h, W * 0.008);
+  ctx.fill();
+
+  if (imgEl && imgEl.complete && imgEl.naturalWidth > 0) {
+    // Clip + cover
+    ctx.save();
+    roundRect(ctx, x, y, w, h, W * 0.008);
+    ctx.clip();
+    const ir = imgEl.naturalWidth / imgEl.naturalHeight;
+    const br = w / h;
+    let sx, sy, sw, sh;
+    if (ir > br) { sh = imgEl.naturalHeight; sw = sh * br; sx = (imgEl.naturalWidth - sw) / 2; sy = 0; }
+    else         { sw = imgEl.naturalWidth; sh = sw / br; sx = 0; sy = (imgEl.naturalHeight - sh) / 2; }
+    ctx.drawImage(imgEl, sx, sy, sw, sh, x, y, w, h);
+    ctx.restore();
+  } else {
+    // Icône caméra placeholder
+    ctx.fillStyle = '#B8B4AC';
+    ctx.font = `${w * 0.2}px Arial`;
+    ctx.textAlign = 'center';
+    ctx.fillText('📷', x + w/2, y + h/2 + w * 0.07);
+    ctx.fillStyle = '#C8C4BC';
+    ctx.font = `${w * 0.1}px Inter, Arial`;
+    ctx.fillText('Ajouter une photo', x + w/2, y + h * 0.72);
+  }
+
+  // Bordure fine autour de l'image
+  ctx.strokeStyle = '#D8D4CC';
+  ctx.lineWidth = 0.5;
+  roundRect(ctx, x, y, w, h, W * 0.008);
+  ctx.stroke();
+}
+
+/* ── Footer ───────────────────────────────────── */
+function drawFooter(W, H) {
+  const cy = H * 0.915;
+  ctx.textAlign = 'center';
+
+  // Ligne déco
+  ctx.strokeStyle = C.timeline;
+  ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(W*0.25, cy - H*0.014); ctx.lineTo(W*0.75, cy - H*0.014); ctx.stroke();
+
+  // Phrase de conclusion
+  ctx.fillStyle = C.dark;
+  ctx.font = `italic ${W * 0.026}px 'Cormorant Garamond', Georgia, serif`;
+  ctx.fillText('Le meilleur reste à venir…', W/2, cy);
+
+  // Infini
+  ctx.fillStyle = C.accent;
+  ctx.font = `${W * 0.03}px Arial`;
+  ctx.fillText('∞', W/2, cy + H * 0.022);
+}
+
+/* ────────────────────────────────────────────────
+   HELPERS CANVAS
+───────────────────────────────────────────────── */
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y); ctx.arcTo(x+w, y,   x+w, y+r,   r);
+  ctx.lineTo(x + w, y + h - r); ctx.arcTo(x+w, y+h, x+w-r, y+h, r);
+  ctx.lineTo(x + r, y + h); ctx.arcTo(x, y+h, x, y+h-r, r);
+  ctx.lineTo(x, y + r); ctx.arcTo(x, y, x+r, y, r);
+  ctx.closePath();
+}
+
+function clipText(ctx, text, maxW) {
+  if (!text) return '';
+  if (ctx.measureText(text).width <= maxW) return text;
+  while (text.length > 0 && ctx.measureText(text + '…').width > maxW) {
+    text = text.slice(0, -1);
+  }
+  return text + '…';
+}
+
+function wrapText(ctx, text, x, y, maxW, lineH, maxLines) {
+  if (!text) return;
+  const words = text.split(' ');
+  let line = '', linesDrawn = 0;
+  for (let i = 0; i < words.length; i++) {
+    const test = line + (line ? ' ' : '') + words[i];
+    if (ctx.measureText(test).width > maxW && line) {
+      if (linesDrawn >= maxLines - 1) {
+        ctx.fillText(clipText(ctx, line, maxW), x, y + linesDrawn * lineH);
+        return;
+      }
+      ctx.fillText(line, x, y + linesDrawn * lineH);
+      line = words[i]; linesDrawn++;
+    } else { line = test; }
+  }
+  if (line) ctx.fillText(clipText(ctx, line, maxW), x, y + linesDrawn * lineH);
+}
+
+/* ────────────────────────────────────────────────
+   CONSTRUCTION DU FORMULAIRE
+───────────────────────────────────────────────── */
+function buildStepCard(idx) {
+  const step = state.steps[idx];
+  const card = document.createElement('div');
+  card.className = 'step-card open';
+  card.dataset.idx = idx;
+
+  card.innerHTML = `
+    <div class="step-card-header">
+      <span class="step-dot"></span>
+      <span class="step-title-label">Moment ${idx + 1}</span>
+      <span class="step-subtitle">${step.title || ''}</span>
+      <svg class="step-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
     </div>
-    <div class="config-layout">
-
-      <!-- FORMULAIRE -->
-      <div class="config-form">
-
-        <div class="form-block">
-          <label class="form-label">Vos prénoms</label>
-          <div class="names-row">
-            <input id="partner1" class="f-input" type="text" placeholder="Julie" maxlength="20" />
-            <span class="names-x">×</span>
-            <input id="partner2" class="f-input" type="text" placeholder="Maxime" maxlength="20" />
+    <div class="step-card-body">
+      <div class="step-fields-grid">
+        <div class="step-field">
+          <label>Date</label>
+          <input class="f-input si-date" type="text" placeholder="14 FÉV. 2020" value="${step.date || ''}" maxlength="20"/>
+        </div>
+        <div class="step-field">
+          <label>Picto</label>
+          <div class="picto-grid" data-idx="${idx}">
+            ${PICTO_KEYS.map(k => `
+              <button class="picto-btn${k === step.picto ? ' active' : ''}" data-picto="${k}" title="${PICTO_LABELS[k]}">
+                ${pictoSVG(k)}
+              </button>`).join('')}
           </div>
         </div>
-
-        <div class="form-block">
-          <label class="form-label">Design</label>
-          <div class="design-btns" id="designBtns">
-            <button class="db active" data-design="classique"><span class="db-dot" style="background:#C92A2A"></span>Classique</button>
-            <button class="db" data-design="or"><span class="db-dot" style="background:#C9A84C"></span>Doré</button>
-            <button class="db" data-design="sombre"><span class="db-dot" style="background:#E8A0B0"></span>Sombre</button>
-            <button class="db" data-design="botanik"><span class="db-dot" style="background:#4A7C59"></span>Botanik</button>
-            <button class="db" data-design="vintage"><span class="db-dot" style="background:#8B4513"></span>Vintage</button>
-          </div>
+        <div class="step-field full">
+          <label>Titre</label>
+          <input class="f-input si-title" type="text" placeholder="Notre rencontre" value="${step.title || ''}" maxlength="40"/>
         </div>
-
-        <div class="form-block">
-          <label class="form-label">Format & Encadrement</label>
-          <div class="options-2col">
-            <div>
-              <p class="sub-label">Format</p>
-              <label class="radio-row"><input type="radio" name="product" value="A3" checked /><span>A3 — 39,90 €</span></label>
-              <label class="radio-row"><input type="radio" name="product" value="A4" /><span>A4 — 29,90 €</span></label>
+        <div class="step-field full">
+          <label>Description</label>
+          <textarea class="f-textarea si-desc" placeholder="Quelques mots sur ce moment…" maxlength="120">${step.desc || ''}</textarea>
+        </div>
+        <div class="step-field full">
+          <label>Photo</label>
+          <div class="upload-zone">
+            <input type="file" accept="image/*" class="si-file"/>
+            <div class="uz-placeholder">
+              <div class="uz-icon">📷</div>
+              <div class="uz-text">Cliquer pour ajouter une photo</div>
             </div>
-            <div>
-              <p class="sub-label">Encadrement</p>
-              <label class="radio-row"><input type="radio" name="frame" value="none" checked /><span>Sans cadre</span></label>
-              <label class="radio-row"><input type="radio" name="frame" value="black" /><span>⬛ Noir +8€</span></label>
-              <label class="radio-row"><input type="radio" name="frame" value="white" /><span>⬜ Blanc +8€</span></label>
-              <label class="radio-row"><input type="radio" name="frame" value="wood" /><span>🪵 Bois +10€</span></label>
-              <label class="radio-row"><input type="radio" name="frame" value="canvas" /><span>🖼️ Toile +20€</span></label>
-            </div>
+            <img class="uz-preview" src="" alt=""/>
           </div>
         </div>
-
-        <div class="form-block">
-          <label class="form-label">Vos moments <span class="hint">(3 à 5)</span></label>
-          <div id="stepsContainer"></div>
-          <button type="button" class="btn-add-step" id="addStepBtn">+ Ajouter un moment</button>
-        </div>
-
-        <div class="form-cta">
-          <div class="price-row">
-            <span class="price-total" id="priceDisplay">39,90 €</span>
-            <span class="price-note">livraison offerte</span>
-          </div>
-          <button type="button" class="btn-order" id="orderBtn">Commander mon affiche</button>
-          <p class="trust-note">🔒 Paiement sécurisé Stripe · Satisfait ou remboursé 30j</p>
-        </div>
       </div>
+    </div>`;
 
-      <!-- PREVIEW -->
-      <div class="config-preview">
-        <div class="preview-sticky">
-          <div class="preview-topbar">
-            <span class="preview-tag">Aperçu temps réel</span>
-            <span class="preview-design-name" id="previewDesignName">Classique</span>
-          </div>
+  // Toggle accordéon
+  card.querySelector('.step-card-header').addEventListener('click', () => {
+    card.classList.toggle('open');
+  });
 
-          <!-- Grande preview mockup -->
-          <div class="preview-mockup-wrap">
-            <canvas id="posterCanvas"></canvas>
-            <button class="zoom-btn preview-zoom" id="previewZoomBtn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>
-              </svg>
-            </button>
-          </div>
+  // Mise à jour en direct
+  card.querySelector('.si-date').addEventListener('input', e => {
+    state.steps[idx].date = e.target.value;
+    scheduleRender();
+  });
+  card.querySelector('.si-title').addEventListener('input', e => {
+    state.steps[idx].title = e.target.value;
+    card.querySelector('.step-subtitle').textContent = e.target.value;
+    scheduleRender();
+  });
+  card.querySelector('.si-desc').addEventListener('input', e => {
+    state.steps[idx].desc = e.target.value;
+    scheduleRender();
+  });
 
-          <!-- Vignettes scènes preview -->
-          <div class="preview-scenes">
-            <button class="scene-btn active" data-scene="poster" title="Affiche seule">🖼</button>
-            <button class="scene-btn" data-scene="salon" title="Vue salon">🛋</button>
-            <button class="scene-btn" data-scene="chambre" title="Vue chambre">🛏</button>
-            <button class="scene-btn" data-scene="couloir" title="Vue couloir">🚪</button>
-          </div>
+  // Pictos
+  card.querySelectorAll('.picto-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      card.querySelectorAll('.picto-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.steps[idx].picto = btn.dataset.picto;
+      scheduleRender();
+    });
+  });
 
-          <p class="preview-dpi">Impression haute définition 300 DPI · Papier 200g</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  // Upload image
+  card.querySelector('.si-file').addEventListener('change', e => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const img = new Image();
+      img.onload = () => {
+        state.steps[idx].img = img;
+        card.querySelector('.uz-preview').src = ev.target.result;
+        card.querySelector('.uz-preview').style.display = 'block';
+        card.querySelector('.uz-placeholder').style.display = 'none';
+        scheduleRender();
+      };
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
 
-<!-- ══ AVIS ══════════════════════════════════════════════════ -->
-<section class="reviews-section" id="avis">
-  <div class="wrap">
-    <div class="section-head">
-      <p class="eyebrow">Ils l'ont offert</p>
-      <h2>+2 400 couples conquis</h2>
-    </div>
-    <div class="reviews-grid">
-      <div class="review-card">
-        <div class="stars">★★★★★</div>
-        <p>"Mon copain a fondu en larmes en l'ouvrant. Nos 4 moments ensemble, nos vraies photos, dans un cadre noir magnifique. C'est le plus beau cadeau que j'ai jamais offert."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">C</div>
-          <div><strong>Camille R.</strong><span>Design Classique · Cadre noir</span></div>
-        </div>
-      </div>
-      <div class="review-card">
-        <div class="stars">★★★★★</div>
-        <p>"La qualité d'impression est bluffante. On voit chaque détail des photos. Le design Sombre avec cadre blanc rend absolument incroyable dans notre chambre."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">T</div>
-          <div><strong>Thomas M.</strong><span>Design Sombre · Cadre blanc</span></div>
-        </div>
-      </div>
-      <div class="review-card">
-        <div class="stars">★★★★★</div>
-        <p>"Cadeau de mariage ultra original. Livré en 6 jours, emballage parfait. La mariée a pleuré de joie. Le design Doré dans un cadre bois, c'est magnifique."</p>
-        <div class="reviewer">
-          <div class="reviewer-avatar">S</div>
-          <div><strong>Sophie L.</strong><span>Design Doré · Cadre bois</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  return card;
+}
 
-<!-- ══ FOOTER ════════════════════════════════════════════════ -->
-<footer class="footer">
-  <div class="footer-inner wrap">
-    <div>
-      <p class="footer-logo">Notre Histoire</p>
-      <p class="footer-desc">Des affiches timeline personnalisées pour immortaliser votre amour. Imprimées en France, livrées encadrées.</p>
-    </div>
-    <div class="footer-links">
-      <a href="/cgv">CGV</a>
-      <a href="/mentions-legales">Mentions légales</a>
-      <a href="/contact">Contact</a>
-    </div>
-    <div class="footer-pay">
-      <p>Paiement sécurisé</p>
-      <div class="pay-badges">
-        <span>VISA</span><span>MC</span><span>AMEX</span>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">© 2026 Notre Histoire · Tous droits réservés</div>
-</footer>
+function pictoSVG(key) {
+  const size = 18;
+  const svgs = {
+    heart: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21C12 21 3 14 3 8a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-9 13-9 13z"/></svg>`,
+    ring:  `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="14" r="6"/><path d="M8 14 L10 8 L12 6 L14 8 L16 14"/></svg>`,
+    plane: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2L15 22L11 13L2 9L22 2Z"/></svg>`,
+    house: `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9L12 2L21 9V20a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>`,
+    wine:  `<svg width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 2h8l-2 7a4 4 0 0 1-4 0L8 2z"/><line x1="12" y1="12" x2="12" y2="20"/><line x1="8" y1="20" x2="16" y2="20"/></svg>`,
+  };
+  return svgs[key] || svgs.heart;
+}
 
-<!-- ══ OVERLAYS ══════════════════════════════════════════════ -->
-<div class="overlay-loading" id="loadingOverlay" style="display:none">
-  <div class="overlay-box">
-    <div class="spinner"></div>
-    <p id="loadingMsg">Préparation de votre commande…</p>
-  </div>
-</div>
-<div class="overlay-success" id="successOverlay" style="display:none">
-  <div class="overlay-box">
-    <div class="success-heart">♥</div>
-    <h2>Commande confirmée !</h2>
-    <p>Votre affiche est en cours de préparation. Vous recevrez un email de suivi sous 24h.</p>
-    <button class="btn-primary" onclick="location.href='/'">Créer une autre affiche</button>
-  </div>
-</div>
+function rebuildStepsList() {
+  const list = document.getElementById('stepsList');
+  list.innerHTML = '';
+  state.steps.forEach((_, i) => list.appendChild(buildStepCard(i)));
+  document.getElementById('btnAddStep').disabled = state.steps.length >= 5;
+  document.getElementById('btnDelStep').disabled = state.steps.length <= 3;
+}
 
-<script src="/js/poster.js"></script>
-<script src="/js/scenes.js"></script>
-<script src="/js/form.js"></script>
-<script src="/js/app.js"></script>
+/* ────────────────────────────────────────────────
+   INTERACTIONS GLOBALES
+───────────────────────────────────────────────── */
+document.getElementById('partner1').addEventListener('input', e => {
+  state.partner1 = e.target.value; scheduleRender();
+});
+document.getElementById('partner2').addEventListener('input', e => {
+  state.partner2 = e.target.value; scheduleRender();
+});
+
+document.querySelectorAll('.fmt-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.fmt-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    state.format = btn.dataset.fmt;
+    document.getElementById('priceDisplay').textContent =
+      state.format === 'A3' ? '39,90 €' : '29,90 €';
+    scheduleRender();
+  });
+});
+
+document.getElementById('btnAddStep').addEventListener('click', () => {
+  if (state.steps.length >= 5) return;
+  state.steps.push({ date:'', title:'', desc:'', picto:'heart', img:null });
+  rebuildStepsList();
+  scheduleRender();
+});
+
+document.getElementById('btnDelStep').addEventListener('click', () => {
+  if (state.steps.length <= 3) return;
+  state.steps.pop();
+  rebuildStepsList();
+  scheduleRender();
+});
+
+document.getElementById('btnOrder').addEventListener('click', () => {
+  // Placeholder — brancher sur /api/checkout existant
+  alert('Commande en cours de redirection vers Stripe…');
+});
+
+// Redimensionnement
+window.addEventListener('resize', scheduleRender);
+
+/* ────────────────────────────────────────────────
+   DÉMARRAGE
+───────────────────────────────────────────────── */
+initDefaultSteps();
+rebuildStepsList();
+scheduleRender();
+</script>
 </body>
 </html>
