@@ -134,9 +134,9 @@ body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:10
 .env-flat{background:var(--page);display:flex;align-items:center;justify-content:center;padding:40px 32px}
 
 /* Mode pièce */
-.env-room{position:relative;width:100%;min-height:400px;background:#D4C9B8}
-.env-room-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.env-room-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.08) 0%,transparent 60%)}
+.env-room{position:relative;width:100%;aspect-ratio:4/3;background:#D4C9B8;overflow:hidden}
+.env-room-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:0}
+.env-room-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.06) 0%,transparent 60%);z-index:1}
 
 /* Affiche wrapper dans la pièce */
 .poster-wrap{position:relative}
@@ -168,7 +168,7 @@ body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:10
 .env-couloir .poster-in-room{transform:perspective(900px) rotateY(8deg) rotateX(1deg) translateZ(10px);transform-origin:center center}
 
 /* ═══ POSTER HTML (le vrai design à l'intérieur) ════ */
-.poster{
+.poster{container-type:inline-size;
   background:var(--cream);
   position:relative;
   overflow:hidden;
@@ -478,7 +478,7 @@ function posterHTML() {
 
   // Tailles dynamiques basées sur la largeur de référence 420px
   const ref = 420;
-  const ts  = (px) => `${(px/ref*100).toFixed(2)}%`;
+  const ts = (px) => `${(px/ref*100).toFixed(2)}cqw`;
 
   return `
     <div class="p-header">
@@ -488,7 +488,7 @@ function posterHTML() {
         <span class="p-deco-heart" style="font-size:${ts(13)}">♥</span>
         <span class="p-deco-line"></span>
       </div>
-      <div class="p-names" style="font-size:${ts(13)};letter-spacing:${ts(2)}">${n1}  ×  ${n2}</div>
+      <div class="p-names" style="font-size:${ts(13)};letter-spacing:0.16em">${n1}  ×  ${n2}</div>
     </div>
 
     <div class="p-timeline">
