@@ -1,240 +1,197 @@
 /**
- * form.js v2.1 — Fix initialisation étapes
+ * canvas.js v2.2 — Rendu immédiat sans dépendance polices externes
  */
 
-const PICTOS = [
-  { key: 'heart', e: '♥', l: 'Amour' },
-  { key: 'wine',  e: '♦', l: 'Dîner' },
-  { key: 'plane', e: '▲', l: 'Voyage' },
-  { key: 'house', e: '■', l: 'Maison' },
-  { key: 'ring',  e: '★', l: 'Bague' },
-  { key: 'star',  e: '✦', l: 'Spécial' },
-  { key: 'music', e: '♪', l: 'Musique' },
-];
+const CANVAS_W = 340;
+const CANVAS_H = 481;
 
-const FRAME_PRICES = { none: 0, black: 8, white: 8, wood: 10, canvas: 20 };
-const BASE_PRICES  = { A3: 39.90, A4: 29.90 };
-const DESIGN_NAMES = { classique: 'Classique', or: 'Doré', sombre: 'Sombre', botanik: 'Botanik', vintage: 'Vintage' };
-
-const state = {
-  partner1: '', partner2: '',
-  product: 'A3', frame: 'none', design: 'classique',
-  steps: [],
+const DESIGNS = {
+  classique: { bg: '#FDFBF7', accent: '#C92A2A', line: '#BEBEBE', dark: '#1A1A1A', muted: '#888', border: '#E0DDD7' },
+  or:        { bg: '#FFFFFF', accent: '#C9A84C', line: '#C9A84C', dark: '#1A1A1A', muted: '#888', border: '#E8D9A0' },
+  sombre:    { bg: '#1A1A1A', accent: '#E8A0B0', line: '#444',    dark: '#F0F0F0', muted: '#AAA', border: '#333' },
+  botanik:   { bg: '#E8EDE4', accent: '#4A7C59', line: '#8FB99A', dark: '#2C3E2D', muted: '#5A7A5E', border: '#C5D9C0' },
+  vintage:   { bg: '#F5EDD6', accent: '#8B4513', line: '#C4A882', dark: '#3D2B1F', muted: '#7A5C3A', border: '#D4B896' },
 };
 
-let renderTimeout;
-function scheduleRender() {
-  clearTimeout(renderTimeout);
-  renderTimeout = setTimeout(() => {
-    window.renderPoster({ ...state, steps: state.steps.map(s=>({...s})) });
-    window.renderPoster({ ...state, steps: state.steps.map(s=>({...s})) }, 'heroCanvas');
-  }, 100);
+const PICTO_MAP = { heart:'♥', wine:'♦', plane:'▲', house:'■', ring:'★', star:'✦', music:'♪' };
+
+const imgCache = {};
+let currentDesign = 'classique';
+
+function setDesign(design) {
+  currentDesign = design;
+  const badge = document.getElementById('designBadge');
+  const names = { classique:'Classique', or:'Doré', sombre:'Sombre', botanik:'Botanik', vintage:'Vintage' };
+  if (badge) badge.textContent = names[design] || design;
 }
 
-function updatePrice() {
-  const base = BASE_PRICES[state.product] || 39.90;
-  const frame = FRAME_PRICES[state.frame] || 0;
-  const total = (base + frame).toFixed(2).replace('.', ',');
-  const el = document.getElementById('priceDisplay');
-  if (el) el.textContent = `${total} €`;
-}
+async function renderPoster(data, canvasId = 'posterCanvas') {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
 
-document.addEventListener('DOMContentLoaded', () => {
-  // Pré-remplir 3 étapes exemples
-  addStep({ date: '14 FÉV. 2020', title: 'Notre rencontre', description: 'Une soirée entre amis…', picto: 'heart' });
-  addStep({ date: '12 JUIL. 2021', title: 'Premier voyage', description: 'Barcelone, juste nous deux.', picto: 'plane' });
-  addStep({ date: '25 DÉC. 2022', title: 'Notre chez-nous', description: 'On a posé nos valises.', picto: 'house' });
+  canvas.width = CANVAS_W;
+  canvas.height = CANVAS_H;
 
-  // Prénoms
-  ['partner1','partner2'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.addEventListener('input', e => { state[id] = e.target.value; scheduleRender(); });
+  const ctx = canvas.getContext('2d');
+  const { partner1 = '', partner2 = '', steps = [], design = currentDesign } = data;
+  const C = DESIGNS[design] || DESIGNS.classique;
+  const W = CANVAS_W;
+  const H = CANVAS_H;
+  const margin = W * 0.07;
+
+  // ── Fond ──
+  ctx.fillStyle = C.bg;
+  ctx.fillRect(0, 0, W, H);
+
+  // ── Coins déco ──
+  const cs = W * 0.06;
+  ctx.strokeStyle = C.accent;
+  ctx.lineWidth = 1;
+  [
+    [margin*0.5, margin*0.5, 1, 1],
+    [W-margin*0.5, margin*0.5, -1, 1],
+    [margin*0.5, H-margin*0.5, 1, -1],
+    [W-margin*0.5, H-margin*0.5, -1, -1]
+  ].forEach(([x,y,dx,dy]) => {
+    ctx.beginPath();
+    ctx.moveTo(x, y+dy*cs); ctx.lineTo(x, y); ctx.lineTo(x+dx*cs, y);
+    ctx.stroke();
   });
 
-  // Format
-  document.querySelectorAll('input[name="product"]').forEach(r => {
-    r.addEventListener('change', e => { state.product = e.target.value; updatePrice(); });
-  });
+  let cy = H * 0.06;
 
-  // Cadre
-  document.querySelectorAll('input[name="frame"]').forEach(r => {
-    r.addEventListener('change', e => { state.frame = e.target.value; updatePrice(); });
-  });
+  // ── Titre "Notre histoire" ──
+  ctx.fillStyle = C.dark;
+  ctx.textAlign = 'center';
+  ctx.font = `italic ${W*0.085}px Georgia, serif`;
+  ctx.fillText('Notre histoire', W/2, cy + W*0.072);
+  cy += W * 0.095;
 
-  // Selector design (boutons)
-  document.querySelectorAll('.ds-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.ds-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      state.design = btn.dataset.design;
-      window.setDesign(state.design);
-      const badge = document.getElementById('designBadge');
-      if (badge) badge.textContent = DESIGN_NAMES[state.design];
-      document.querySelectorAll('.design-card').forEach(c => {
-        c.classList.toggle('active', c.dataset.design === state.design);
-      });
-      scheduleRender();
-    });
-  });
+  // ── Séparateur cœur ──
+  ctx.fillStyle = C.accent;
+  ctx.font = `${W*0.025}px Arial`;
+  ctx.fillText('— ♥ —', W/2, cy + W*0.018);
+  cy += W * 0.036;
 
-  // Cards design (section)
-  document.querySelectorAll('.design-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const btn = document.querySelector(`.ds-btn[data-design="${card.dataset.design}"]`);
-      if (btn) btn.click();
-      document.getElementById('configurator')?.scrollIntoView({ behavior: 'smooth' });
-    });
-  });
+  // ── Prénoms ──
+  const n1 = (partner1 || 'Prénom 1').toUpperCase();
+  const n2 = (partner2 || 'Prénom 2').toUpperCase();
+  ctx.fillStyle = C.dark;
+  ctx.font = `bold ${W*0.034}px Arial, sans-serif`;
+  ctx.fillText(`${n1}  ×  ${n2}`, W/2, cy + W*0.026);
+  cy += W * 0.048;
 
-  // Ajouter étape
-  const addBtn = document.getElementById('addStepBtn');
-  if (addBtn) addBtn.addEventListener('click', () => {
-    if (state.steps.length >= 5) return;
-    addStep();
-  });
+  // ── Ligne fine ──
+  ctx.beginPath();
+  ctx.moveTo(W*0.32, cy); ctx.lineTo(W*0.68, cy);
+  ctx.strokeStyle = C.line; ctx.lineWidth = 0.6; ctx.stroke();
+  cy += 14;
 
-  updatePrice();
-  scheduleRender();
-});
+  // ── Timeline ──
+  const tlX = W * 0.25;
+  const tlTop = cy;
+  const tlBottom = H * 0.87;
+  const activeSteps = (steps || []).filter(Boolean);
+  const count = Math.max(activeSteps.length, 1);
+  const zoneH = (tlBottom - tlTop) / count;
 
-function addStep(defaults = {}) {
-  if (state.steps.length >= 5) return;
-  const idx = state.steps.length;
-  const step = {
-    date: defaults.date || '',
-    title: defaults.title || '',
-    description: defaults.description || '',
-    picto: defaults.picto || 'heart',
-    imageUrl: null,
-  };
-  state.steps.push(step);
-  renderCard(idx, step);
-  updateAddBtn();
-  scheduleRender();
-}
+  // Ligne verticale
+  ctx.beginPath();
+  ctx.moveTo(tlX, tlTop); ctx.lineTo(tlX, tlBottom);
+  ctx.strokeStyle = C.line; ctx.lineWidth = 0.8; ctx.stroke();
 
-function renderCard(idx, step) {
-  const container = document.getElementById('stepsContainer');
-  if (!container) return;
+  for (let i = 0; i < activeSteps.length; i++) {
+    const step = activeSteps[i] || {};
+    const stepY = tlTop + zoneH * i + zoneH * 0.44;
 
-  const card = document.createElement('div');
-  card.className = 'step-card';
-  card.dataset.idx = idx;
+    // Point ancrage
+    ctx.beginPath(); ctx.arc(tlX, stepY, 5, 0, Math.PI*2);
+    ctx.fillStyle = C.accent; ctx.fill();
+    ctx.beginPath(); ctx.arc(tlX, stepY, 2.5, 0, Math.PI*2);
+    ctx.fillStyle = C.bg; ctx.fill();
 
-  const canRemove = state.steps.length > 3;
+    // Date (gauche)
+    ctx.fillStyle = C.accent;
+    ctx.font = `bold ${W*0.018}px Arial`;
+    ctx.textAlign = 'right';
+    ctx.fillText((step.date || '').toUpperCase(), tlX - 10, stepY + 4);
 
-  card.innerHTML = `
-    <div class="step-head">
-      <span class="step-num">Moment ${idx+1}</span>
-      ${canRemove ? `<button class="btn-remove" data-idx="${idx}">✕</button>` : ''}
-    </div>
-    <div class="step-grid">
-      <div>
-        <label class="step-label">Date</label>
-        <input class="step-input" data-field="date" data-idx="${idx}" placeholder="14 FÉV. 2020" value="${step.date}" maxlength="20" />
-      </div>
-      <div>
-        <label class="step-label">Picto</label>
-        <div class="picto-row">
-          ${PICTOS.map(p => `<button class="picto-btn ${p.key===step.picto?'active':''}" data-picto="${p.key}" data-idx="${idx}" title="${p.l}">${p.e}</button>`).join('')}
-        </div>
-      </div>
-      <div>
-        <label class="step-label">Titre</label>
-        <input class="step-input" data-field="title" data-idx="${idx}" placeholder="Notre rencontre" value="${step.title}" maxlength="40" />
-      </div>
-      <div>
-        <label class="step-label">Description</label>
-        <input class="step-input" data-field="description" data-idx="${idx}" placeholder="Une soirée entre amis…" value="${step.description}" maxlength="60" />
-      </div>
-      <div class="step-full">
-        <label class="step-label">Photo</label>
-        <div class="upload-area">
-          <input type="file" accept="image/*" data-idx="${idx}" class="file-input" />
-          <div class="upload-ph">
-            <div style="font-size:20px;margin-bottom:4px">📷</div>
-            <div class="upload-txt">Cliquer pour ajouter une photo</div>
-          </div>
-          <img class="upload-thumb" data-idx="${idx}" src="" alt="" />
-        </div>
-      </div>
-    </div>
-  `;
+    // Picto (sur la ligne, au dessus du point)
+    ctx.font = `${W*0.02}px Arial`;
+    ctx.textAlign = 'center';
+    ctx.fillText(PICTO_MAP[step.picto] || '♥', tlX, stepY - 12);
 
-  container.appendChild(card);
+    // Titre (droite)
+    const tx = tlX + 12;
+    const tw = W * 0.38;
+    ctx.fillStyle = C.dark;
+    ctx.font = `italic ${W*0.022}px Georgia, serif`;
+    ctx.textAlign = 'left';
+    ctx.fillText(clip(step.title || 'Votre moment', 22), tx, stepY - 1);
 
-  // Inputs texte
-  card.querySelectorAll('.step-input').forEach(input => {
-    input.addEventListener('input', e => {
-      const i = parseInt(e.target.dataset.idx);
-      state.steps[i][e.target.dataset.field] = e.target.value;
-      scheduleRender();
-    });
-  });
+    // Description
+    ctx.fillStyle = C.muted;
+    ctx.font = `${W*0.014}px Arial`;
+    ctx.fillText(clip(step.description || '', 34), tx, stepY + W*0.02);
 
-  // Pictos
-  card.querySelectorAll('.picto-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const i = parseInt(btn.dataset.idx);
-      state.steps[i].picto = btn.dataset.picto;
-      card.querySelectorAll('.picto-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      scheduleRender();
-    });
-  });
-
-  // Upload image
-  card.querySelector('.file-input').addEventListener('change', async e => {
-    const file = e.target.files[0];
-    const i = parseInt(e.target.dataset.idx);
-    if (!file) return;
-
-    const area = card.querySelector('.upload-area');
-    const thumb = card.querySelector('.upload-thumb');
-    area.style.opacity = '0.5';
-    card.querySelector('.upload-txt').textContent = 'Upload en cours…';
-
-    try {
-      const fd = new FormData();
-      fd.append('image', file);
-      const res = await fetch('/api/upload/image', { method: 'POST', body: fd });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
-      state.steps[i].imageUrl = data.url;
-      thumb.src = data.url;
-      thumb.style.display = 'block';
-      card.querySelector('.upload-ph').style.display = 'none';
-      scheduleRender();
-    } catch (err) {
-      alert('Erreur upload : ' + err.message);
-      card.querySelector('.upload-txt').textContent = 'Cliquer pour ajouter une photo';
-    } finally {
-      area.style.opacity = '1';
+    // Image (extrême droite)
+    if (step.imageUrl) {
+      const ix = W * 0.65, iw = W * 0.29, ih = iw * 0.73;
+      try {
+        const img = await loadImg(step.imageUrl);
+        coverDraw(ctx, img, ix, stepY - ih/2, iw, ih);
+        ctx.strokeStyle = C.border; ctx.lineWidth = 0.5;
+        ctx.strokeRect(ix, stepY - ih/2, iw, ih);
+      } catch {
+        ctx.fillStyle = C.border;
+        ctx.fillRect(ix, stepY - ih/2, iw, ih);
+        ctx.fillStyle = C.muted;
+        ctx.font = `${W*0.022}px Arial`;
+        ctx.textAlign = 'center';
+        ctx.fillText('📷', ix + iw/2, stepY + 6);
+      }
     }
-  });
-
-  // Supprimer
-  const removeBtn = card.querySelector('.btn-remove');
-  if (removeBtn) {
-    removeBtn.addEventListener('click', () => removeStep(parseInt(removeBtn.dataset.idx)));
   }
+
+  // ── Footer ──
+  const fy = H * 0.9;
+  ctx.beginPath();
+  ctx.moveTo(W*0.28, fy-8); ctx.lineTo(W*0.72, fy-8);
+  ctx.strokeStyle = C.line; ctx.lineWidth = 0.5; ctx.stroke();
+
+  ctx.fillStyle = C.dark;
+  ctx.font = `italic ${W*0.026}px Georgia, serif`;
+  ctx.textAlign = 'center';
+  ctx.fillText('Le meilleur reste à venir…', W/2, fy + 10);
+
+  ctx.fillStyle = C.accent;
+  ctx.font = `${W*0.03}px Arial`;
+  ctx.fillText('∞', W/2, fy + 28);
 }
 
-function removeStep(idx) {
-  if (state.steps.length <= 3) return;
-  state.steps.splice(idx, 1);
-  const container = document.getElementById('stepsContainer');
-  if (container) container.innerHTML = '';
-  state.steps.forEach((s, i) => renderCard(i, s));
-  updateAddBtn();
-  scheduleRender();
+function clip(str, max) {
+  return str && str.length > max ? str.slice(0, max-1) + '…' : (str || '');
 }
 
-function updateAddBtn() {
-  const btn = document.getElementById('addStepBtn');
-  if (!btn) return;
-  btn.disabled = state.steps.length >= 5;
-  btn.textContent = state.steps.length >= 5 ? '✓ Maximum 5 moments atteint' : '+ Ajouter un moment';
+function loadImg(url) {
+  if (imgCache[url]) return Promise.resolve(imgCache[url]);
+  return new Promise((res, rej) => {
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => { imgCache[url] = img; res(img); };
+    img.onerror = rej;
+    img.src = url;
+  });
 }
 
-window.getFormState = () => ({ ...state, steps: state.steps.map(s=>({...s})) });
+function coverDraw(ctx, img, x, y, w, h) {
+  const ir = img.width / img.height;
+  const br = w / h;
+  let sx, sy, sw, sh;
+  if (ir > br) { sh = img.height; sw = sh * br; sx = (img.width - sw) / 2; sy = 0; }
+  else         { sw = img.width;  sh = sw / br; sx = 0; sy = (img.height - sh) / 2; }
+  ctx.drawImage(img, sx, sy, sw, sh, x, y, w, h);
+}
+
+window.renderPoster = renderPoster;
+window.setDesign = setDesign;
