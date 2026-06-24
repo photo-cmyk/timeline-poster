@@ -3,260 +3,249 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Notre Histoire — Créez votre affiche</title>
+<title>Chapitre à Deux — Affiches premium personnalisées</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600&family=Cinzel:wght@400;600&display=swap" rel="stylesheet"/>
 <style>
-/* ═══ TOKENS ═════════════════════════════════════════════ */
+/* ═══ RESET & TOKENS ══════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --cream:#FDFBF7;
-  --ink:#111;
-  --ink2:#3D3D3D;
-  --muted:#888;
-  --border:#E2E0DC;
-  --surface:#F5F3EF;
-  --page:#ECEAE6;
+  --ink:#111;--ink2:#3A3A3A;--muted:#888;
+  --border:#E2E0DC;--surface:#F5F3EF;--page:#ECEAE6;
   --accent:#C92A2A;
-  --fd:'Cormorant Garamond',Georgia,serif;
-  --fs:'Inter',system-ui,sans-serif;
-  --r:6px;
-  --r2:12px;
+  --fc:'Cormorant Garamond',Georgia,serif;
+  --fs:'Plus Jakarta Sans',system-ui,sans-serif;
+  --fci:'Cinzel',serif;
+  --r:6px;--r2:12px;
 }
 html{font-size:16px}
 body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased}
 
-/* ═══ LAYOUT ═════════════════════════════════════════════ */
-.app{display:grid;grid-template-columns:400px 1fr;min-height:100vh}
+/* ═══ LAYOUT ══════════════════════════════════════════════ */
+.app{display:grid;grid-template-columns:420px 1fr;min-height:100vh}
 @media(max-width:900px){.app{grid-template-columns:1fr}}
 
-/* ═══ PANNEAU FORMULAIRE ═════════════════════════════════ */
-.pf{background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;position:relative}
-.pf-head{padding:24px 24px 18px;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:10}
-.pf-logo{font-family:var(--fd);font-size:24px;font-style:italic;font-weight:400}
+/* ═══ PANNEAU FORMULAIRE ══════════════════════════════════ */
+.pf{background:#fff;border-right:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto}
+.pf-head{padding:22px 24px 16px;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:10}
+.pf-logo{font-family:var(--fc);font-size:22px;font-style:italic;font-weight:400;letter-spacing:.02em}
 .pf-sub{font-size:11px;color:var(--muted);margin-top:2px}
-.pf-body{padding:20px 24px;flex:1;display:flex;flex-direction:column;gap:20px}
-.pf-cta{padding:18px 24px;border-top:1px solid var(--border);background:#fff;position:sticky;bottom:0}
+.pf-body{padding:20px 24px;flex:1;display:flex;flex-direction:column;gap:18px}
+.pf-cta{padding:16px 24px;border-top:1px solid var(--border);background:#fff;position:sticky;bottom:0}
 
-/* Labels */
-.lbl{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px}
+.lbl{font-size:10px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:7px}
 
-/* Inputs */
-.fi{width:100%;padding:11px 13px;border:1.5px solid var(--border);border-radius:var(--r);font-family:var(--fs);font-size:14px;color:var(--ink);background:var(--surface);outline:none;transition:border-color .18s,background .18s}
+.fi{width:100%;padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--r);font-family:var(--fs);font-size:14px;color:var(--ink);background:var(--surface);outline:none;transition:border-color .18s,background .18s}
 .fi:focus{border-color:var(--ink);background:#fff}
 .fi::placeholder{color:var(--muted)}
 .fi-row{display:grid;grid-template-columns:1fr 20px 1fr;align-items:center;gap:6px}
-.fi-sep{font-family:var(--fd);font-size:20px;color:var(--muted);text-align:center}
-.fi-textarea{width:100%;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-family:var(--fs);font-size:13px;color:var(--ink);background:var(--surface);resize:none;min-height:60px;outline:none;transition:border-color .18s}
+.fi-sep{font-family:var(--fc);font-size:20px;color:var(--muted);text-align:center}
+.fi-textarea{width:100%;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--r);font-family:var(--fs);font-size:13px;color:var(--ink);background:var(--surface);resize:none;min-height:56px;outline:none;transition:border-color .18s}
 .fi-textarea:focus{border-color:var(--ink);background:#fff}
 
 /* Format */
 .fmt-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.fmt-btn{padding:10px 8px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);font-family:var(--fs);font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;text-align:center;transition:all .18s}
-.fmt-btn small{display:block;font-size:10px;font-weight:400;color:var(--muted);margin-top:2px}
-.fmt-btn:hover,.fmt-btn.on{border-color:var(--ink);background:var(--ink);color:#fff}
-.fmt-btn.on small{color:rgba(255,255,255,.6)}
+.fmt-btn{padding:9px 8px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);font-family:var(--fs);font-size:13px;font-weight:600;color:var(--ink2);cursor:pointer;text-align:center;transition:all .18s}
+.fmt-btn small{display:block;font-size:10px;font-weight:400;color:var(--muted);margin-top:1px}
+.fmt-btn.on,.fmt-btn:hover{border-color:var(--ink);background:var(--ink);color:#fff}
+.fmt-btn.on small,.fmt-btn:hover small{color:rgba(255,255,255,.6)}
+
+/* Thèmes */
+.theme-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.theme-btn{padding:10px 8px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);font-size:11px;font-weight:500;cursor:pointer;text-align:center;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--ink2)}
+.theme-btn .th-swatch{width:28px;height:20px;border-radius:3px;display:block}
+.theme-btn:hover,.theme-btn.on{border-color:var(--ink);background:var(--ink);color:#fff}
+.theme-btn.on .th-swatch,.theme-btn:hover .th-swatch{outline:1.5px solid rgba(255,255,255,.4)}
 
 /* Finitions */
 .fin-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
-.fin-btn{padding:9px 8px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);font-size:12px;font-weight:500;cursor:pointer;text-align:center;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:4px}
-.fin-btn .fin-swatch{width:22px;height:22px;border-radius:4px;display:block}
-.fin-btn:hover,.fin-btn.on{border-color:var(--ink)}
-.fin-btn.on{background:var(--ink);color:#fff}
-.fin-btn.on .fin-swatch{outline:2px solid rgba(255,255,255,.4)}
+.fin-btn{padding:9px 8px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);font-size:11px;font-weight:500;cursor:pointer;text-align:center;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink2)}
+.fin-btn .fin-sw{width:22px;height:22px;border-radius:4px;display:block}
+.fin-btn:hover,.fin-btn.on{border-color:var(--ink);background:var(--ink);color:#fff}
 
 /* Étapes */
 .step-card{border:1.5px solid var(--border);border-radius:var(--r2);overflow:hidden;background:#fff;transition:border-color .18s}
 .step-card.on{border-color:var(--ink)}
-.step-head{display:flex;align-items:center;padding:13px 14px;cursor:pointer;gap:10px;user-select:none}
-.step-dot{width:9px;height:9px;border-radius:50%;background:var(--accent);flex-shrink:0}
-.step-name{font-size:13px;font-weight:600;flex:1}
-.step-preview{font-size:11px;color:var(--muted);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.step-chev{width:15px;height:15px;color:var(--muted);transition:transform .2s;flex-shrink:0}
+.step-head{display:flex;align-items:center;padding:12px 14px;cursor:pointer;gap:9px;user-select:none}
+.step-dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.step-name{font-size:12px;font-weight:600;flex:1}
+.step-preview{font-size:11px;color:var(--muted);max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.step-chev{width:14px;height:14px;color:var(--muted);transition:transform .2s;flex-shrink:0}
 .step-card.on .step-chev{transform:rotate(180deg)}
-.step-body{display:none;padding:4px 14px 14px;gap:10px;flex-direction:column}
+.step-body{display:none;padding:4px 14px 14px;gap:9px;flex-direction:column}
 .step-card.on .step-body{display:flex}
-.step-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.step-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .step-full{grid-column:1/-1}
-.step-lbl{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.step-lbl{font-size:10px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:3px}
 
 /* Pictos */
-.picto-row{display:flex;gap:5px;flex-wrap:wrap}
-.pb{width:36px;height:36px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;padding:0}
-.pb:hover{border-color:var(--ink)}
-.pb.on{border-color:var(--ink);background:var(--ink)}
+.picto-row{display:flex;gap:4px;flex-wrap:wrap}
+.pb{width:34px;height:34px;border:1.5px solid var(--border);border-radius:6px;background:var(--surface);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;padding:0}
+.pb:hover,.pb.on{border-color:var(--ink)}
+.pb.on{background:var(--ink)}
 .pb.on svg *{stroke:#fff!important}
 
 /* Upload */
-.upz{position:relative;border:2px dashed var(--border);border-radius:var(--r);background:var(--surface);padding:14px;text-align:center;cursor:pointer;transition:all .2s;overflow:hidden}
+.upz{position:relative;border:2px dashed var(--border);border-radius:var(--r);background:var(--surface);padding:12px;text-align:center;cursor:pointer;transition:all .2s;overflow:hidden}
 .upz:hover{border-color:var(--ink);background:#fff}
 .upz input{position:absolute;inset:0;opacity:0;cursor:pointer}
 .upz-ph{pointer-events:none;font-size:11px;color:var(--muted)}
-.upz-ph span{font-size:18px;display:block;margin-bottom:4px}
-.upz-img{width:100%;height:64px;object-fit:cover;border-radius:4px;margin-top:8px;display:none}
+.upz-ph span{font-size:18px;display:block;margin-bottom:3px}
+.upz-img{width:100%;height:60px;object-fit:cover;border-radius:4px;margin-top:6px;display:none}
+
+/* Env */
+.env-row{display:flex;gap:5px;flex-wrap:wrap}
+.env-btn{padding:7px 11px;border:1.5px solid var(--border);border-radius:50px;background:var(--surface);font-size:11px;font-weight:500;cursor:pointer;transition:all .18s;white-space:nowrap}
+.env-btn:hover,.env-btn.on{border-color:var(--ink);background:var(--ink);color:#fff}
 
 /* Steps actions */
-.step-actions{display:flex;gap:7px}
-.btn-add{flex:1;padding:10px;border:2px dashed var(--border);border-radius:var(--r);background:transparent;font-family:var(--fs);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
+.step-actions{display:flex;gap:6px}
+.btn-add{flex:1;padding:9px;border:2px dashed var(--border);border-radius:var(--r);background:transparent;font-family:var(--fs);font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
 .btn-add:hover{border-color:var(--ink);color:var(--ink)}
 .btn-add:disabled{opacity:.35;cursor:not-allowed}
-.btn-del{padding:10px 13px;border:1.5px solid var(--border);border-radius:var(--r);background:transparent;cursor:pointer;color:var(--muted);transition:all .2s}
+.btn-del{padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--r);background:transparent;cursor:pointer;color:var(--muted);transition:all .2s}
 .btn-del:hover{border-color:var(--accent);color:var(--accent)}
 .btn-del:disabled{opacity:.35;cursor:not-allowed}
 
-/* Environnement selector */
-.env-row{display:flex;gap:6px;flex-wrap:wrap}
-.env-btn{padding:8px 12px;border:1.5px solid var(--border);border-radius:50px;background:var(--surface);font-size:12px;font-weight:500;cursor:pointer;transition:all .18s;white-space:nowrap}
-.env-btn:hover,.env-btn.on{border-color:var(--ink);background:var(--ink);color:#fff}
-
-/* Prix + CTA */
-.price-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:12px}
-.price-val{font-family:var(--fd);font-size:34px;font-weight:600}
+/* CTA */
+.price-row{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:11px}
+.price-val{font-family:var(--fc);font-size:32px;font-weight:500}
 .price-lbl{font-size:11px;color:var(--muted)}
-.btn-order{width:100%;padding:15px;background:var(--ink);color:#fff;border:none;border-radius:var(--r);font-family:var(--fs);font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.04em;transition:background .2s,transform .15s}
+.btn-order{width:100%;padding:14px;background:var(--ink);color:#fff;border:none;border-radius:var(--r);font-family:var(--fs);font-size:14px;font-weight:600;cursor:pointer;letter-spacing:.04em;transition:background .2s,transform .15s}
 .btn-order:hover{background:var(--accent);transform:translateY(-1px)}
 .trust{font-size:11px;color:var(--muted);text-align:center;margin-top:8px}
 
-/* ═══ PANNEAU PREVIEW ═════════════════════════════════ */
-.pp{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:36px 32px;gap:18px;overflow-y:auto;background:var(--page)}
-.pp-topbar{width:100%;max-width:700px;display:flex;align-items:center;justify-content:space-between}
+/* ═══ PANNEAU PREVIEW ══════════════════════════════════ */
+.pp{display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:32px 28px;gap:16px;overflow-y:auto;background:var(--page)}
+.pp-topbar{width:100%;max-width:680px;display:flex;align-items:center;justify-content:space-between}
 .pp-lbl{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
-.btn-zoom{padding:8px 16px;border:1.5px solid var(--border);border-radius:50px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:all .2s}
+.btn-zoom{padding:7px 15px;border:1.5px solid var(--border);border-radius:50px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:5px;transition:all .2s}
 .btn-zoom:hover{border-color:var(--ink);background:var(--ink);color:#fff}
-.btn-zoom svg{transition:stroke .2s}
-.btn-zoom:hover svg *{stroke:#fff}
 
-/* Environnement wrapper */
-.env-wrap{width:100%;max-width:700px;position:relative;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.14),0 4px 14px rgba(0,0,0,.08)}
+/* Environnement */
+.env-wrap{width:100%;max-width:680px;position:relative;border-radius:12px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.14),0 4px 14px rgba(0,0,0,.08)}
+.env-flat{background:var(--page);display:flex;align-items:center;justify-content:center;padding:36px 28px}
+.env-room{position:relative;width:100%;background:#D4C9B8;overflow:hidden}
+.env-room-bg{display:block;width:100%;height:auto}
+.poster-in-room{position:absolute;z-index:2;transform-origin:top left}
 
-/* Mode à plat */
-.env-flat{background:var(--page);display:flex;align-items:center;justify-content:center;padding:40px 32px}
+/* Finitions sur l'affiche */
+.fin-frame{position:relative}
+.fin-none .fin-frame{box-shadow:0 16px 48px rgba(0,0,0,.15)}
+.fin-black .fin-frame{border:13px solid #111;box-shadow:inset 0 0 0 1px #333,0 20px 50px rgba(0,0,0,.4),4px 4px 0 #000}
+.fin-white .fin-frame{border:13px solid #F2F2F2;box-shadow:inset 0 0 0 1px #DDD,0 16px 40px rgba(0,0,0,.25),3px 3px 0 #DDD}
+.fin-wood  .fin-frame{border:15px solid #8B6343;box-shadow:0 20px 50px rgba(0,0,0,.35),3px 3px 8px rgba(0,0,0,.2)}
+.fin-canvas .fin-frame{border:11px solid #C8B898;outline:2px solid #A89878;box-shadow:0 12px 30px rgba(0,0,0,.3),6px 6px 0 rgba(0,0,0,.15)}
 
-/* Mode pièce */
-.env-room{position:relative;width:100%;aspect-ratio:4/3;background:#D4C9B8;overflow:hidden}
-.env-room-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;z-index:0}
-.env-room-overlay{position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.06) 0%,transparent 60%);z-index:1}
+/* ═══ POSTER HTML — STYLES COMMUNS ══════════════════════ */
+.poster{position:relative;overflow:hidden;user-select:none}
+.poster-inner{position:absolute;inset:0}
 
-/* Affiche wrapper dans la pièce */
-.poster-wrap{position:relative}
-.poster-wrap.env-flat-mode{
-  border:12px solid #1A1A1A;
-  border-radius:2px;
-  box-shadow:0 24px 64px rgba(0,0,0,.16),0 6px 16px rgba(0,0,0,.1);
-}
+/* ─── THÈME GALERIE ─────────────────────────────────── */
+.t-galerie{background:#FBF9F4;color:#1C1C1C;font-family:var(--fs)}
+.t-galerie .g-header{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid #E5E5E5;padding-bottom:4%}
+.t-galerie .g-header-left p{font-size:.55em;text-transform:uppercase;letter-spacing:.3em;color:#999;margin-bottom:.3em}
+.t-galerie .g-header-left h1{font-family:var(--fc);font-size:1.9em;font-weight:300;color:#111}
+.t-galerie .g-header-right{font-size:.5em;text-transform:uppercase;letter-spacing:.2em;color:#999}
+.t-galerie .g-body{display:grid;grid-template-columns:5fr 7fr;gap:5%;flex:1;margin:4% 0;align-items:center}
+.t-galerie .g-texts{display:flex;flex-direction:column;justify-content:center;gap:8%;padding-right:5%;border-right:1px solid rgba(229,229,229,.6);height:100%;padding-top:2%;padding-bottom:2%}
+.t-galerie .g-moment-num{font-size:.48em;font-weight:600;text-transform:uppercase;letter-spacing:.2em;color:#999;display:block;margin-bottom:.4em}
+.t-galerie .g-moment-desc{font-family:var(--fc);font-size:.72em;line-height:1.6;color:#555;font-style:italic;text-align:justify}
+.t-galerie .g-photo-wrap{background:#fff;padding:1.5%;box-shadow:0 2px 8px rgba(0,0,0,.06);border:1px solid rgba(229,229,229,.4);aspect-ratio:3/4;overflow:hidden}
+.t-galerie .g-photo-wrap img{width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.12)}
+.t-galerie .g-photo-ph{width:100%;height:100%;background:#F0EDE8;display:flex;align-items:center;justify-content:center;font-size:.6em;color:#999;font-style:italic}
+.t-galerie .g-footer{border-top:1px solid #E5E5E5;padding-top:3%;display:flex;justify-content:space-between;align-items:center;color:#999;font-size:.48em;text-transform:uppercase;letter-spacing:.3em}
+.t-galerie .g-footer-mid{font-family:var(--fc);font-style:italic;text-transform:none;letter-spacing:normal;font-size:.72em;color:rgba(153,153,153,.8)}
 
-/* Finitions CSS */
-.fin-none   .poster-wrap{border:none;box-shadow:0 16px 48px rgba(0,0,0,.15)}
-.fin-black  .poster-wrap{border:14px solid #111;box-shadow:inset 0 0 0 1px #333,0 20px 50px rgba(0,0,0,.4),4px 4px 0 #000}
-.fin-white  .poster-wrap{border:14px solid #F2F2F2;box-shadow:inset 0 0 0 1px #DDD,0 16px 40px rgba(0,0,0,.25),3px 3px 0 #DDD}
-.fin-wood   .poster-wrap{
-  border:16px solid transparent;
-  border-image:linear-gradient(135deg,#C8956A 0%,#8B5E3C 30%,#A8733E 50%,#7A4E2A 70%,#C8956A 100%) 1;
-  box-shadow:0 20px 50px rgba(0,0,0,.35),3px 3px 8px rgba(0,0,0,.2);
-}
-.fin-canvas .poster-wrap{
-  border:12px solid #C8B898;
-  outline:2px solid #A89878;
-  box-shadow:0 12px 30px rgba(0,0,0,.3),6px 6px 0 rgba(0,0,0,.15),inset 0 0 12px rgba(0,0,0,.06);
-  filter:contrast(1.02) saturate(1.08);
-}
+/* ─── THÈME CINÉMA ──────────────────────────────────── */
+.t-cinema{background:#0A0A0A;color:#E5E5E5;font-family:var(--fs)}
+.t-cinema .c-bg{position:absolute;inset:0;overflow:hidden}
+.t-cinema .c-bg img{width:100%;height:100%;object-fit:cover;opacity:.45;filter:grayscale(1) contrast(1.25);transform:scale(1.05)}
+.t-cinema .c-bg-ph{width:100%;height:100%;background:#1A1A1A;display:flex;align-items:center;justify-content:center;font-size:.6em;color:#555;font-style:italic}
+.t-cinema .c-grad{position:absolute;inset:0;background:linear-gradient(to top,#0A0A0A 0%,rgba(10,10,10,.4) 50%,transparent 100%)}
+.t-cinema .c-content{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:8%}
+.t-cinema .c-top{display:flex;justify-content:space-between;align-items:start;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:4%}
+.t-cinema .c-top span{font-size:.48em;text-transform:uppercase;letter-spacing:.4em;color:#888}
+.t-cinema .c-bottom{display:flex;flex-direction:column;align-items:center;text-align:center;margin-top:auto}
+.t-cinema h1{font-family:var(--fc);font-size:2.6em;font-weight:300;letter-spacing:.15em;text-transform:uppercase;color:#fff;margin-bottom:.3em}
+.t-cinema .c-tagline{font-family:var(--fc);font-style:italic;font-size:.9em;color:#CCC;letter-spacing:.05em;margin-bottom:6%}
+.t-cinema .c-credits{width:100%;max-width:80%;border-top:1px solid rgba(255,255,255,.1);padding-top:4%;font-size:.44em;letter-spacing:.25em;text-transform:uppercase;color:#666;line-height:1.8}
+.t-cinema .c-credits strong{color:#fff;font-weight:500}
 
-/* Affiche dans une pièce — transformation 3D */
-.env-salon   .poster-in-room{transform:perspective(900px) rotateY(-6deg) rotateX(1deg) translateZ(10px);transform-origin:center center}
-.env-chambre .poster-in-room{transform:perspective(900px) rotateX(2deg) rotateY(0deg) translateZ(8px);transform-origin:center top}
-.env-couloir .poster-in-room{transform:perspective(900px) rotateY(8deg) rotateX(1deg) translateZ(10px);transform-origin:center center}
+/* ─── THÈME CARTOGRAPHIE ────────────────────────────── */
+.t-carte{background:#F4F3EE;color:#1C1C1C;font-family:var(--fs)}
+.t-carte .k-header{text-align:center;border-bottom:1px solid #E5E5E5;padding-bottom:4%}
+.t-carte .k-header p{font-size:.5em;text-transform:uppercase;letter-spacing:.35em;color:#999;margin-bottom:.4em}
+.t-carte .k-header h1{font-family:var(--fc);font-style:italic;font-size:1.6em;color:#444}
+.t-carte .k-body{position:relative;flex:1}
+.t-carte .k-body svg{position:absolute;inset:0;width:100%;height:100%}
+.t-carte .k-point{position:absolute}
+.t-carte .k-dot{width:.55em;height:.55em;border-radius:50%;background:#1C1C1C;margin-bottom:.8em;box-shadow:0 1px 3px rgba(0,0,0,.2)}
+.t-carte .k-point-name{font-size:.55em;font-weight:600;text-transform:uppercase;letter-spacing:.1em;display:block}
+.t-carte .k-point-coord{font-size:.46em;color:#999;font-family:monospace;margin-top:.2em;display:block}
+.t-carte .k-footer{text-align:center;font-size:.48em;letter-spacing:.3em;text-transform:uppercase;color:#999;border-top:1px solid rgba(229,229,229,.6);padding-top:4%}
 
-/* ═══ POSTER HTML (le vrai design à l'intérieur) ════ */
-.poster{container-type:inline-size;
-  background:var(--cream);
-  position:relative;
-  overflow:hidden;
-  font-family:var(--fs);
-  /* ratio piloté par JS */
-}
+/* ─── THÈME ROMAN ───────────────────────────────────── */
+.t-roman{background:#FAF8F5;color:#1A1A1A;font-family:var(--fs)}
+.t-roman .r-header{text-align:left}
+.t-roman .r-header p{font-size:.5em;text-transform:uppercase;letter-spacing:.4em;color:#999}
+.t-roman .r-body{flex:1;display:flex;flex-direction:column;justify-content:center;max-width:85%;margin:auto}
+.t-roman .r-num{font-family:var(--fc);font-size:2.8em;color:#DDD;font-weight:300;display:block;margin-bottom:.2em}
+.t-roman h1{font-family:var(--fc);font-size:1.7em;font-style:italic;border-bottom:1px solid #E5E5E5;padding-bottom:5%;margin-bottom:8%;color:#333;letter-spacing:.04em;line-height:1.2}
+.t-roman .r-texts{display:flex;flex-direction:column;gap:5%}
+.t-roman .r-para{font-family:var(--fc);font-size:.75em;color:#666;line-height:1.8;letter-spacing:.03em;text-align:justify}
+.t-roman .r-para-drop{font-size:1.4em;font-weight:300;color:#333;margin-right:.05em}
+.t-roman .r-footer{display:flex;justify-content:space-between;align-items:center;border-top:1px solid #E5E5E5;padding-top:4%;font-size:.48em;color:#999;text-transform:uppercase;letter-spacing:.3em}
 
-.poster-inner{
-  position:absolute;
-  inset:0;
-  padding:6% 5% 5%;
-  display:flex;
-  flex-direction:column;
-}
+/* ─── THÈME AQUARELLE ───────────────────────────────── */
+.t-aqua{background:#FCFCFA;color:#333;font-family:var(--fs)}
+.t-aqua .a-blob1{position:absolute;top:-15%;left:-15%;width:55%;height:55%;background:rgba(255,200,150,.18);border-radius:50%;filter:blur(60px);pointer-events:none}
+.t-aqua .a-blob2{position:absolute;bottom:25%;right:-15%;width:60%;height:60%;background:rgba(200,196,188,.25);border-radius:50%;filter:blur(80px);pointer-events:none}
+.t-aqua .a-content{position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:space-between}
+.t-aqua .a-header{text-align:center;border-bottom:1px solid #F0F0F0;padding-bottom:4%}
+.t-aqua .a-header h1{font-family:var(--fc);font-style:italic;font-size:1.4em;color:#333;letter-spacing:.04em}
+.t-aqua .a-header p{font-size:.5em;text-transform:uppercase;letter-spacing:.3em;color:#999;margin-top:.4em}
+.t-aqua .a-center{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6%}
+.t-aqua .a-frame{background:#fff;padding:3%;box-shadow:0 15px 35px rgba(0,0,0,.03);border:1px solid rgba(200,200,200,.4);width:60%;aspect-ratio:1;overflow:hidden}
+.t-aqua .a-frame img{width:100%;height:100%;object-fit:cover;filter:grayscale(1);opacity:.85}
+.t-aqua .a-frame-ph{width:100%;height:100%;background:#F5F5F5;display:flex;align-items:center;justify-content:center;font-size:.55em;color:#BBB}
+.t-aqua .a-quote{text-align:center;max-width:80%;padding:0 5%}
+.t-aqua .a-quote p{font-family:var(--fc);font-size:.72em;font-style:italic;color:#888;line-height:1.7}
+.t-aqua .a-footer{text-align:center;font-size:.48em;letter-spacing:.3em;text-transform:uppercase;color:#999;border-top:1px solid #F0F0F0;padding-top:4%}
 
-/* En-tête */
-.p-header{text-align:center;margin-bottom:4%}
-.p-title{font-family:var(--fd);font-style:italic;font-weight:400;line-height:1.1;margin-bottom:1.5%}
-.p-deco{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:2%}
-.p-deco-line{flex:1;max-width:60px;height:0.6px;background:#C92A2A}
-.p-deco-heart{color:#C92A2A;font-size:1em}
-.p-names{font-weight:700;letter-spacing:.16em;text-transform:uppercase}
-
-/* Timeline */
-.p-timeline{flex:1;position:relative;display:flex;flex-direction:column;justify-content:space-around}
-.p-tl-line{position:absolute;left:25%;top:0;bottom:0;width:0.8px;background:#A0A0A0}
-
-/* Étape */
-.p-step{display:grid;position:relative;align-items:center}
-/* colonnes : date | cercle | texte | image */
-.p-step{grid-template-columns:23% 4% 38% 30%;grid-template-areas:"date dot text img";gap:0 1%}
-
-.p-date{grid-area:date;text-align:right;font-weight:700;text-transform:uppercase;line-height:1.2;padding-right:2%}
-.p-dot{grid-area:dot;display:flex;justify-content:center;align-items:center;position:relative;z-index:1}
-.p-dot-circle{border-radius:50%;border:1.2px solid #C92A2A;background:#fff;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.p-text{grid-area:text;padding-left:4%}
-.p-step-title{font-family:var(--fd);font-style:italic;font-weight:600;line-height:1.2;margin-bottom:2%}
-.p-step-desc{color:#777;line-height:1.4}
-.p-img{grid-area:img;overflow:hidden;border-radius:2px;background:#EDE9E2;display:flex;align-items:center;justify-content:center}
-.p-img img{width:100%;height:100%;object-fit:cover;display:block}
-.p-img-ph{color:#B8B4AC;font-size:1.4em}
-
-/* Footer */
-.p-footer{text-align:center;margin-top:3%}
-.p-footer-line{width:40%;height:0.5px;background:#A0A0A0;margin:0 auto 2%}
-.p-footer-text{font-family:var(--fd);font-style:italic}
-.p-footer-inf{color:#C92A2A}
-
-/* ═══ MODAL ZOOM ═════════════════════════════════════ */
+/* ═══ MODAL ZOOM ═══════════════════════════════════════ */
 .modal{position:fixed;inset:0;z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
 .modal.on{opacity:1;pointer-events:all}
-.modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(6px)}
+.modal-bg{position:absolute;inset:0;background:rgba(0,0,0,.72);backdrop-filter:blur(6px)}
 .modal-content{position:relative;z-index:1;max-height:94vh;overflow-y:auto;border-radius:4px}
-.modal-close{position:fixed;top:20px;right:24px;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:18px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;transition:background .2s}
-.modal-close:hover{background:rgba(255,255,255,.3)}
+.modal-close{position:fixed;top:20px;right:24px;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.15);border:none;color:#fff;font-size:17px;cursor:pointer;z-index:2;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.modal-close:hover{background:rgba(255,255,255,.28)}
 
-/* ═══ LOADING ═══════════════════════════════════════ */
+/* ═══ OVERLAYS ═════════════════════════════════════════ */
 .overlay-load{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 .overlay-load.on{display:flex}
-.load-box{background:#fff;border-radius:12px;padding:40px 36px;text-align:center;width:340px}
-.spinner{width:32px;height:32px;border:2.5px solid var(--border);border-top-color:var(--ink);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 14px}
+.load-box{background:#fff;border-radius:12px;padding:36px;text-align:center;width:320px}
+.spinner{width:30px;height:30px;border:2px solid var(--border);border-top-color:var(--ink);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}
 @keyframes spin{to{transform:rotate(360deg)}}
-.load-msg{font-size:14px;color:var(--muted)}
-
-/* ═══ OVERLAY SUCCESS ════════════════════════════════ */
+.load-msg{font-size:13px;color:var(--muted)}
 .overlay-ok{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:400;display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
 .overlay-ok.on{display:flex}
-.ok-box{background:#fff;border-radius:12px;padding:44px 36px;text-align:center;width:380px}
-.ok-heart{font-size:40px;color:var(--accent);margin-bottom:14px}
-.ok-h{font-family:var(--fd);font-size:26px;font-weight:400;margin-bottom:10px}
-.ok-p{font-size:14px;color:var(--muted);line-height:1.7;margin-bottom:22px}
-
-/* ═══ RESPONSIVE ════════════════════════════════════ */
-@media(max-width:900px){
-  .pp{padding:20px 16px}
-  .env-wrap{max-width:100%}
-}
+.ok-box{background:#fff;border-radius:12px;padding:40px 36px;text-align:center;width:360px}
+.ok-heart{font-size:38px;color:var(--accent);margin-bottom:12px}
+.ok-h{font-family:var(--fc);font-size:24px;font-weight:400;margin-bottom:8px}
+.ok-p{font-size:13px;color:var(--muted);line-height:1.7;margin-bottom:20px}
 </style>
 </head>
 <body>
 <div class="app">
 
-<!-- ═══════════════════════════════════════════
+<!-- ═══════════════════════════════════════════════
      PANNEAU FORMULAIRE
-═══════════════════════════════════════════ -->
+═══════════════════════════════════════════════ -->
 <aside class="pf">
   <div class="pf-head">
-    <div class="pf-logo">Notre Histoire</div>
+    <div class="pf-logo">Chapitre à Deux</div>
     <div class="pf-sub">Aperçu mis à jour en temps réel</div>
   </div>
 
@@ -269,6 +258,33 @@ body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:10
         <input id="p1" class="fi" type="text" placeholder="Julie" maxlength="18"/>
         <span class="fi-sep">&</span>
         <input id="p2" class="fi" type="text" placeholder="Maxime" maxlength="18"/>
+      </div>
+    </div>
+
+    <!-- Thème -->
+    <div>
+      <label class="lbl">Thème</label>
+      <div class="theme-grid">
+        <button class="theme-btn on" data-theme="galerie">
+          <span class="th-swatch" style="background:linear-gradient(135deg,#FBF9F4 50%,#1C1C1C 50%)"></span>
+          Galerie d'Art
+        </button>
+        <button class="theme-btn" data-theme="cinema">
+          <span class="th-swatch" style="background:#0A0A0A"></span>
+          Cinéma d'Auteur
+        </button>
+        <button class="theme-btn" data-theme="carte">
+          <span class="th-swatch" style="background:#F4F3EE"></span>
+          Cartographie
+        </button>
+        <button class="theme-btn" data-theme="roman">
+          <span class="th-swatch" style="background:#FAF8F5"></span>
+          Roman de Luxe
+        </button>
+        <button class="theme-btn" data-theme="aquarelle" style="grid-column:1/-1">
+          <span class="th-swatch" style="background:linear-gradient(135deg,rgba(255,200,150,.4),rgba(200,196,188,.4))"></span>
+          Aquarelle Fine Art
+        </button>
       </div>
     </div>
 
@@ -286,29 +302,24 @@ body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:10
       <label class="lbl">Finition & Cadre</label>
       <div class="fin-grid">
         <button class="fin-btn on" data-fin="none">
-          <span class="fin-swatch" style="background:var(--cream);border:1px solid var(--border)"></span>
-          Affiche seule
+          <span class="fin-sw" style="background:#FDFBF7;border:1px solid var(--border)"></span>Affiche seule
         </button>
         <button class="fin-btn" data-fin="black">
-          <span class="fin-swatch" style="background:#111"></span>
-          Cadre Noir +8€
+          <span class="fin-sw" style="background:#111"></span>Cadre Noir +8€
         </button>
         <button class="fin-btn" data-fin="white">
-          <span class="fin-swatch" style="background:#F2F2F2;border:1px solid var(--border)"></span>
-          Cadre Blanc +8€
+          <span class="fin-sw" style="background:#F2F2F2;border:1px solid var(--border)"></span>Cadre Blanc +8€
         </button>
         <button class="fin-btn" data-fin="wood">
-          <span class="fin-swatch" style="background:linear-gradient(135deg,#C8956A,#8B5E3C)"></span>
-          Cadre Bois +10€
+          <span class="fin-sw" style="background:linear-gradient(135deg,#C8956A,#8B5E3C)"></span>Cadre Bois +10€
         </button>
         <button class="fin-btn" data-fin="canvas" style="grid-column:1/-1">
-          <span class="fin-swatch" style="background:#C8B898"></span>
-          Toile sur Châssis +20€
+          <span class="fin-sw" style="background:#C8B898"></span>Toile sur Châssis +20€
         </button>
       </div>
     </div>
 
-    <!-- Environnement -->
+    <!-- Mise en situation -->
     <div>
       <label class="lbl">Mise en situation</label>
       <div class="env-row">
@@ -319,17 +330,17 @@ body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:10
       </div>
     </div>
 
-    <!-- Étapes -->
+    <!-- Moments -->
     <div>
       <label class="lbl">Vos moments <span style="font-weight:400;text-transform:none;letter-spacing:0">(3 à 5)</span></label>
-      <div id="stepsList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px"></div>
+      <div id="stepsList" style="display:flex;flex-direction:column;gap:7px;margin-bottom:7px"></div>
       <div class="step-actions">
         <button class="btn-add" id="btnAdd">+ Ajouter un moment</button>
         <button class="btn-del" id="btnDel">✕</button>
       </div>
     </div>
 
-  </div><!-- /pf-body -->
+  </div>
 
   <div class="pf-cta">
     <div class="price-row">
@@ -341,36 +352,32 @@ body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:10
   </div>
 </aside>
 
-<!-- ═══════════════════════════════════════════
+<!-- ═══════════════════════════════════════════════
      PANNEAU PREVIEW
-═══════════════════════════════════════════ -->
+═══════════════════════════════════════════════ -->
 <main class="pp" id="pp">
   <div class="pp-topbar">
-    <span class="pp-lbl" id="ppLbl">Aperçu — Design Classique</span>
+    <span class="pp-lbl" id="ppLbl">Aperçu — Galerie d'Art</span>
     <button class="btn-zoom" id="btnZoom">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>
       </svg>
       Zoomer
     </button>
   </div>
 
-  <!-- Wrapper environnement -->
-  <div class="env-wrap fin-none env-flat-mode" id="envWrap">
-    <!-- Mode à plat -->
+  <div class="env-wrap fin-none" id="envWrap">
     <div class="env-flat" id="envFlat">
-      <div class="poster-wrap" id="posterWrapFlat">
+      <div class="fin-frame" id="finFrameFlat">
         <div class="poster" id="posterFlat">
           <div class="poster-inner" id="posterInnerFlat"></div>
         </div>
       </div>
     </div>
-
-    <!-- Mode pièce (caché par défaut) -->
     <div class="env-room" id="envRoom" style="display:none">
       <img class="env-room-bg" id="roomBg" src="" alt=""/>
       <div class="poster-in-room" id="posterInRoom">
-        <div class="poster-wrap" id="posterWrapRoom">
+        <div class="fin-frame" id="finFrameRoom">
           <div class="poster" id="posterRoom">
             <div class="poster-inner" id="posterInnerRoom"></div>
           </div>
@@ -379,33 +386,31 @@ body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:10
     </div>
   </div>
 
-  <p style="font-size:10px;color:var(--muted)">Rendu fidèle · Impression 300 DPI · Papier 200g</p>
+  <p style="font-size:10px;color:var(--muted)">Impression 300 DPI · Papier Fine Art 250g · Ratio exact A3/A4</p>
 </main>
 
-<!-- ═══ MODAL ZOOM ═════════════════════════════════ -->
+<!-- MODAL ZOOM -->
 <div class="modal" id="modal">
   <div class="modal-bg" id="modalBg"></div>
   <button class="modal-close" id="modalClose">✕</button>
   <div class="modal-content">
-    <div class="poster" id="posterModal" style="border:12px solid #111;box-shadow:0 30px 80px rgba(0,0,0,.4)">
-      <div class="poster-inner" id="posterInnerModal"></div>
+    <div class="fin-frame" id="finFrameModal" style="box-shadow:0 30px 80px rgba(0,0,0,.4)">
+      <div class="poster" id="posterModal">
+        <div class="poster-inner" id="posterInnerModal"></div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ═══ OVERLAYS ═══════════════════════════════════ -->
+<!-- OVERLAYS -->
 <div class="overlay-load" id="overlayLoad">
-  <div class="load-box">
-    <div class="spinner"></div>
-    <p class="load-msg" id="loadMsg">Préparation de votre commande…</p>
-  </div>
+  <div class="load-box"><div class="spinner"></div><p class="load-msg" id="loadMsg">Préparation…</p></div>
 </div>
-
 <div class="overlay-ok" id="overlayOk">
   <div class="ok-box">
     <div class="ok-heart">♥</div>
     <div class="ok-h">Commande confirmée !</div>
-    <p class="ok-p">Votre affiche est en cours de préparation. Vous recevrez un email de suivi sous 24h.</p>
+    <p class="ok-p">Votre affiche est en cours de préparation. Email de suivi sous 24h.</p>
     <button class="btn-order" onclick="location.href='/'">Créer une autre affiche</button>
   </div>
 </div>
@@ -413,199 +418,301 @@ body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:10
 <script>
 'use strict';
 
-/* ══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    ÉTAT GLOBAL
-══════════════════════════════════════════════════ */
+══════════════════════════════════════════════════════ */
 const S = {
-  p1: '', p2: '',
-  format: 'A3',
-  fin: 'none',
-  env: 'flat',
-  steps: []
+  p1:'', p2:'',
+  theme:'galerie', format:'A3', fin:'none', env:'flat',
+  steps:[]
 };
 
-const PRICES = { A3: 39.90, A4: 29.90 };
-const FIN_EXTRA = { none:0, black:8, white:8, wood:10, canvas:20 };
+const PRICES = {A3:39.90,A4:29.90};
+const FIN_EXTRA = {none:0,black:8,white:8,wood:10,canvas:20};
+const THEME_NAMES = {galerie:"Galerie d'Art",cinema:"Cinéma d'Auteur",carte:"Cartographie",roman:"Roman de Luxe",aquarelle:"Aquarelle Fine Art"};
 
 const ROOMS = {
-  salon:   { src:'/assets/room-salon.jpg',
-             left:0.67, top:0.08, width:0.22 },
-  chambre: { src:'/assets/room-chambre.jpg',
-             left:0.50, top:0.05, width:0.28 },
-  fauteuil:{ src:'/assets/room-fauteuil.jpg',
-             left:0.20, top:0.05, width:0.22 },
+  salon:   {src:'/assets/room-salon.jpg',   left:0.67, top:0.08, width:0.22},
+  chambre: {src:'/assets/room-chambre.jpg', left:0.50, top:0.05, width:0.28},
+  fauteuil:{src:'/assets/room-fauteuil.jpg',left:0.20, top:0.05, width:0.22},
 };
 
-/* ══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    PICTOS SVG
-══════════════════════════════════════════════════ */
+══════════════════════════════════════════════════════ */
 const PICTOS = {
-  heart:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21C12 21 3 14 3 8a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-9 13-9 13z"/></svg>`,
-  ring:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="14" r="6"/><path d="M8 14l2-6 2-2 2 2 2 6"/></svg>`,
-  plane:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>`,
-  house:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>`,
-  wine:   `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 2h8l-2 7a4 4 0 0 1-8 0L8 2z"/><line x1="12" y1="12" x2="12" y2="20"/><line x1="8" y1="20" x2="16" y2="20"/></svg>`,
+  heart:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M12 21C12 21 3 14 3 8a5 5 0 0 1 9-3 5 5 0 0 1 9 3c0 6-9 13-9 13z"/></svg>`,
+  ring:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="14" r="6"/><path d="M8 14l2-6 2-2 2 2 2 6"/></svg>`,
+  plane:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>`,
+  house:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>`,
+  wine:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 2h8l-2 7a4 4 0 0 1-8 0L8 2z"/><line x1="12" y1="12" x2="12" y2="20"/><line x1="8" y1="20" x2="16" y2="20"/></svg>`,
 };
 const PICTO_KEYS = ['heart','ring','plane','house','wine'];
 const PICTO_LABELS = {heart:'Cœur',ring:'Bague',plane:'Voyage',house:'Maison',wine:'Dîner'};
 
-/* ══════════════════════════════════════════════════
-   DIMENSIONS POSTER
-══════════════════════════════════════════════════ */
-const RATIO = { A3: 594/420, A4: 420/297 };
-
-function sizePoster(el, targetW) {
-  const r = RATIO[S.format] || RATIO.A3;
-  el.style.width  = targetW + 'px';
-  el.style.height = Math.round(targetW * r) + 'px';
-}
-
-function getTargetWidth() {
-  const pp = document.getElementById('pp');
-  const avail = pp ? pp.clientWidth - 64 : 500;
-  const maxByHeight = (window.innerHeight * 0.80) / (RATIO[S.format] || RATIO.A3);
-  return Math.min(avail, maxByHeight, 520);
-}
-
-/* ══════════════════════════════════════════════════
-   RENDU HTML DE L'AFFICHE
-══════════════════════════════════════════════════ */
+/* ══════════════════════════════════════════════════════
+   RENDU DES 5 THÈMES
+══════════════════════════════════════════════════════ */
 function posterHTML() {
-  const n1 = S.p1 ? S.p1.toUpperCase() : 'PRÉNOM 1';
-  const n2 = S.p2 ? S.p2.toUpperCase() : 'PRÉNOM 2';
+  const p1 = S.p1 || 'Julie';
+  const p2 = S.p2 || 'Maxime';
   const steps = S.steps;
-  const n = steps.length || 1;
-
-  // Tailles dynamiques basées sur la largeur de référence 420px
-  const ref = 420;
-  const ts = (px) => `${(px/ref*100).toFixed(2)}cqw`;
-
-  return `
-    <div class="p-header">
-      <div class="p-title" style="font-size:${ts(34)}">Notre histoire</div>
-      <div class="p-deco">
-        <span class="p-deco-line"></span>
-        <span class="p-deco-heart" style="font-size:${ts(13)}">♥</span>
-        <span class="p-deco-line"></span>
-      </div>
-      <div class="p-names" style="font-size:${ts(13)};letter-spacing:0.16em">${n1}  ×  ${n2}</div>
-    </div>
-
-    <div class="p-timeline">
-      <div class="p-tl-line"></div>
-      ${steps.map(step => stepHTML(step, n, ref)).join('')}
-    </div>
-
-    <div class="p-footer">
-      <div class="p-footer-line"></div>
-      <div class="p-footer-text" style="font-size:${ts(14)}">Le meilleur reste à venir…</div>
-      <div class="p-footer-inf" style="font-size:${ts(16)}">∞</div>
-    </div>`;
+  switch(S.theme) {
+    case 'galerie':   return htmlGalerie(p1, p2, steps);
+    case 'cinema':    return htmlCinema(p1, p2, steps);
+    case 'carte':     return htmlCarte(p1, p2, steps);
+    case 'roman':     return htmlRoman(p1, p2, steps);
+    case 'aquarelle': return htmlAquarelle(p1, p2, steps);
+    default: return htmlGalerie(p1, p2, steps);
+  }
 }
 
-function stepHTML(step, totalSteps, ref) {
-  const circleSize = 28;
-  const imgAspect  = 0.72; // ratio image zone
-  const dateSize   = Math.max(8, 13 - totalSteps);
-  const titleSize  = Math.max(9, 15 - totalSteps);
-  const descSize   = Math.max(7, 11 - totalSteps);
-  const imgH       = Math.max(36, 80 - totalSteps * 8);
+/* ─── GALERIE ──────────────────────────────────────── */
+function htmlGalerie(p1, p2, steps) {
+  const moments = steps.slice(0,3);
+  const mainPhoto = moments[0]?.localUrl;
+  const textsHTML = moments.map((m,i) => `
+    <div>
+      <span class="g-moment-num">0${i+1} / ${esc((m.title||'étape').toUpperCase())}</span>
+      <p class="g-moment-desc">${esc(m.description || 'Description de votre moment partagé à deux.')}</p>
+    </div>`).join('');
 
-  const pictoSVG = PICTOS[step.picto] || PICTOS.heart;
-
-  const imgContent = step.localUrl
-    ? `<img src="${step.localUrl}" alt=""/>`
-    : `<div class="p-img-ph">📷</div>`;
-
-  return `
-    <div class="p-step">
-      <div class="p-date" style="font-size:${dateSize}px">${(step.date||'').toUpperCase()}</div>
-      <div class="p-dot">
-        <div class="p-dot-circle" style="width:${circleSize}px;height:${circleSize}px">
-          <div style="width:${circleSize*0.55}px;height:${circleSize*0.55}px;color:#C92A2A">${pictoSVG}</div>
+  return `<div class="t-galerie poster-inner" style="padding:8%">
+    <div class="g-header">
+      <div class="g-header-left">
+        <p>Chronologie Éditoriale</p>
+        <h1>${p1.charAt(0)} & ${p2.charAt(0)} · Vingt-Deux</h1>
+      </div>
+      <span class="g-header-right">Paris — Lyon</span>
+    </div>
+    <div class="g-body" style="flex:1">
+      <div class="g-texts">${textsHTML}</div>
+      <div style="padding-left:2%">
+        <div class="g-photo-wrap">
+          ${mainPhoto
+            ? `<img src="${mainPhoto}" alt="Photo principale"/>`
+            : `<div class="g-photo-ph">Votre photo</div>`}
         </div>
       </div>
-      <div class="p-text">
-        <div class="p-step-title" style="font-size:${titleSize}px">${esc(step.title||'Votre moment')}</div>
-        <div class="p-step-desc" style="font-size:${descSize}px">${esc(step.desc||'')}</div>
+    </div>
+    <div class="g-footer">
+      <span>Maison Chapitre À Deux</span>
+      <span class="g-footer-mid">Impression fine art sur papier d'art 250g</span>
+      <span>N° 01</span>
+    </div>
+  </div>`;
+}
+
+/* ─── CINÉMA ───────────────────────────────────────── */
+function htmlCinema(p1, p2, steps) {
+  const photo = steps[0]?.localUrl;
+  return `<div class="t-cinema poster-inner">
+    <div class="c-bg">
+      ${photo
+        ? `<img src="${photo}" alt=""/>`
+        : `<div class="c-bg-ph">Insérez votre cliché d'auteur</div>`}
+    </div>
+    <div class="c-grad"></div>
+    <div class="c-content">
+      <div class="c-top">
+        <span>Sélection Officielle 2022</span>
+        <span>Récit Original</span>
       </div>
-      <div class="p-img" style="height:${imgH}px;border-radius:3px">${imgContent}</div>
-    </div>`;
+      <div class="c-bottom">
+        <h1>${esc(p1.toUpperCase())} &amp; ${esc(p2.toUpperCase())}</h1>
+        <p class="c-tagline">"L'art de s'écrire à deux"</p>
+        <div class="c-credits">
+          PRODUIT PAR <strong>MAISON CHAPITRE À DEUX</strong> · ÉCRIT PAR LA SYMPATHIE DES JOURS · PHOTOGRAPHIE PAR LES SOUVENIRS PARTAGÉS · TOUS DROITS RÉSERVÉS POUR L'ÉTERNITÉ
+        </div>
+      </div>
+    </div>
+  </div>`;
 }
 
-function esc(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* ─── CARTOGRAPHIE ──────────────────────────────────── */
+function htmlCarte(p1, p2, steps) {
+  const m = steps;
+  return `<div class="t-carte poster-inner" style="padding:8%;display:flex;flex-direction:column">
+    <div class="k-header">
+      <p>Tracé Géographique</p>
+      <h1>${esc(p1)} &amp; ${esc(p2)}</h1>
+    </div>
+    <div class="k-body" style="flex:1;position:relative;margin:4% 0">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 468 500" style="position:absolute;inset:0;width:100%;height:100%">
+        <path d="M 80 80 C 380 140, 40 280, 320 420" fill="none" stroke="#D1C7BD" stroke-width="1.2" stroke-dasharray="4 4"/>
+      </svg>
+      <div class="k-point" style="top:12%;left:10%">
+        <div class="k-dot"></div>
+        <span class="k-point-name">${esc((m[0]?.title||'I · Rencontre').toUpperCase())}</span>
+        <span class="k-point-coord">48.8566° N, 2.3522° E</span>
+      </div>
+      <div class="k-point" style="top:48%;right:10%;text-align:right">
+        <div class="k-dot" style="margin-left:auto"></div>
+        <span class="k-point-name">${esc((m[1]?.title||'II · Escapade').toUpperCase())}</span>
+        <span class="k-point-coord">8.5069° S, 115.2625° E</span>
+      </div>
+      <div class="k-point" style="bottom:12%;left:25%">
+        <div class="k-dot"></div>
+        <span class="k-point-name">${esc((m[2]?.title||'III · Ancrage').toUpperCase())}</span>
+        <span class="k-point-coord">45.7640° N, 4.8357° E</span>
+      </div>
+    </div>
+    <div class="k-footer">Trois repères · Une trajectoire commune</div>
+  </div>`;
 }
 
-/* ══════════════════════════════════════════════════
-   UPDATE PREVIEW
-══════════════════════════════════════════════════ */
-let pending = false;
-function update() {
-  if (pending) return;
-  pending = true;
-  requestAnimationFrame(() => { pending = false; _doUpdate(); });
+/* ─── ROMAN ─────────────────────────────────────────── */
+function htmlRoman(p1, p2, steps) {
+  const descs = steps.slice(0,3).map(s => s.description || '');
+  return `<div class="t-roman poster-inner" style="padding:10%;display:flex;flex-direction:column;justify-content:space-between">
+    <div class="r-header"><p>Maison Chapitre À Deux</p></div>
+    <div class="r-body">
+      <span class="r-num">I.</span>
+      <h1>${esc(p1)} &amp; ${esc(p2)}</h1>
+      <div class="r-texts">
+        <p class="r-para"><span class="r-para-drop">C'</span>${esc(descs[0] || 'est un soir d\'hiver que tout a commencé. Un regard volé au milieu du bruit, puis une évidence qui s\'installe sans demander la permission.')}</p>
+        <p class="r-para">${esc(descs[1] || 'Plus tard, à l\'autre bout du monde, nos promesses se sont discrètement gravées sous le soleil lourd et bienveillant de Bali.')}</p>
+        <p class="r-para">${esc(descs[2] || 'Aujourd\'hui, un premier toit à nous, des projets plein la tête et tout un océan d\'avenir à écrire à deux.')}</p>
+      </div>
+    </div>
+    <div class="r-footer"><span>Édition Privée</span><span>Page 01</span></div>
+  </div>`;
 }
 
-function _doUpdate() {
+/* ─── AQUARELLE ──────────────────────────────────────── */
+function htmlAquarelle(p1, p2, steps) {
+  const photo = steps[0]?.localUrl;
+  return `<div class="t-aqua poster-inner">
+    <div class="a-blob1"></div>
+    <div class="a-blob2"></div>
+    <div class="a-content" style="padding:8%">
+      <div class="a-header">
+        <h1>Poésie d'un Instant</h1>
+        <p>${esc(p1)} &amp; ${esc(p2)}</p>
+      </div>
+      <div class="a-center">
+        <div class="a-frame">
+          ${photo
+            ? `<img src="${photo}" alt=""/>`
+            : `<div class="a-frame-ph">Votre image</div>`}
+        </div>
+        <div class="a-quote">
+          <p>"Trois années résumées en quelques lignes silencieuses, gravées à l'encre fine sur le papier de nos vies."</p>
+        </div>
+      </div>
+      <div class="a-footer">Collection Fine Art — Maison Chapitre À Deux</div>
+    </div>
+  </div>`;
+}
+
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+/* ══════════════════════════════════════════════════════
+   UPDATE
+══════════════════════════════════════════════════════ */
+const RATIO = {A3:594/420, A4:420/297};
+
+function sizePoster(el, w) {
+  const r = RATIO[S.format]||RATIO.A3;
+  el.style.width  = w+'px';
+  el.style.height = Math.round(w*r)+'px';
+}
+
+function getW() {
+  const pp = document.getElementById('pp');
+  const avail = pp ? pp.clientWidth - 56 : 500;
+  const maxH  = (window.innerHeight * 0.82) / (RATIO[S.format]||RATIO.A3);
+  return Math.min(avail, maxH, 560);
+}
+
+let pending=false;
+function update(){if(pending)return;pending=true;requestAnimationFrame(()=>{pending=false;_update();});}
+
+function _update() {
   const html = posterHTML();
-
-  // Tous les posters partagent le même HTML
-  ['posterInnerFlat','posterInnerRoom','posterInnerModal'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.innerHTML = html;
+  ['posterInnerFlat','posterInnerRoom','posterInnerModal'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.innerHTML=html;
   });
 
-  // Tailles
-  const w = getTargetWidth();
-  ['posterFlat','posterRoom'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) sizePoster(el, w);
+  const w = getW();
+  ['posterFlat','posterRoom'].forEach(id=>{
+    const el=document.getElementById(id); if(el) sizePoster(el,w);
   });
-  // Modal = plus grand
-  const modalEl = document.getElementById('posterModal');
-  if (modalEl) {
-    const mw = Math.min(window.innerWidth * 0.9, 520);
-    sizePoster(modalEl, mw);
-  }
+  const modalEl=document.getElementById('posterModal');
+  if(modalEl) sizePoster(modalEl, Math.min(window.innerWidth*.88,520));
 
-  // Finition CSS
-  const envWrap = document.getElementById('envWrap');
-  envWrap.className = envWrap.className.replace(/\bfin-\w+/g,'') + ` fin-${S.fin}`;
+  // Finitions
+  ['finFrameFlat','finFrameRoom','finFrameModal'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(!el) return;
+    el.className='fin-frame';
+    // Appliquer styles de cadre inline car la classe parente gère le thème sombre (cinema)
+    const styles={
+      none:'',
+      black:'border:13px solid #111;box-shadow:inset 0 0 0 1px #333,0 20px 50px rgba(0,0,0,.4),4px 4px 0 #000',
+      white:'border:13px solid #F2F2F2;box-shadow:inset 0 0 0 1px #DDD,0 16px 40px rgba(0,0,0,.25),3px 3px 0 #DDD',
+      wood:'border:15px solid #8B6343;box-shadow:0 20px 50px rgba(0,0,0,.35),3px 3px 8px rgba(0,0,0,.2)',
+      canvas:'border:11px solid #C8B898;outline:2px solid #A89878;box-shadow:0 12px 30px rgba(0,0,0,.3),6px 6px 0 rgba(0,0,0,.15)',
+    };
+    el.style.cssText = styles[S.fin]||'';
+    if(!styles[S.fin]) el.style.boxShadow='0 16px 48px rgba(0,0,0,.15)';
+  });
 
   // Environnement
-  const isFlat = S.env === 'flat';
-  document.getElementById('envFlat').style.display = isFlat ? '' : 'none';
-  document.getElementById('envRoom').style.display = isFlat ? 'none' : '';
-  envWrap.className = envWrap.className.replace(/\benv-flat-mode\b/g,'').trim();
-  if (isFlat) {
-    envWrap.classList.add('env-flat-mode');
-  } else {
-    const room = ROOMS[S.env];
-    if (room) {
-      const roomBg = document.getElementById('roomBg');
-      roomBg.src = room.src;
-      roomBg.onload = () => positionPosterInRoom();
-      if (roomBg.complete && roomBg.naturalWidth > 0) positionPosterInRoom();
+  const isFlat = S.env==='flat';
+  document.getElementById('envFlat').style.display = isFlat?'':'none';
+  document.getElementById('envRoom').style.display = isFlat?'none':'';
+  if(!isFlat){
+    const room=ROOMS[S.env];
+    if(room){
+      const bg=document.getElementById('roomBg');
+      if(bg.src!==location.origin+room.src) bg.src=room.src;
+      bg.onload=positionRoom;
+      if(bg.complete&&bg.naturalWidth>0) positionRoom();
     }
   }
 
+  // Labels
+  document.getElementById('ppLbl').textContent = `Aperçu — ${THEME_NAMES[S.theme]||''}`;
+
   // Prix
-  const base = PRICES[S.format] || 39.90;
-  const extra = FIN_EXTRA[S.fin] || 0;
-  document.getElementById('priceVal').textContent = (base + extra).toFixed(2).replace('.',',') + ' €';
+  const base=PRICES[S.format]||39.90;
+  const extra=FIN_EXTRA[S.fin]||0;
+  document.getElementById('priceVal').textContent=(base+extra).toFixed(2).replace('.',',')+' €';
 }
 
-/* ══════════════════════════════════════════════════
-   CONSTRUCTION FORMULAIRE ÉTAPES
-══════════════════════════════════════════════════ */
-function buildCard(idx) {
-  const step = S.steps[idx];
-  const card = document.createElement('div');
-  card.className = 'step-card on';
-  card.dataset.idx = idx;
+function positionRoom(){
+  const room=ROOMS[S.env]; if(!room) return;
+  const bg=document.getElementById('roomBg');
+  const pin=document.getElementById('posterInRoom');
+  const pr=document.getElementById('posterRoom');
+  const imgW=bg.offsetWidth, imgH=bg.offsetHeight;
+  if(!imgW||!imgH) return;
+  const pW=imgW*room.width;
+  const ratio=RATIO[S.format]||RATIO.A3;
+  const pH=pW*ratio;
+  pin.style.left=(imgW*room.left - pW/2)+'px';
+  pin.style.top=(imgH*room.top)+'px';
+  pin.style.width=pW+'px';
+  pr.style.width=pW+'px';
+  pr.style.height=pH+'px';
+  // Ombre proportionnelle
+  const fr=document.getElementById('finFrameRoom');
+  if(fr&&!fr.style.border){
+    fr.style.boxShadow=`${pW*.02}px ${pW*.04}px ${pW*.1}px rgba(0,0,0,.45),${pW*.005}px ${pW*.01}px ${pW*.03}px rgba(0,0,0,.2)`;
+  }
+}
 
-  card.innerHTML = `
+window.addEventListener('resize',()=>{update();if(S.env!=='flat')positionRoom();});
+
+/* ══════════════════════════════════════════════════════
+   FORMULAIRE ÉTAPES
+══════════════════════════════════════════════════════ */
+function buildCard(idx){
+  const step=S.steps[idx];
+  const card=document.createElement('div');
+  card.className='step-card on'; card.dataset.idx=idx;
+  card.innerHTML=`
     <div class="step-head">
       <span class="step-dot"></span>
       <span class="step-name">Moment ${idx+1}</span>
@@ -621,9 +728,10 @@ function buildCard(idx) {
         <div>
           <label class="step-lbl">Picto</label>
           <div class="picto-row">${PICTO_KEYS.map(k=>`
-            <button class="pb${k===step.picto?' on':''}" data-p="${k}" title="${PICTO_LABELS[k]}" style="color:${k===step.picto?'#fff':'#555'}">
-              <div style="width:16px;height:16px">${PICTOS[k]}</div>
-            </button>`).join('')}</div>
+            <button class="pb${k===step.picto?' on':''}" data-p="${k}" title="${PICTO_LABELS[k]}">
+              <div style="width:15px;height:15px;color:${k===step.picto?'#fff':'#555'}">${PICTOS[k]}</div>
+            </button>`).join('')}
+          </div>
         </div>
         <div class="step-full">
           <label class="step-lbl">Titre</label>
@@ -631,248 +739,159 @@ function buildCard(idx) {
         </div>
         <div class="step-full">
           <label class="step-lbl">Description</label>
-          <textarea class="fi-textarea si-desc" maxlength="120" placeholder="Quelques mots sur ce moment…">${step.desc||''}</textarea>
+          <textarea class="fi-textarea si-desc" maxlength="140" placeholder="Quelques mots…">${step.desc||''}</textarea>
         </div>
         <div class="step-full">
           <label class="step-lbl">Photo</label>
           <div class="upz">
             <input type="file" accept="image/*" class="si-file"/>
-            <div class="upz-ph"><span>📷</span>Cliquer pour ajouter une photo</div>
+            <div class="upz-ph"><span>📷</span>Ajouter une photo</div>
             <img class="upz-img" src="${step.localUrl||''}" style="${step.localUrl?'display:block':''}"/>
           </div>
         </div>
       </div>
     </div>`;
 
-  // Toggle
-  card.querySelector('.step-head').addEventListener('click', () => card.classList.toggle('on'));
-
-  // Inputs
-  card.querySelector('.si-date').addEventListener('input', e => {
-    S.steps[idx].date = e.target.value; update();
-  });
-  card.querySelector('.si-title').addEventListener('input', e => {
-    S.steps[idx].title = e.target.value;
-    card.querySelector('.step-preview').textContent = e.target.value;
+  card.querySelector('.step-head').addEventListener('click',()=>card.classList.toggle('on'));
+  card.querySelector('.si-date').addEventListener('input',e=>{S.steps[idx].date=e.target.value;update();});
+  card.querySelector('.si-title').addEventListener('input',e=>{
+    S.steps[idx].title=e.target.value;
+    card.querySelector('.step-preview').textContent=e.target.value;
     update();
   });
-  card.querySelector('.si-desc').addEventListener('input', e => {
-    S.steps[idx].desc = e.target.value; update();
-  });
+  card.querySelector('.si-desc').addEventListener('input',e=>{S.steps[idx].desc=e.target.value;update();});
 
-  // Pictos
-  card.querySelectorAll('.pb').forEach(btn => {
-    btn.addEventListener('click', e => {
-      e.stopPropagation();
-      S.steps[idx].picto = btn.dataset.p;
-      card.querySelectorAll('.pb').forEach(b => {
-        b.classList.remove('on');
-        b.style.color = '#555';
-      });
-      btn.classList.add('on');
-      btn.style.color = '#fff';
-      update();
-    });
-  });
+  card.querySelectorAll('.pb').forEach(btn=>btn.addEventListener('click',e=>{
+    e.stopPropagation();
+    S.steps[idx].picto=btn.dataset.p;
+    card.querySelectorAll('.pb').forEach(b=>{b.classList.remove('on');b.querySelector('div').style.color='#555';});
+    btn.classList.add('on'); btn.querySelector('div').style.color='#fff';
+    update();
+  }));
 
-  // Upload — URL.createObjectURL pour preview immédiate
-  card.querySelector('.si-file').addEventListener('change', e => {
-    const file = e.target.files[0];
-    if (!file) return;
-    // Révoquer l'ancienne URL si elle existe
-    if (S.steps[idx].localUrl) URL.revokeObjectURL(S.steps[idx].localUrl);
-    const url = URL.createObjectURL(file);
-    S.steps[idx].localUrl  = url;
-    S.steps[idx].file      = file; // conservé pour upload Supabase au checkout
-    const img = card.querySelector('.upz-img');
-    img.src = url; img.style.display = 'block';
-    card.querySelector('.upz-ph').style.display = 'none';
+  card.querySelector('.si-file').addEventListener('change',e=>{
+    const file=e.target.files[0]; if(!file) return;
+    if(S.steps[idx].localUrl) URL.revokeObjectURL(S.steps[idx].localUrl);
+    const url=URL.createObjectURL(file);
+    S.steps[idx].localUrl=url; S.steps[idx].file=file;
+    const img=card.querySelector('.upz-img');
+    img.src=url; img.style.display='block';
+    card.querySelector('.upz-ph').style.display='none';
     update();
   });
 
   return card;
 }
 
-function rebuildList() {
-  const list = document.getElementById('stepsList');
-  list.innerHTML = '';
-  S.steps.forEach((_,i) => list.appendChild(buildCard(i)));
-  document.getElementById('btnAdd').disabled = S.steps.length >= 5;
-  document.getElementById('btnDel').disabled = S.steps.length <= 3;
+function rebuildList(){
+  const list=document.getElementById('stepsList');
+  list.innerHTML='';
+  S.steps.forEach((_,i)=>list.appendChild(buildCard(i)));
+  document.getElementById('btnAdd').disabled=S.steps.length>=5;
+  document.getElementById('btnDel').disabled=S.steps.length<=3;
 }
 
-/* ══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    INTERACTIONS
-══════════════════════════════════════════════════ */
-document.getElementById('p1').addEventListener('input', e => { S.p1 = e.target.value; update(); });
-document.getElementById('p2').addEventListener('input', e => { S.p2 = e.target.value; update(); });
+══════════════════════════════════════════════════════ */
+document.getElementById('p1').addEventListener('input',e=>{S.p1=e.target.value;update();});
+document.getElementById('p2').addEventListener('input',e=>{S.p2=e.target.value;update();});
 
-document.querySelectorAll('.fmt-btn').forEach(b => b.addEventListener('click', () => {
-  document.querySelectorAll('.fmt-btn').forEach(x => x.classList.remove('on'));
-  b.classList.add('on'); S.format = b.dataset.fmt; update();
+document.querySelectorAll('.theme-btn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.theme-btn').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); S.theme=b.dataset.theme; update();
+}));
+document.querySelectorAll('.fmt-btn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fmt-btn').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); S.format=b.dataset.fmt; update();
+}));
+document.querySelectorAll('.fin-btn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.fin-btn').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); S.fin=b.dataset.fin; update();
+}));
+document.querySelectorAll('.env-btn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.env-btn').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); S.env=b.dataset.env; update();
 }));
 
-document.querySelectorAll('.fin-btn').forEach(b => b.addEventListener('click', () => {
-  document.querySelectorAll('.fin-btn').forEach(x => x.classList.remove('on'));
-  b.classList.add('on'); S.fin = b.dataset.fin; update();
-}));
-
-document.querySelectorAll('.env-btn').forEach(b => b.addEventListener('click', () => {
-  document.querySelectorAll('.env-btn').forEach(x => x.classList.remove('on'));
-  b.classList.add('on'); S.env = b.dataset.env; update();
-}));
-
-document.getElementById('btnAdd').addEventListener('click', () => {
-  if (S.steps.length >= 5) return;
-  S.steps.push({ date:'', title:'', desc:'', picto:'heart', localUrl:null, file:null });
+document.getElementById('btnAdd').addEventListener('click',()=>{
+  if(S.steps.length>=5) return;
+  S.steps.push({date:'',title:'',desc:'',picto:'heart',localUrl:null,file:null});
+  rebuildList(); update();
+});
+document.getElementById('btnDel').addEventListener('click',()=>{
+  if(S.steps.length<=3) return;
+  const last=S.steps.pop();
+  if(last.localUrl) URL.revokeObjectURL(last.localUrl);
   rebuildList(); update();
 });
 
-document.getElementById('btnDel').addEventListener('click', () => {
-  if (S.steps.length <= 3) return;
-  const last = S.steps.pop();
-  if (last.localUrl) URL.revokeObjectURL(last.localUrl);
-  rebuildList(); update();
+// Zoom
+const modal=document.getElementById('modal');
+document.getElementById('btnZoom').addEventListener('click',()=>{
+  modal.classList.add('on'); document.body.style.overflow='hidden';
+  const mw=Math.min(window.innerWidth*.88,520);
+  sizePoster(document.getElementById('posterModal'),mw);
 });
+function closeModal(){modal.classList.remove('on');document.body.style.overflow='';}
+document.getElementById('modalClose').addEventListener('click',closeModal);
+document.getElementById('modalBg').addEventListener('click',closeModal);
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
 
-// Zoom modal
-const modal = document.getElementById('modal');
-document.getElementById('btnZoom').addEventListener('click', () => {
-  modal.classList.add('on'); document.body.style.overflow = 'hidden';
-  const mw = Math.min(window.innerWidth * 0.88, 520);
-  sizePoster(document.getElementById('posterModal'), mw);
-});
-function closeModal() { modal.classList.remove('on'); document.body.style.overflow = ''; }
-document.getElementById('modalClose').addEventListener('click', closeModal);
-document.getElementById('modalBg').addEventListener('click', closeModal);
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-window.addEventListener('resize', update);
-
-/* ══════════════════════════════════════════════════
-   CHECKOUT — Upload Supabase + Stripe
-══════════════════════════════════════════════════ */
-document.getElementById('btnOrder').addEventListener('click', async () => {
-  // Validation
-  if (!S.p1.trim() || !S.p2.trim()) { alert('Veuillez entrer les deux prénoms.'); return; }
-  const errs = [];
-  S.steps.forEach((s,i) => {
-    if (!s.date.trim())  errs.push(`Moment ${i+1} : date manquante`);
-    if (!s.title.trim()) errs.push(`Moment ${i+1} : titre manquant`);
-    if (!s.file && !s.localUrl) errs.push(`Moment ${i+1} : photo manquante`);
+/* ══════════════════════════════════════════════════════
+   CHECKOUT
+══════════════════════════════════════════════════════ */
+document.getElementById('btnOrder').addEventListener('click',async()=>{
+  if(!S.p1.trim()||!S.p2.trim()){alert('Veuillez entrer les deux prénoms.');return;}
+  const errs=[];
+  S.steps.forEach((s,i)=>{
+    if(!s.date.trim()) errs.push(`Moment ${i+1} : date manquante`);
+    if(!s.title.trim()) errs.push(`Moment ${i+1} : titre manquant`);
   });
-  if (errs.length) { alert('Erreurs :\n\n' + errs.map(e=>'• '+e).join('\n')); return; }
+  if(errs.length){alert('Erreurs :\n\n'+errs.map(e=>'• '+e).join('\n'));return;}
 
   showLoad('Envoi des photos…');
-
-  try {
-    // 1. Upload images sur Supabase
-    const stepsWithUrls = await Promise.all(S.steps.map(async (step, i) => {
-      if (!step.file) return { ...step, imageUrl: step.localUrl };
-      const fd = new FormData();
-      fd.append('image', step.file);
-      const res = await fetch('/api/upload/image', { method:'POST', body:fd });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Upload échoué');
-      return { ...step, imageUrl: data.url };
+  try{
+    const stepsWithUrls=await Promise.all(S.steps.map(async step=>{
+      if(!step.file) return{...step,imageUrl:step.localUrl};
+      const fd=new FormData(); fd.append('image',step.file);
+      const res=await fetch('/api/upload/image',{method:'POST',body:fd});
+      const data=await res.json();
+      if(!res.ok) throw new Error(data.error||'Upload échoué');
+      return{...step,imageUrl:data.url};
     }));
 
     showLoad('Création de votre commande…');
-
-    // 2. Créer session Stripe
-    const payload = {
-      partner1: S.p1,
-      partner2: S.p2,
-      product:  S.format,
-      frame:    S.fin,
-      design:   'classique',
-      steps: stepsWithUrls.map(s => ({
-        date:        s.date,
-        title:       s.title,
-        description: s.desc,
-        picto:       s.picto,
-        imageUrl:    s.imageUrl,
-      })),
-    };
-
-    const res = await fetch('/api/checkout', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
+    const res=await fetch('/api/checkout',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        partner1:S.p1, partner2:S.p2,
+        product:S.format, frame:S.fin, design:S.theme,
+        steps:stepsWithUrls.map(s=>({date:s.date,title:s.title,description:s.desc,picto:s.picto,imageUrl:s.imageUrl})),
+      }),
     });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || 'Erreur serveur');
-
-    showLoad('Redirection vers le paiement sécurisé…');
-    window.location.href = data.url;
-
-  } catch(err) {
-    hideLoad();
-    alert('Erreur : ' + err.message);
-  }
+    const data=await res.json();
+    if(!res.ok) throw new Error(data.error||'Erreur serveur');
+    showLoad('Redirection vers le paiement…');
+    window.location.href=data.url;
+  }catch(err){hideLoad();alert('Erreur : '+err.message);}
 });
 
-function showLoad(msg) {
-  document.getElementById('loadMsg').textContent = msg;
-  document.getElementById('overlayLoad').classList.add('on');
-}
-function hideLoad() {
-  document.getElementById('overlayLoad').classList.remove('on');
-}
+function showLoad(msg){document.getElementById('loadMsg').textContent=msg;document.getElementById('overlayLoad').classList.add('on');}
+function hideLoad(){document.getElementById('overlayLoad').classList.remove('on');}
 
+const params=new URLSearchParams(location.search);
+if(params.get('session_id')) document.getElementById('overlayOk').classList.add('on');
 
-/* ══════════════════════════════════════════════════
-   POSITION AFFICHE DANS LA PIÈCE
-══════════════════════════════════════════════════ */
-function positionPosterInRoom() {
-  const room = ROOMS[S.env];
-  if (!room) return;
-
-  const roomBg  = document.getElementById('roomBg');
-  const posterIn = document.getElementById('posterInRoom');
-  const posterEl = document.getElementById('posterRoom');
-  const wrap     = document.getElementById('posterWrapRoom');
-
-  const imgW = roomBg.offsetWidth;
-  const imgH = roomBg.offsetHeight;
-  if (!imgW || !imgH) return;
-
-  // Largeur de l'affiche en px = % de la largeur de l'image affichée
-  const posterW = imgW * room.width;
-  // Hauteur selon ratio A3/A4
-  const ratio = S.format === 'A3' ? 594/420 : 420/297;
-  const posterH = posterW * ratio;
-
-  // Positionnement absolu
-  posterIn.style.left   = (imgW * room.left - posterW/2) + 'px';
-  posterIn.style.top    = (imgH * room.top) + 'px';
-  posterIn.style.width  = posterW + 'px';
-
-  // Dimensionner le poster HTML
-  posterEl.style.width  = posterW + 'px';
-  posterEl.style.height = posterH + 'px';
-
-  // Ombre réaliste pour intégration
-  wrap.style.boxShadow = `${posterW*0.02}px ${posterW*0.04}px ${posterW*0.12}px rgba(0,0,0,0.45),${posterW*0.005}px ${posterW*0.01}px ${posterW*0.03}px rgba(0,0,0,0.2)`;
-}
-
-window.addEventListener('resize', () => {
-  if (S.env !== 'flat') positionPosterInRoom();
-});
-
-// Succès Stripe
-const params = new URLSearchParams(location.search);
-if (params.get('session_id')) document.getElementById('overlayOk').classList.add('on');
-
-/* ══════════════════════════════════════════════════
+/* ══════════════════════════════════════════════════════
    INIT
-══════════════════════════════════════════════════ */
-S.steps = [
-  { date:'14 FÉV. 2020', title:'Notre rencontre',   desc:'Une soirée entre amis, un regard qui change tout.', picto:'heart',  localUrl:null, file:null },
-  { date:'12 JUIL. 2021', title:'Premier voyage',   desc:'Barcelone sous le soleil, juste nous deux.',        picto:'plane',  localUrl:null, file:null },
-  { date:'25 DÉC. 2022',  title:'Notre chez-nous',  desc:'On a posé nos valises, pour de bon.',               picto:'house',  localUrl:null, file:null },
+══════════════════════════════════════════════════════ */
+S.steps=[
+  {date:'14 FÉV. 2020',title:'Notre rencontre',  desc:'Un soir d\'hiver, un regard volé au milieu du bruit.',picto:'heart', localUrl:null,file:null},
+  {date:'12 JUIL. 2021',title:'Premier voyage',  desc:'Barcelone sous le soleil, juste nous deux.',          picto:'plane', localUrl:null,file:null},
+  {date:'25 DÉC. 2022', title:'Notre chez-nous', desc:'On a posé nos valises, pour de bon.',                 picto:'house', localUrl:null,file:null},
 ];
-
 rebuildList();
 update();
 </script>
