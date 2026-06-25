@@ -98,6 +98,10 @@ body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:10
 .env-row{display:flex;gap:5px;flex-wrap:wrap}
 .env-btn{padding:7px 11px;border:1.5px solid var(--border);border-radius:50px;background:var(--surface);font-size:11px;font-weight:500;cursor:pointer;transition:all .18s;white-space:nowrap}
 .env-btn:hover,.env-btn.on{border-color:var(--ink);background:var(--ink);color:#fff}
+.paper-btn{padding:8px 6px;border:1.5px solid var(--border);border-radius:var(--r);background:var(--surface);font-size:11px;font-weight:600;cursor:pointer;text-align:center;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--ink2)}
+.paper-btn .paper-sw{width:22px;height:22px;border-radius:50%;display:block;border:1px solid var(--border)}
+.paper-btn:hover,.paper-btn.on{border-color:var(--ink)}
+.paper-btn.on{background:var(--ink);color:#fff}
 
 /* Steps actions */
 .step-actions{display:flex;gap:6px}
@@ -324,6 +328,25 @@ body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:10
       </div>
     </div>
 
+    <!-- Couleur du papier -->
+    <div>
+      <label class="lbl">Couleur du papier</label>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px" id="paperBtns">
+        <button class="paper-btn on" data-paper="coton">
+          <span class="paper-sw" style="background:#FAF8F5"></span>Coton
+        </button>
+        <button class="paper-btn" data-paper="blanc">
+          <span class="paper-sw" style="background:#FFFFFF"></span>Blanc
+        </button>
+        <button class="paper-btn" data-paper="pierre">
+          <span class="paper-sw" style="background:#EAE6DF"></span>Pierre
+        </button>
+        <button class="paper-btn" data-paper="charbon">
+          <span class="paper-sw" style="background:#1C1C1C"></span>Charbon
+        </button>
+      </div>
+    </div>
+
     <!-- Mise en situation -->
     <div>
       <label class="lbl">Mise en situation</label>
@@ -428,7 +451,7 @@ body{font-family:var(--fs);background:var(--page);color:var(--ink);min-height:10
 ══════════════════════════════════════════════════════ */
 const S = {
   p1:'', p2:'',
-  theme:'galerie', format:'A3', fin:'none', env:'flat',
+  theme:'galerie', format:'A3', fin:'none', env:'flat', paper:'coton',
   steps:[]
 };
 
@@ -466,15 +489,21 @@ function posterHTML() {
   const steps = S.steps;
   const year = steps[0]?.date ? extractYear(steps[0].date) : '2021';
   const slogan = 'Chaque chapitre nous a rapprochés de la vie que nous construisons aujourd\'hui.';
+  const paperColors = {coton:'#FAF8F5', blanc:'#FFFFFF', pierre:'#EAE6DF', charbon:'#1C1C1C'};
+  const paperBg = paperColors[S.paper] || '#FAF8F5';
+  const isDark = S.paper === 'charbon';
+  const textBase = isDark ? '#F0F0F0' : '#1C1C1C';
+  const textMuted = isDark ? '#AAA' : '#888';
+  const borderColor = isDark ? '#333' : '#e5e5e5';
   const goldText = 'gold-foil-text';
   const goldBg = 'gold-foil-bg';
   switch(S.theme) {
-    case 'galerie':   return htmlDesign1(p1, p2, steps, year, slogan, goldText, goldBg);
-    case 'cinema':    return htmlDesign2(p1, p2, steps, year, slogan, goldText, goldBg);
-    case 'carte':     return htmlDesign3(p1, p2, steps, year, slogan, goldText, goldBg);
-    case 'roman':     return htmlDesign4(p1, p2, steps, year, slogan, goldText, goldBg);
-    case 'aquarelle': return htmlDesign5(p1, p2, steps, year, slogan, goldText, goldBg);
-    default: return htmlDesign1(p1, p2, steps, year, slogan, goldText, goldBg);
+    case 'galerie':   return htmlDesign1(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
+    case 'cinema':    return htmlDesign2(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
+    case 'carte':     return htmlDesign3(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
+    case 'roman':     return htmlDesign4(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
+    case 'aquarelle': return htmlDesign5(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
+    default: return htmlDesign1(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
   }
 }
 
@@ -483,7 +512,7 @@ function posterHTML() {
 ══════════════════════════════════════════════════════ */
 
 /* ─── DESIGN 1 : CHAPITRE À DEUX (Focus Photo) ── */
-function htmlDesign1(p1, p2, steps, year, slogan, goldText, goldBg) {
+function htmlDesign1(p1, p2, steps, year, slogan, goldText, goldBg, paperBg='#FAF8F5', isDark=false, textBase='#1C1C1C', textMuted='#888', borderColor='#e5e5e5') {
   const m = steps;
   const imgs = steps.map(s => s.localUrl || '');
   const mainImg = imgs[0] || '';
@@ -508,7 +537,7 @@ function htmlDesign1(p1, p2, steps, year, slogan, goldText, goldBg) {
     </div>\`;
   }).join('');
 
-  return \`<div class="poster-inner paper-texture" style="background:#FAF8F5;color:#1C1C1C;display:flex;flex-direction:column;justify-content:space-between;padding:7%;font-family:'Plus Jakarta Sans',sans-serif">
+  return \`<div class="poster-inner paper-texture" style="background:"+paperBg+";color:"+textBase+";display:flex;flex-direction:column;justify-content:space-between;padding:7%;font-family:'Plus Jakarta Sans',sans-serif">
     <div style="display:flex;flex-direction:column;gap:8px">
       \${mainImg ? \`<div style="width:100%;height:28%;overflow:hidden;border-radius:6px;border:1px solid #e5e5e5;position:relative">
         <img src="\${mainImg}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)"/>
@@ -534,7 +563,7 @@ function htmlDesign1(p1, p2, steps, year, slogan, goldText, goldBg) {
 }
 
 /* ─── DESIGN 2 : TIMELINE LUXE (Ligne centrale) ── */
-function htmlDesign2(p1, p2, steps, year, slogan, goldText, goldBg) {
+function htmlDesign2(p1, p2, steps, year, slogan, goldText, goldBg, paperBg='#FAF8F5', isDark=false, textBase='#1C1C1C', textMuted='#888', borderColor='#e5e5e5') {
   const m = steps;
   const imgs = steps.map(s => s.localUrl || '');
 
@@ -570,7 +599,7 @@ function htmlDesign2(p1, p2, steps, year, slogan, goldText, goldBg) {
     </div>\`;
   }).join('');
 
-  return \`<div class="poster-inner paper-texture" style="background:#FAF8F5;color:#1C1C1C;display:flex;flex-direction:column;justify-content:space-between;padding:8%;font-family:'Plus Jakarta Sans',sans-serif">
+  return \`<div class="poster-inner paper-texture" style="background:"+paperBg+";color:"+textBase+";display:flex;flex-direction:column;justify-content:space-between;padding:8%;font-family:'Plus Jakarta Sans',sans-serif">
     <div style="text-align:center;padding-bottom:14px;border-bottom:1px solid #e5e5e5;margin:0 3%">
       <span style="font-size:.48em;font-weight:700;text-transform:uppercase;letter-spacing:.35em;color:#888;display:block;margin-bottom:4px">TRACÉ ET SOUVENIRS PRIVÉS</span>
       <h1 style="font-family:'Cormorant Garamond',serif;font-size:2em;font-weight:300;letter-spacing:.08em;text-transform:uppercase">
@@ -592,7 +621,7 @@ function htmlDesign2(p1, p2, steps, year, slogan, goldText, goldBg) {
 }
 
 /* ─── DESIGN 3 : CARTE VOYAGE (Rose des vents) ── */
-function htmlDesign3(p1, p2, steps, year, slogan, goldText, goldBg) {
+function htmlDesign3(p1, p2, steps, year, slogan, goldText, goldBg, paperBg='#FAF8F5', isDark=false, textBase='#1C1C1C', textMuted='#888', borderColor='#e5e5e5') {
   const m = steps;
   const imgs = steps.map(s => s.localUrl || '');
   const coords = ['48.8566° N, 2.3522° E','8.5069° S, 115.2625° E','45.7640° N, 4.8357° E','43.2965° N, 5.3698° E','48.5734° N, 7.7521° E'];
@@ -620,7 +649,7 @@ function htmlDesign3(p1, p2, steps, year, slogan, goldText, goldBg) {
     </div>\`;
   }).join('');
 
-  return \`<div class="poster-inner paper-texture" style="background:#F4F3EE;color:#1C1C1C;display:flex;flex-direction:column;justify-content:space-between;padding:8% 5%;font-family:'Plus Jakarta Sans',sans-serif">
+  return \`<div class="poster-inner paper-texture" style="background:"+paperBg+";color:"+textBase+";display:flex;flex-direction:column;justify-content:space-between;padding:8% 5%;font-family:'Plus Jakarta Sans',sans-serif">
     <div style="text-align:center;border-bottom:1px solid #e5e5e5;padding-bottom:12px;margin:0 3%;position:relative;z-index:1">
       <span style="font-size:.48em;font-weight:700;text-transform:uppercase;letter-spacing:.35em;color:#888;display:block;margin-bottom:3px">NOTRE VOYAGE GÉOGRAPHIQUE</span>
       <h1 style="font-family:'Cormorant Garamond',serif;font-size:1.8em;font-weight:300;letter-spacing:.06em;font-style:italic">
@@ -645,7 +674,7 @@ function htmlDesign3(p1, p2, steps, year, slogan, goldText, goldBg) {
 }
 
 /* ─── DESIGN 4 : CINÉMA D'AUTEUR ── */
-function htmlDesign4(p1, p2, steps, year, slogan, goldText, goldBg) {
+function htmlDesign4(p1, p2, steps, year, slogan, goldText, goldBg, paperBg='#FAF8F5', isDark=false, textBase='#1C1C1C', textMuted='#888', borderColor='#e5e5e5') {
   const mainImg = steps[0]?.localUrl || '';
   const img2 = steps[1]?.localUrl || '';
   const img3 = steps[2]?.localUrl || '';
@@ -687,7 +716,7 @@ function htmlDesign4(p1, p2, steps, year, slogan, goldText, goldBg) {
 }
 
 /* ─── DESIGN 5 : AQUARELLE PRESTIGE ── */
-function htmlDesign5(p1, p2, steps, year, slogan, goldText, goldBg) {
+function htmlDesign5(p1, p2, steps, year, slogan, goldText, goldBg, paperBg='#FAF8F5', isDark=false, textBase='#1C1C1C', textMuted='#888', borderColor='#e5e5e5') {
   const mainImg = steps[0]?.localUrl || '';
   const m = steps;
 
@@ -696,7 +725,7 @@ function htmlDesign5(p1, p2, steps, year, slogan, goldText, goldBg) {
     <span style="display:block;font-size:.38em;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-top:2px;line-height:1.2">\${esc(step.title||'')}</span>
   </div>\`).join('');
 
-  return \`<div class="poster-inner paper-texture" style="background:#FCFCFA;color:#333;display:flex;flex-direction:column;justify-content:space-between;font-family:'Plus Jakarta Sans',sans-serif;overflow:hidden">
+  return \`<div class="poster-inner paper-texture" style="background:"+paperBg+";color:"+textBase+";display:flex;flex-direction:column;justify-content:space-between;font-family:'Plus Jakarta Sans',sans-serif;overflow:hidden">
     <div style="position:absolute;top:-15%;left:-15%;width:55%;height:55%;background:rgba(255,200,150,.15);border-radius:50%;filter:blur(60px);pointer-events:none"></div>
     <div style="position:absolute;bottom:20%;right:-15%;width:60%;height:60%;background:rgba(200,196,188,.2);border-radius:50%;filter:blur(80px);pointer-events:none"></div>
     <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;height:100%;padding:8%">
@@ -930,6 +959,10 @@ document.querySelectorAll('.fmt-btn').forEach(b=>b.addEventListener('click',()=>
 document.querySelectorAll('.fin-btn').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.fin-btn').forEach(x=>x.classList.remove('on'));
   b.classList.add('on'); S.fin=b.dataset.fin; update();
+}));
+document.querySelectorAll('.paper-btn').forEach(b=>b.addEventListener('click',()=>{
+  document.querySelectorAll('.paper-btn').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on'); S.paper=b.dataset.paper; update();
 }));
 document.querySelectorAll('.env-btn').forEach(b=>b.addEventListener('click',()=>{
   document.querySelectorAll('.env-btn').forEach(x=>x.classList.remove('on'));
