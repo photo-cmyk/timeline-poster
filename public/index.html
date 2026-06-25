@@ -508,252 +508,261 @@ function posterHTML() {
 }
 
 /* ══════════════════════════════════════════════════════
-   5 THÈMES GEMINI — DESIGNS PREMIUM
+   5 THÈMES PREMIUM — VERSION GEMINI TRADUITE EN VANILLA JS
 ══════════════════════════════════════════════════════ */
 
-/* ─── DESIGN 1 : CHAPITRE À DEUX (Focus Photo) ── */
-function htmlDesign1(p1, p2, steps, year, slogan, goldText, goldBg, paperBg='#FAF8F5', isDark=false, textBase='#1C1C1C', textMuted='#888', borderColor='#e5e5e5') {
-  const m = steps;
+const ROMAN = ['I','II','III','IV','V'];
+
+/* ─── DESIGN 1 : FOCUS PHOTO ── */
+function htmlDesign1(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor) {
   const imgs = steps.map(s => s.localUrl || '');
   const mainImg = imgs[0] || '';
-  const borderC = 'border-neutral-200/60';
-  const textM = 'text-neutral-500';
-  
-  const chapitres = m.slice(0,5).map((step, i) => {
-    const imgSrc = imgs[i+1] || imgs[0] || '';
+
+  const chapitres = steps.slice(0,5).map((step, i) => {
+    const imgSrc = imgs[i] || '';
     const isLast = i === 4;
-    return `<div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:3px">
-      <span style="font-size:.42em;letter-spacing:.15em;color:#888;font-weight:700;text-transform:uppercase">Chapitre ${['I','II','III','IV','V'][i]}</span>
-      <div style="width:100%;aspect-ratio:4/5;overflow:hidden;border-radius:3px;border:1px solid #e5e5e5;background:#f5f5f5">
-        ${isLast
-          ? `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" fill="#daae51" style="width:16px;height:16px"><path d="M12 1.5l2.9 5.8 6.4.9-4.6 4.5 1.1 6.4-5.8-3-5.8 3 1.1-6.4-4.6-4.5 6.4-.9z"/></svg></div>`
-          : imgSrc
-            ? `<img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)"/>`
-            : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.5em;color:#bbb">📷</div>`}
-      </div>
-      <span style="font-family:'Cormorant Garamond',serif;font-size:.52em;font-weight:600;line-height:1.2">${esc(step.title||'')}</span>
-      <span style="font-size:.32em;font-family:monospace;opacity:.6">${esc(step.date||'')}</span>
-      <p style="font-family:'Cormorant Garamond',serif;font-size:.42em;color:#888;font-style:italic;line-height:1.3;margin-top:2px">« ${esc((step.desc||'').substring(0,60))} »</p>
+    return `
+    <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:2%">
+      <span style="font-size:1.5cqw;letter-spacing:.15em;color:${textMuted};font-weight:700;text-transform:uppercase;font-family:'Plus Jakarta Sans',sans-serif">Chapitre ${ROMAN[i]}</span>
+      ${isLast
+        ? `<div style="width:100%;aspect-ratio:4/5;display:flex;align-items:center;justify-content:center;border:1px dashed ${borderColor};border-radius:.5cqw;margin:.5cqw 0">
+            <svg viewBox="0 0 24 24" fill="#daae51" style="width:4cqw;height:4cqw"><path d="M12 1.5l2.9 5.8 6.4.9-4.6 4.5 1.1 6.4-5.8-3-5.8 3 1.1-6.4-4.6-4.5 6.4-.9z"/></svg>
+           </div>`
+        : `<div style="width:100%;aspect-ratio:4/5;overflow:hidden;border-radius:.5cqw;border:1px solid ${borderColor};margin:.5cqw 0;background:#f5f5f5">
+            ${imgSrc ? `<img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.95)"/>` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.2cqw;color:#bbb">📷</div>`}
+           </div>`}
+      <span style="font-family:'Cormorant Garamond',serif;font-size:1.8cqw;font-weight:600;line-height:1.2;overflow:hidden;display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical">${esc(step.title||'')}</span>
+      <span style="font-size:1.3cqw;font-family:monospace;opacity:.6">${esc(step.date||'')}</span>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.4cqw;color:${textMuted};font-style:italic;line-height:1.3;margin-top:.5cqw;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">« ${esc(step.desc||'')} »</p>
     </div>`;
   }).join('');
 
-  return `<div class="poster-inner paper-texture" style="background:${paperBg};color:${textBase};display:flex;flex-direction:column;justify-content:space-between;padding:7%;font-family:'Plus Jakarta Sans',sans-serif">
-    <div style="display:flex;flex-direction:column;gap:8px">
-      ${mainImg ? `<div style="width:100%;height:28%;overflow:hidden;border-radius:6px;border:1px solid #e5e5e5;position:relative">
-        <img src="${mainImg}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)"/>
-        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.12),transparent)"></div>
-      </div>` : `<div style="width:100%;height:28%;background:#f0ede8;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:.6em;color:#bbb">Votre photo principale</div>`}
-      <div style="text-align:center;padding:4px 0">
-        <span style="font-size:.48em;text-transform:uppercase;letter-spacing:.3em;color:#888;font-weight:600">Une histoire depuis ${year}</span>
-        <h1 style="font-family:'Cormorant Garamond',serif;font-size:1.5em;font-weight:300;text-transform:uppercase;margin:3px 0">
-          <span class="${goldText}">${esc(p1)} & ${esc(p2)}</span>
+  return `<div class="poster-inner paper-texture" style="background:${paperBg};color:${textBase};container-type:inline-size;display:flex;flex-direction:column;justify-content:space-between;padding:7cqw;font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="display:flex;flex-direction:column;gap:3cqw">
+      <div style="width:100%;height:45cqw;overflow:hidden;border-radius:2cqw;border:1px solid ${borderColor};position:relative;background:#f0ede8">
+        ${mainImg ? `<img src="${mainImg}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.98) contrast(1.05)"/>
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.1),transparent)"></div>` : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:2cqw;color:#bbb">Votre photo principale</div>`}
+      </div>
+      <div style="text-align:center;padding:1cqw 0">
+        <h2 style="font-size:1.8cqw;text-transform:uppercase;letter-spacing:.3em;color:${textMuted};font-weight:600;margin-bottom:.8cqw">Une histoire écrite depuis ${esc(year)}</h2>
+        <h1 style="font-family:'Cormorant Garamond',serif;font-size:6.5cqw;font-weight:300;text-transform:uppercase;line-height:1">
+          <span class="${goldText}">${esc(p1)} &amp; ${esc(p2)}</span>
         </h1>
-        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.5em;color:#888;max-width:280px;margin:0 auto">"${slogan}"</p>
-        <div class="${goldBg}" style="width:25%;height:1px;margin:6px auto 0"></div>
+        <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2.2cqw;color:${textMuted};max-width:70cqw;margin:1.2cqw auto 0;line-height:1.5">"${esc(slogan)}"</p>
+        <div class="${goldBg}" style="width:18cqw;height:.18cqw;margin:2cqw auto 0"></div>
       </div>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;flex:1;margin:8px 0;padding-top:8px;border-top:1px solid #e5e5e5">
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:1.8cqw;flex:1;margin:2.5cqw 0;padding-top:2.5cqw;border-top:1px solid ${borderColor}">
       ${chapitres}
     </div>
-    <div style="border-top:1px solid #e5e5e5;padding-top:8px;text-align:center;color:#888;font-size:.42em;text-transform:uppercase;letter-spacing:.35em">
-      <span style="font-weight:700;font-size:1.1em;color:#1C1C1C">Chapitre À Deux</span><br/>
-      <span>Édition Limitée Personnalisée • Réalisée en France</span>
+    <div style="border-top:1px solid ${borderColor};padding-top:2.5cqw;text-align:center;color:${textMuted};font-size:1.6cqw;text-transform:uppercase;letter-spacing:.35em">
+      <span style="font-weight:700;font-size:1.8cqw;color:${isDark?'#E0E0E0':'#1C1C1C'}">Chapitre À Deux</span><br/>
+      <span style="opacity:.75">Édition Limitée Personnalisée • Réalisée en France</span>
     </div>
   </div>`;
 }
 
-/* ─── DESIGN 2 : TIMELINE LUXE (Ligne centrale) ── */
-function htmlDesign2(p1, p2, steps, year, slogan, goldText, goldBg, paperBg='#FAF8F5', isDark=false, textBase='#1C1C1C', textMuted='#888', borderColor='#e5e5e5') {
-  const m = steps;
+/* ─── DESIGN 2 : TIMELINE LUXE ── */
+function htmlDesign2(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor) {
   const imgs = steps.map(s => s.localUrl || '');
 
-  const jalons = m.slice(0,5).map((step, i) => {
+  const jalons = steps.slice(0,5).map((step, i) => {
     const isRight = i % 2 === 1;
     const imgSrc = imgs[i] || '';
     const imgEl = imgSrc
       ? `<img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)"/>`
-      : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:.5em;color:#bbb">📷</div>`;
+      : `<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:1.5cqw;color:#bbb">📷</div>`;
 
-    if (!isRight) return `<div style="position:relative;width:100%;display:flex;align-items:center;height:52px">
-      <div style="position:absolute;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#b38728,#daae51);border:1px solid #fff;z-index:1"></div>
-      <div style="width:47%;display:flex;align-items:center;gap:6px;text-align:left">
-        <div style="width:36px;height:44px;border-radius:2px;border:1px solid #e5e5e5;overflow:hidden;flex-shrink:0;background:#f5f5f5">${imgEl}</div>
-        <div>
-          <span style="font-size:.35em;font-family:monospace;opacity:.6;display:block">${esc(step.date||'')}</span>
-          <h3 style="font-size:.48em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;line-height:1">${esc(step.title||'')}</h3>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:.4em;color:#888;font-style:italic;line-height:1.3">« ${esc((step.desc||'').substring(0,55))} »</p>
-        </div>
+    const photoBox = `<div style="width:8cqw;height:10.5cqw;border-radius:.4cqw;border:1px solid ${borderColor};overflow:hidden;flex-shrink:0;background:#f5f5f5">${imgEl}</div>`;
+    const textBox = `<div style="min-width:0">
+      <span style="font-size:1.4cqw;font-family:monospace;opacity:.6;display:block">${esc(step.date||'')}</span>
+      <h3 style="font-size:1.8cqw;font-weight:700;letter-spacing:.1em;text-transform:uppercase;line-height:1;margin-bottom:.3cqw;font-family:'Plus Jakarta Sans',sans-serif">${esc(step.title||'')}</h3>
+      <p style="font-family:'Cormorant Garamond',serif;font-size:1.6cqw;color:${textMuted};font-style:italic;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">« ${esc(step.desc||'')} »</p>
+    </div>`;
+
+    if (!isRight) return `
+    <div style="position:relative;width:100%;display:flex;align-items:center;height:14cqw">
+      <div style="position:absolute;left:50%;transform:translateX(-50%);width:2cqw;height:2cqw;border-radius:50%;background:linear-gradient(135deg,#b38728,#daae51);border:1px solid #fff;z-index:1;flex-shrink:0"></div>
+      <div style="width:47%;display:flex;align-items:center;gap:2cqw;text-align:left">
+        ${photoBox}${textBox}
       </div>
     </div>`;
-    else return `<div style="position:relative;width:100%;display:flex;align-items:center;height:52px">
-      <div style="position:absolute;left:50%;transform:translateX(-50%);width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#b38728,#daae51);border:1px solid #fff;z-index:1"></div>
+    else return `
+    <div style="position:relative;width:100%;display:flex;align-items:center;height:14cqw">
+      <div style="position:absolute;left:50%;transform:translateX(-50%);width:2cqw;height:2cqw;border-radius:50%;background:linear-gradient(135deg,#b38728,#daae51);border:1px solid #fff;z-index:1;flex-shrink:0"></div>
       <div style="width:53%;margin-left:auto"></div>
-      <div style="width:47%;display:flex;align-items:center;justify-content:flex-end;gap:6px;text-align:right">
-        <div>
-          <span style="font-size:.35em;font-family:monospace;opacity:.6;display:block">${esc(step.date||'')}</span>
-          <h3 style="font-size:.48em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;line-height:1">${esc(step.title||'')}</h3>
-          <p style="font-family:'Cormorant Garamond',serif;font-size:.4em;color:#888;font-style:italic;line-height:1.3">« ${esc((step.desc||'').substring(0,55))} »</p>
-        </div>
-        <div style="width:36px;height:44px;border-radius:2px;border:1px solid #e5e5e5;overflow:hidden;flex-shrink:0;background:#f5f5f5">${imgEl}</div>
+      <div style="width:47%;display:flex;align-items:center;justify-content:flex-end;gap:2cqw;text-align:right">
+        ${textBox}${photoBox}
       </div>
     </div>`;
   }).join('');
 
-  return `<div class="poster-inner paper-texture" style="background:${paperBg};color:${textBase};display:flex;flex-direction:column;justify-content:space-between;padding:8%;font-family:'Plus Jakarta Sans',sans-serif">
-    <div style="text-align:center;padding-bottom:14px;border-bottom:1px solid #e5e5e5;margin:0 3%">
-      <span style="font-size:.48em;font-weight:700;text-transform:uppercase;letter-spacing:.35em;color:#888;display:block;margin-bottom:4px">TRACÉ ET SOUVENIRS PRIVÉS</span>
-      <h1 style="font-family:'Cormorant Garamond',serif;font-size:2em;font-weight:300;letter-spacing:.08em;text-transform:uppercase">
+  return `<div class="poster-inner paper-texture" style="background:${paperBg};color:${textBase};container-type:inline-size;display:flex;flex-direction:column;justify-content:space-between;padding:8cqw;font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="text-align:center;padding-bottom:3cqw;border-bottom:1px solid ${borderColor};margin:0 3cqw">
+      <span style="font-size:1.8cqw;font-weight:700;text-transform:uppercase;letter-spacing:.35em;color:${textMuted};display:block;margin-bottom:.8cqw">TRACÉ ET SOUVENIRS PRIVÉS</span>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:7cqw;font-weight:300;letter-spacing:.08em;text-transform:uppercase;line-height:1.1">
         ${esc(p1)} <span class="${goldText}">&</span> ${esc(p2)}
       </h1>
-      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.6em;color:#888;margin-top:3px">L'Ancre de nos plus doux jalons d'amour</p>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2.2cqw;color:${textMuted};margin-top:.8cqw">L'Ancre de nos plus doux jalons d'amour</p>
     </div>
-    <div style="position:relative;flex:1;margin:12px 3%;padding:4px 0">
-      <div class="${goldBg}" style="position:absolute;left:50%;top:4px;bottom:4px;width:1px;transform:translateX(-50%);opacity:.7"></div>
+    <div style="position:relative;flex:1;margin:3cqw;padding:1.5cqw 0">
+      <div class="${goldBg}" style="position:absolute;left:50%;top:4px;bottom:4px;width:.25cqw;transform:translateX(-50%);opacity:.7"></div>
       <div style="display:flex;flex-direction:column;justify-content:space-between;height:100%">
         ${jalons}
       </div>
     </div>
-    <div style="border-top:1px solid #e5e5e5;padding-top:8px;display:flex;justify-content:space-between;color:#888;font-size:.42em;text-transform:uppercase;letter-spacing:.25em">
+    <div style="border-top:1px solid ${borderColor};padding-top:2.5cqw;display:flex;justify-content:space-between;color:${textMuted};font-size:1.8cqw;text-transform:uppercase;letter-spacing:.25em">
       <span>ÉDITION SOUVENIR D'ART SÉRIE</span>
       <span>CHAPITRE À DEUX</span>
     </div>
   </div>`;
 }
 
-/* ─── DESIGN 3 : CARTE VOYAGE (Rose des vents) ── */
-function htmlDesign3(p1, p2, steps, year, slogan, goldText, goldBg, paperBg='#FAF8F5', isDark=false, textBase='#1C1C1C', textMuted='#888', borderColor='#e5e5e5') {
-  const m = steps;
+/* ─── DESIGN 3 : CARTE VOYAGE ── */
+function htmlDesign3(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor) {
   const imgs = steps.map(s => s.localUrl || '');
-  const coords = ['48.8566° N, 2.3522° E','8.5069° S, 115.2625° E','45.7640° N, 4.8357° E','43.2965° N, 5.3698° E','48.5734° N, 7.7521° E'];
-  const positions = [
-    'top:8%;left:8%',
-    'top:30%;right:8%;text-align:right',
-    'top:52%;left:20%',
-    'top:72%;right:12%;text-align:right',
-    'bottom:6%;left:30%'
+  const coords = ['48.8566° N, 2.3522° E','45.8992° N, 6.1293° E','37.3891° N, 5.9845° W','45.7640° N, 4.8357° E','43.2965° N, 5.3698° E'];
+
+  const points5 = [
+    { side:'left',  top:'8%',   left:'8%',  right:'' },
+    { side:'right', top:'28%',  left:'',    right:'8%' },
+    { side:'left',  top:'48%',  left:'15%', right:'' },
+    { side:'right', top:'68%',  left:'',    right:'8%' },
+    { side:'center',top:'',     left:'',    right:'', bottom:'6%' },
   ];
 
-  const points = m.slice(0,5).map((step, i) => {
+  const pts = steps.slice(0,5).map((step, i) => {
     const imgSrc = imgs[i] || '';
-    const isRight = positions[i].includes('right');
-    const imgEl = imgSrc
-      ? `<img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)"/>`
-      : '';
-    return `<div style="position:absolute;${positions[i]};display:flex;align-items:center;gap:6px;${isRight?'flex-direction:row-reverse':''}">
-      <div style="width:32px;height:32px;border-radius:2px;border:2px solid #daae51;overflow:hidden;background:#f5f5f5;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.1)">${imgEl}</div>
+    const pos = points5[i];
+    const imgEl = imgSrc ? `<img src="${imgSrc}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.05)"/>` : '';
+    const posStyle = pos.side === 'center'
+      ? `bottom:${pos.bottom};left:50%;transform:translateX(-50%)`
+      : `top:${pos.top};${pos.side==='left'?`left:${pos.left}`:`right:${pos.right}`}`;
+    const isRight = pos.side === 'right';
+    return `<div style="position:absolute;${posStyle};display:flex;align-items:center;gap:6px;${isRight?'flex-direction:row-reverse':''}">
+      <div style="width:9cqw;height:9cqw;border-radius:2px;border:2px solid #daae51;overflow:hidden;background:#f5f5f5;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.1)">${imgEl}</div>
       <div style="${isRight?'text-align:right':''}">
-        <h3 style="font-size:.48em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;line-height:1">${esc(step.title||'')}</h3>
-        <span style="font-size:.32em;font-family:monospace;opacity:.6;display:block;margin-top:2px">${coords[i]}</span>
-        <span style="font-size:.32em;font-family:monospace;opacity:.5;display:block">${esc(step.date||'')}</span>
+        <h3 style="font-size:2cqw;font-weight:700;letter-spacing:.1em;text-transform:uppercase;line-height:1">${esc(step.title||'')}</h3>
+        <span style="font-size:1.4cqw;font-family:monospace;opacity:.6;display:block;margin-top:2px">${coords[i]}</span>
+        <span style="font-size:1.4cqw;font-family:monospace;opacity:.5;display:block">${esc(step.date||'')}</span>
       </div>
     </div>`;
   }).join('');
 
-  return `<div class="poster-inner paper-texture" style="background:${paperBg};color:${textBase};display:flex;flex-direction:column;justify-content:space-between;padding:8% 5%;font-family:'Plus Jakarta Sans',sans-serif">
-    <div style="text-align:center;border-bottom:1px solid #e5e5e5;padding-bottom:12px;margin:0 3%;position:relative;z-index:1">
-      <span style="font-size:.48em;font-weight:700;text-transform:uppercase;letter-spacing:.35em;color:#888;display:block;margin-bottom:3px">NOTRE VOYAGE GÉOGRAPHIQUE</span>
-      <h1 style="font-family:'Cormorant Garamond',serif;font-size:1.8em;font-weight:300;letter-spacing:.06em;font-style:italic">
+  return `<div class="poster-inner paper-texture" style="background:${paperBg};color:${textBase};container-type:inline-size;display:flex;flex-direction:column;justify-content:space-between;padding:8cqw 5cqw;font-family:'Plus Jakarta Sans',sans-serif">
+    <div style="position:absolute;inset:0;opacity:.025;background:linear-gradient(to right,rgba(128,128,128,.07) 1px,transparent 1px),linear-gradient(to bottom,rgba(128,128,128,.07) 1px,transparent 1px);background-size:16px 16px;pointer-events:none;z-index:0"></div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:.03;z-index:0">
+      <svg style="width:60cqw;height:60cqw" viewBox="0 0 100 100" fill="${textBase}">
+        <path d="M50 0 L52 45 L100 50 L52 55 L50 100 L48 55 L0 50 L48 45 Z"/>
+        <circle cx="50" cy="50" r="12" fill="none" stroke="${textBase}" stroke-width=".8"/>
+        <circle cx="50" cy="50" r="16" fill="none" stroke="${textBase}" stroke-width=".3" stroke-dasharray="1 1"/>
+      </svg>
+    </div>
+    <div style="text-align:center;border-bottom:1px solid ${borderColor};padding-bottom:3cqw;margin:0 3cqw;position:relative;z-index:1">
+      <span style="font-size:1.8cqw;font-weight:700;text-transform:uppercase;letter-spacing:.35em;color:${textMuted};display:block;margin-bottom:.8cqw">NOTRE VOYAGE GÉOGRAPHIQUE</span>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:7cqw;font-weight:300;letter-spacing:.06em;font-style:italic;line-height:1.1">
         ${esc(p1)} <span class="${goldText}">&</span> ${esc(p2)}
       </h1>
+      <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2.2cqw;color:${textMuted};margin-top:.8cqw">Tracé d'une destinée d'amour</p>
     </div>
-    <div style="position:relative;flex:1;margin:8px 3%;min-height:300px">
+    <div style="position:relative;flex:1;margin:2cqw 3cqw">
       <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" preserveAspectRatio="none">
         <path d="M 45 30 C 180 50,180 70,275 90 C 160 110,100 130,45 150 C 160 170,200 190,275 210 C 180 230,130 250,160 270" fill="none" stroke="#daae51" stroke-width="1.2" stroke-dasharray="3 3"/>
-        <circle cx="50" cy="160" r="60" fill="none" stroke="#1C1C1C" stroke-width=".3" stroke-dasharray="1 1" opacity=".04"/>
-        <line x1="50" y1="100" x2="50" y2="220" stroke="#1C1C1C" stroke-width=".4" opacity=".04"/>
-        <line x1="-10" y1="160" x2="110" y2="160" stroke="#1C1C1C" stroke-width=".4" opacity=".04"/>
       </svg>
       <div style="position:relative;z-index:1;width:100%;height:100%">
-        ${points}
+        ${pts}
       </div>
     </div>
-    <div style="border-top:1px solid rgba(229,229,229,.6);padding-top:8px;text-align:center;font-size:.42em;letter-spacing:.08em;text-transform:uppercase;color:#888">
-      Une cartographie intime · Cinq ancrages de vie · <strong>Chapitre À Deux</strong>
+    <div style="border-top:1px solid ${borderColor};padding-top:3cqw;display:flex;justify-content:space-between;color:${textMuted};font-size:1.6cqw;text-transform:uppercase;letter-spacing:.08em;position:relative;z-index:1">
+      <span>Une cartographie intime · Cinq ancrages de vie</span>
+      <span style="font-weight:600">Chapitre À Deux</span>
     </div>
   </div>`;
 }
 
 /* ─── DESIGN 4 : CINÉMA D'AUTEUR ── */
-function htmlDesign4(p1, p2, steps, year, slogan, goldText, goldBg, paperBg='#FAF8F5', isDark=false, textBase='#1C1C1C', textMuted='#888', borderColor='#e5e5e5') {
+function htmlDesign4(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor) {
   const mainImg = steps[0]?.localUrl || '';
-  const img2 = steps[1]?.localUrl || '';
-  const img3 = steps[2]?.localUrl || '';
-  const m = steps;
+  const img2    = steps[1]?.localUrl || '';
+  const img3    = steps[2]?.localUrl || '';
 
-  const credits = m.slice(0,4).map((step,i) => {
+  const credits = steps.slice(0,4).map((step,i) => {
     const labels = ['RENCONTRE','SOUVENIRS','VAGABONDAGE','FIANÇAILLES'];
-    return `${labels[i]||step.title.toUpperCase()} <span style="color:#fff">${extractYear(step.date||'')}</span>`;
+    const lbl = labels[i] || (step.title||'').toUpperCase();
+    const yr  = extractYear(step.date||'');
+    return `${lbl} <span style="color:#fff">${yr}</span>`;
   }).join(' • ');
 
-  return `<div class="poster-inner" style="background:#0A0A0A;color:#E5E5E5;display:flex;flex-direction:column;justify-content:space-between;font-family:'Plus Jakarta Sans',sans-serif">
+  return `<div class="poster-inner" style="background:#0A0A0A;color:#E5E5E5;container-type:inline-size;display:flex;flex-direction:column;justify-content:space-between;font-family:'Plus Jakarta Sans',sans-serif">
     <div style="position:absolute;inset:0;overflow:hidden">
       ${mainImg
         ? `<img src="${mainImg}" style="width:100%;height:100%;object-fit:cover;opacity:.45;filter:grayscale(1) contrast(1.25);transform:scale(1.05)"/>`
-        : '<div style="width:100%;height:100%;background:#1A1A1A"></div>'}
-      <div style="position:absolute;inset:0;background:linear-gradient(to top,#0A0A0A 0%,rgba(10,10,10,.4) 50%,rgba(10,10,10,.9) 100%)"></div>
+        : `<div style="width:100%;height:100%;background:#1A1A1A"></div>`}
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,#0A0A0A 0%,rgba(10,10,10,.4) 50%,rgba(10,10,10,.92) 100%)"></div>
     </div>
-    <div style="position:relative;z-index:1;padding:8%">
-      <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:14px">
-        <span style="font-size:.48em;text-transform:uppercase;letter-spacing:.4em;color:#888">SÉLECTION OFFICIELLE — DEPUIS ${year}</span>
-        <span style="font-size:.48em;text-transform:uppercase;letter-spacing:.2em;color:#888">RÉCIT D'AUTEUR</span>
+    <div style="position:relative;z-index:1;padding:8cqw 8cqw 0">
+      <div style="display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:4cqw">
+        <span style="font-size:1.8cqw;text-transform:uppercase;letter-spacing:.4em;color:#888">SÉLECTION OFFICIELLE — DEPUIS ${esc(year)}</span>
+        <span style="font-size:1.8cqw;text-transform:uppercase;letter-spacing:.2em;color:#888">RÉCIT D'AUTEUR</span>
       </div>
     </div>
-    <div style="position:relative;z-index:1;text-align:center;padding:0 8% 8%">
-      <p style="font-size:.5em;text-transform:uppercase;letter-spacing:.4em;color:rgba(255,255,255,.9);margin-bottom:8px;text-shadow:0 2px 10px rgba(0,0,0,.95)">${esc(slogan.substring(0,60))}</p>
-      <h1 style="font-family:'Cormorant Garamond',serif;font-size:2.2em;font-weight:300;letter-spacing:.18em;text-transform:uppercase;color:#fff;margin-bottom:6px;text-shadow:0 4px 15px rgba(0,0,0,.95)">
-        ${esc(p1)} & ${esc(p2)}
+    <div style="position:relative;z-index:1;text-align:center;padding:0 8cqw 8cqw">
+      <p style="font-size:2cqw;text-transform:uppercase;letter-spacing:.4em;color:rgba(255,255,255,.9);margin-bottom:2cqw;text-shadow:0 2px 10px rgba(0,0,0,.95)">${esc(slogan.substring(0,60))}</p>
+      <h1 style="font-family:'Cormorant Garamond',serif;font-size:8.5cqw;font-weight:300;letter-spacing:.18em;text-transform:uppercase;color:#fff;margin-bottom:2cqw;text-shadow:0 4px 15px rgba(0,0,0,.95)">
+        ${esc(p1)} &amp; ${esc(p2)}
       </h1>
-      <div style="display:flex;justify-content:center;gap:10px;margin:12px 0">
-        ${img2 ? `<div style="width:30%;aspect-ratio:4/3;overflow:hidden;border-radius:4px;border:1px solid rgba(255,255,255,.1)"><img src="${img2}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1)"/></div>` : ''}
-        ${img3 ? `<div style="width:30%;aspect-ratio:4/3;overflow:hidden;border-radius:4px;border:1px solid rgba(255,255,255,.1)"><img src="${img3}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1)"/></div>` : ''}
+      <div style="display:flex;justify-content:center;gap:3cqw;margin:2cqw 0">
+        ${img2?`<div style="width:30%;aspect-ratio:4/3;overflow:hidden;border-radius:4px;border:1px solid rgba(255,255,255,.1)"><img src="${img2}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1)"/></div>`:''}
+        ${img3?`<div style="width:30%;aspect-ratio:4/3;overflow:hidden;border-radius:4px;border:1px solid rgba(255,255,255,.1)"><img src="${img3}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.1)"/></div>`:''}
       </div>
-      <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:12px;font-size:.42em;letter-spacing:.25em;text-transform:uppercase;color:#666;line-height:1.8">
+      <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:2cqw;font-size:1.5cqw;letter-spacing:.25em;text-transform:uppercase;color:#666;line-height:1.8">
         ${credits}
-        <br><span style="font-size:.85em;color:#555">PRODUIT PAR CHAPITRE À DEUX • DIRECTION ARTISTIQUE LES SOUVENIRS PARTAGÉS</span>
+        <br/><span style="font-size:1.2cqw;color:#555">PRODUIT PAR CHAPITRE À DEUX • DIRECTION ARTISTIQUE LES SOUVENIRS PARTAGÉS</span>
       </div>
     </div>
   </div>`;
 }
 
 /* ─── DESIGN 5 : AQUARELLE PRESTIGE ── */
-function htmlDesign5(p1, p2, steps, year, slogan, goldText, goldBg, paperBg='#FAF8F5', isDark=false, textBase='#1C1C1C', textMuted='#888', borderColor='#e5e5e5') {
+function htmlDesign5(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor) {
   const mainImg = steps[0]?.localUrl || '';
-  const m = steps;
 
-  const cols = m.slice(0,4).map(step => `<div style="text-align:center">
-    <span style="display:block;font-size:.6em;font-weight:700;color:#1C1C1C">${extractYear(step.date||'')}</span>
-    <span style="display:block;font-size:.38em;text-transform:uppercase;letter-spacing:.1em;color:#888;margin-top:2px;line-height:1.2">${esc(step.title||'')}</span>
-  </div>`).join('');
+  const cols = steps.slice(0,4).map(step => `
+    <div style="text-align:center">
+      <span style="display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:2.5cqw;font-weight:700;color:${isDark?'#E0E0E0':'#1C1C1C'}">${extractYear(step.date||'')}</span>
+      <span style="display:block;font-family:'Plus Jakarta Sans',sans-serif;font-size:1.6cqw;text-transform:uppercase;letter-spacing:.1em;color:${textMuted};margin-top:.5cqw;line-height:1.2">${esc(step.title||'')}</span>
+    </div>`).join('');
 
-  return `<div class="poster-inner paper-texture" style="background:${paperBg};color:${textBase};display:flex;flex-direction:column;justify-content:space-between;font-family:'Plus Jakarta Sans',sans-serif;overflow:hidden">
-    <div style="position:absolute;top:-15%;left:-15%;width:55%;height:55%;background:rgba(255,200,150,.15);border-radius:50%;filter:blur(60px);pointer-events:none"></div>
-    <div style="position:absolute;bottom:20%;right:-15%;width:60%;height:60%;background:rgba(200,196,188,.2);border-radius:50%;filter:blur(80px);pointer-events:none"></div>
-    <div style="position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;height:100%;padding:8%">
-      <div style="text-align:center;border-bottom:1px solid #f0f0f0;padding-bottom:12px">
-        <h1 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4em;color:#333;letter-spacing:.04em">Notre Histoire d'Amour</h1>
-        <p style="font-size:.48em;text-transform:uppercase;letter-spacing:.3em;color:#999;margin-top:3px">${esc(p1)} & ${esc(p2)}</p>
+  return `<div class="poster-inner paper-texture" style="background:${paperBg};color:${textBase};container-type:inline-size;font-family:'Plus Jakarta Sans',sans-serif;overflow:hidden">
+    <div style="position:absolute;top:-15%;left:-15%;width:55%;height:55%;background:rgba(255,200,150,.12);border-radius:50%;filter:blur(60px);pointer-events:none"></div>
+    <div style="position:absolute;bottom:20%;right:-15%;width:60%;height:60%;background:rgba(200,196,188,.18);border-radius:50%;filter:blur(80px);pointer-events:none"></div>
+    <div style="position:relative;z-index:1;height:100%;display:flex;flex-direction:column;justify-content:space-between;padding:9cqw">
+      <div style="text-align:center;border-bottom:1px solid ${borderColor};padding-bottom:3cqw">
+        <h1 style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:6cqw;color:${isDark?'#E5E5E5':'#1C1C1C'};letter-spacing:.04em">Notre Histoire d'Amour</h1>
+        <p style="font-size:2.2cqw;text-transform:uppercase;letter-spacing:.35em;color:${textMuted};font-weight:700;margin-top:.8cqw">${esc(p1)} &amp; ${esc(p2)}</p>
       </div>
-      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5%">
-        <div style="background:#fff;padding:3%;box-shadow:0 15px 35px rgba(0,0,0,.03);border:1px solid rgba(200,200,200,.4);width:55%;aspect-ratio:3/4;overflow:hidden">
+      <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3cqw">
+        <div style="background:#fff;padding:2cqw;box-shadow:0 12px 28px rgba(0,0,0,.05);border:1px solid rgba(200,200,200,.4);width:55cqw;aspect-ratio:3/4;overflow:hidden">
           ${mainImg
-            ? `<img src="${mainImg}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1);opacity:.85"/>`
-            : `<div style="width:100%;height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;font-size:.5em;color:#bbb">Votre photo</div>`}
+            ? `<img src="${mainImg}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.97)"/>`
+            : `<div style="width:100%;height:100%;background:#f5f5f5;display:flex;align-items:center;justify-content:center;font-size:2cqw;color:#bbb">Votre photo</div>`}
         </div>
-        <div style="text-align:center;max-width:80%;padding:0 5%">
-          <span style="font-size:1.2em;display:block;line-height:1;" class="${goldText}">"</span>
-          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:.65em;color:#888;line-height:1.7;margin-top:-2px">"${esc(slogan)}"</p>
+        <div style="text-align:center;max-width:65cqw">
+          <span style="font-size:6cqw;display:block;line-height:1;font-weight:700" class="${goldText}">"</span>
+          <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:2.5cqw;color:${textMuted};line-height:1.7;margin-top:-.5cqw">"${esc(slogan)}"</p>
         </div>
       </div>
       <div>
-        <div style="width:100%;height:1px;background:#f0f0f0;margin-bottom:8px"></div>
+        <div style="width:100%;height:1px;background:${borderColor};margin-bottom:2cqw;opacity:.6"></div>
         <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center">${cols}</div>
-        <div style="text-align:center;font-size:.38em;letter-spacing:.3em;text-transform:uppercase;color:#999;margin-top:8px;border-top:1px solid #f0f0f0;padding-top:8px">
+        <div style="text-align:center;font-size:1.6cqw;letter-spacing:.3em;text-transform:uppercase;color:${textMuted};margin-top:2cqw;padding-top:2cqw;border-top:1px solid ${borderColor}">
           Collection Fine Art — Maison Chapitre À Deux
         </div>
       </div>
     </div>
   </div>`;
 }
+
 
 
 function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
