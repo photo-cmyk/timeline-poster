@@ -499,9 +499,9 @@ function posterHTML() {
   const goldBg = 'gold-foil-bg';
   switch(S.theme) {
     case 'galerie':   return htmlDesign1(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
-    case 'cinema':    return htmlDesign2(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
+    case 'cinema':    return htmlDesign4(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
     case 'carte':     return htmlDesign3(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
-    case 'roman':     return htmlDesign4(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
+    case 'roman':     return htmlDesign2(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
     case 'aquarelle': return htmlDesign5(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
     default: return htmlDesign1(p1, p2, steps, year, slogan, goldText, goldBg, paperBg, isDark, textBase, textMuted, borderColor);
   }
@@ -656,7 +656,7 @@ function htmlDesign3(p1, p2, steps, year, slogan, goldText, goldBg, paperBg='#FA
         ${esc(p1)} <span class="${goldText}">&</span> ${esc(p2)}
       </h1>
     </div>
-    <div style="position:relative;flex:1;margin:8px 3%">
+    <div style="position:relative;flex:1;margin:8px 3%;min-height:300px">
       <svg style="position:absolute;inset:0;width:100%;height:100%;z-index:0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" preserveAspectRatio="none">
         <path d="M 45 30 C 180 50,180 70,275 90 C 160 110,100 130,45 150 C 160 170,200 190,275 210 C 180 230,130 250,160 270" fill="none" stroke="#daae51" stroke-width="1.2" stroke-dasharray="3 3"/>
         <circle cx="50" cy="160" r="60" fill="none" stroke="#1C1C1C" stroke-width=".3" stroke-dasharray="1 1" opacity=".04"/>
